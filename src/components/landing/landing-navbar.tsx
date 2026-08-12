@@ -58,11 +58,11 @@ export function LandingNavbar() {
 					>
 						Características
 					</a>
-					<Link to={"/login" as string} className="block py-2 text-sm">
+					<Link to={"/login"} className="block py-2 text-sm">
 						Iniciar sesión
 					</Link>
 					<Button asChild className="w-full mt-1">
-						<Link to={"/register" as string}>Registrarse</Link>
+						<Link to={"/register"}>Registrarse</Link>
 					</Button>
 				</div>
 			)}

@@ -1,5 +1,28 @@
 import { relations } from "drizzle-orm";
-import { boolean, index, pgTable, text, timestamp } from "drizzle-orm/pg-core";
+import {
+	boolean,
+	date,
+	index,
+	numeric,
+	pgEnum,
+	pgTable,
+	text,
+	time,
+	timestamp,
+	uuid,
+} from "drizzle-orm/pg-core";
+
+export const userRole = pgEnum("user_role", ["admin", "user"]);
+export const sex = pgEnum("sex", ["male", "female", "other"]);
+export const weightUnit = pgEnum("weight_unit", ["kg", "lb"]);
+export const heightUnit = pgEnum("height_unit", ["cm", "ft"]);
+export const goalPace = pgEnum("goal_pace", ["slow", "moderate", "fast"]);
+export const supportStatus = pgEnum("support_status", [
+	"open",
+	"in_progress",
+	"resolved",
+	"closed",
+]);
 
 export const user = pgTable("user", {
 	id: text("id").primaryKey(),
@@ -12,6 +35,13 @@ export const user = pgTable("user", {
 		.defaultNow()
 		.$onUpdate(() => /* @__PURE__ */ new Date())
 		.notNull(),
+	role: userRole("role").default("user").notNull(),
+	sex: sex("sex"),
+	birthDate: date("birth_date"),
+	height: numeric("height", { precision: 6, scale: 2 }),
+	weightUnit: weightUnit("weight_unit").default("kg").notNull(),
+	heightUnit: heightUnit("height_unit").default("cm").notNull(),
+	timezone: text("timezone").default("UTC").notNull(),
 });
 
 export const session = pgTable(
@@ -73,9 +103,81 @@ export const verification = pgTable(
 	(table) => [index("verification_identifier_idx").on(table.identifier)],
 );
 
+export const goal = pgTable(
+	"goal",
+	{
+		id: uuid("id").defaultRandom().primaryKey(),
+		createdById: text("created_by_id")
+			.notNull()
+			.references(() => user.id, { onDelete: "cascade" }),
+		targetWeight: numeric("target_weight", {
+			precision: 6,
+			scale: 2,
+		}).notNull(),
+		targetDate: date("target_date"),
+		pace: goalPace("pace").default("moderate").notNull(),
+		startWeight: numeric("start_weight", { precision: 6, scale: 2 }),
+		startDate: date("start_date"),
+		createdAt: timestamp("created_at").defaultNow().notNull(),
+		updatedAt: timestamp("updated_at")
+			.defaultNow()
+			.$onUpdate(() => /* @__PURE__ */ new Date())
+			.notNull(),
+	},
+	(table) => [index("goal_created_by_id_idx").on(table.createdById)],
+);
+
+export const weightEntry = pgTable(
+	"weight_entry",
+	{
+		id: uuid("id").defaultRandom().primaryKey(),
+		createdById: text("created_by_id")
+			.notNull()
+			.references(() => user.id, { onDelete: "cascade" }),
+		weight: numeric("weight", { precision: 6, scale: 2 }).notNull(),
+		date: date("date").notNull(),
+		time: time("time"),
+		note: text("note"),
+		createdAt: timestamp("created_at").defaultNow().notNull(),
+		updatedAt: timestamp("updated_at")
+			.defaultNow()
+			.$onUpdate(() => /* @__PURE__ */ new Date())
+			.notNull(),
+	},
+	(table) => [
+		index("weight_entry_created_by_id_idx").on(table.createdById),
+		index("weight_entry_date_idx").on(table.date),
+	],
+);
+
+export const supportTicket = pgTable(
+	"support_ticket",
+	{
+		id: uuid("id").defaultRandom().primaryKey(),
+		createdById: text("created_by_id")
+			.notNull()
+			.references(() => user.id, { onDelete: "cascade" }),
+		subject: text("subject").notNull(),
+		message: text("message").notNull(),
+		status: supportStatus("status").default("open").notNull(),
+		createdAt: timestamp("created_at").defaultNow().notNull(),
+		updatedAt: timestamp("updated_at")
+			.defaultNow()
+			.$onUpdate(() => /* @__PURE__ */ new Date())
+			.notNull(),
+	},
+	(table) => [
+		index("support_ticket_created_by_id_idx").on(table.createdById),
+		index("support_ticket_status_idx").on(table.status),
+	],
+);
+
 export const userRelations = relations(user, ({ many }) => ({
 	sessions: many(session),
 	accounts: many(account),
+	goals: many(goal),
+	weightEntries: many(weightEntry),
+	supportTickets: many(supportTicket),
 }));
 
 export const sessionRelations = relations(session, ({ one }) => ({
@@ -88,6 +190,27 @@ export const sessionRelations = relations(session, ({ one }) => ({
 export const accountRelations = relations(account, ({ one }) => ({
 	user: one(user, {
 		fields: [account.userId],
+		references: [user.id],
+	}),
+}));
+
+export const goalRelations = relations(goal, ({ one }) => ({
+	user: one(user, {
+		fields: [goal.createdById],
+		references: [user.id],
+	}),
+}));
+
+export const weightEntryRelations = relations(weightEntry, ({ one }) => ({
+	user: one(user, {
+		fields: [weightEntry.createdById],
+		references: [user.id],
+	}),
+}));
+
+export const supportTicketRelations = relations(supportTicket, ({ one }) => ({
+	user: one(user, {
+		fields: [supportTicket.createdById],
 		references: [user.id],
 	}),
 }));

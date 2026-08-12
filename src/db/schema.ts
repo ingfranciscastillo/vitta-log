@@ -42,6 +42,8 @@ export const user = pgTable("user", {
 	weightUnit: weightUnit("weight_unit").default("kg").notNull(),
 	heightUnit: heightUnit("height_unit").default("cm").notNull(),
 	timezone: text("timezone").default("UTC").notNull(),
+	stripeCustomerId: text("stripe_customer_id"),
+	isPro: boolean("is_pro").default(false).notNull(),
 });
 
 export const session = pgTable(

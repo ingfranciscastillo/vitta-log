@@ -1,8 +1,16 @@
 import { drizzleAdapter } from "@better-auth/drizzle-adapter";
+import { stripe } from "@better-auth/stripe";
 import { betterAuth } from "better-auth";
 import { tanstackStartCookies } from "better-auth/tanstack-start";
+import { eq } from "drizzle-orm";
+import Stripe from "stripe";
 import { db } from "#/db";
+import { user } from "#/db/schema";
 import { sendEmail } from "#/lib/email";
+
+const stripeClient = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+	apiVersion: "2026-07-29.dahlia",
+});
 
 export const auth = betterAuth({
 	database: drizzleAdapter(db, {
@@ -52,6 +60,18 @@ export const auth = betterAuth({
 				input: true,
 				returned: true,
 			},
+			stripeCustomerId: {
+				type: "string",
+				required: false,
+				input: false,
+				returned: false,
+			},
+			isPro: {
+				type: "boolean",
+				defaultValue: false,
+				input: false,
+				returned: true,
+			},
 		},
 	},
 	emailAndPassword: {
@@ -75,5 +95,23 @@ export const auth = betterAuth({
 			});
 		},
 	},
-	plugins: [tanstackStartCookies()],
+	plugins: [
+		stripe({
+			stripeClient,
+			stripeWebhookSecret: process.env.STRIPE_WEBHOOK_SECRET!,
+			createCustomerOnSignUp: true,
+			onEvent: async (event) => {
+				if (event.type === "checkout.session.completed") {
+					const session = event.data.object as Stripe.Checkout.Session;
+					if (session.mode !== "payment") return;
+					const userId =
+						session.client_reference_id ??
+						(session.metadata?.userId as string | undefined);
+					if (!userId) return;
+					await db.update(user).set({ isPro: true }).where(eq(user.id, userId));
+				}
+			},
+		}),
+		tanstackStartCookies(),
+	],
 });

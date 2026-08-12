@@ -1,10 +1,17 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 import Features from "#/components/landing/features";
 import Hero from "#/components/landing/hero";
 import LandingFooter from "#/components/landing/landing-footer";
 import LandingNavbar from "#/components/landing/landing-navbar";
+import { getSession } from "#/lib/auth.functions";
 
-export const Route = createFileRoute("/")({ component: Landing });
+export const Route = createFileRoute("/")({
+	beforeLoad: async () => {
+		const session = await getSession();
+		if (session) throw redirect({ to: "/dashboard" });
+	},
+	component: Landing,
+});
 
 function Landing() {
 	return (

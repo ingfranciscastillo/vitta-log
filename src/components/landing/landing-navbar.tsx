@@ -2,9 +2,13 @@ import { CloseCircleIcon, HamburgerMenuIcon } from "@solar-icons/react/bold";
 import { Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { Button } from "#/components/ui/button";
+import { authClient } from "#/lib/auth-client";
 
 export function LandingNavbar() {
 	const [open, setOpen] = useState<boolean>(false);
+	const { data: session, isPending } = authClient.useSession();
+	const signedIn = !isPending && !!session?.user;
+
 	return (
 		<header className="sticky top-0 z-50 bg-background/80 backdrop-blur-lg border-b border-border">
 			<div className="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
@@ -19,20 +23,34 @@ export function LandingNavbar() {
 					>
 						Características
 					</a>
-					<Link
-						to={"/login" as string}
-						className="hover:text-foreground transition-colors"
-					>
-						Iniciar sesión
-					</Link>
+					{!signedIn && (
+						<Link
+							to={"/login" as string}
+							className="hover:text-foreground transition-colors"
+						>
+							Iniciar sesión
+						</Link>
+					)}
 				</nav>
 				<div className="flex items-center gap-2">
-					<Button asChild variant="ghost" className="hidden sm:inline-flex h-9">
-						<Link to={"/login" as string}>Iniciar sesión</Link>
-					</Button>
-					<Button asChild className="hidden sm:inline-flex h-9">
-						<Link to={"/register" as string}>Registrarse</Link>
-					</Button>
+					{signedIn ? (
+						<Button asChild className="hidden sm:inline-flex h-9">
+							<Link to={"/dashboard" as string}>Dashboard</Link>
+						</Button>
+					) : (
+						<>
+							<Button
+								asChild
+								variant="ghost"
+								className="hidden sm:inline-flex h-9"
+							>
+								<Link to={"/login" as string}>Iniciar sesión</Link>
+							</Button>
+							<Button asChild className="hidden sm:inline-flex h-9">
+								<Link to={"/register" as string}>Registrarse</Link>
+							</Button>
+						</>
+					)}
 					<button
 						type="button"
 						className="sm:hidden p-2 -mr-2"
@@ -58,12 +76,20 @@ export function LandingNavbar() {
 					>
 						Características
 					</a>
-					<Link to={"/login"} className="block py-2 text-sm">
-						Iniciar sesión
-					</Link>
-					<Button asChild className="w-full mt-1">
-						<Link to={"/register"}>Registrarse</Link>
-					</Button>
+					{signedIn ? (
+						<Button asChild className="w-full mt-1">
+							<Link to={"/dashboard"}>Dashboard</Link>
+						</Button>
+					) : (
+						<>
+							<Link to={"/login"} className="block py-2 text-sm">
+								Iniciar sesión
+							</Link>
+							<Button asChild className="w-full mt-1">
+								<Link to={"/register"}>Registrarse</Link>
+							</Button>
+						</>
+					)}
 				</div>
 			)}
 		</header>

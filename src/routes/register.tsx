@@ -1,6 +1,6 @@
 import { LetterIcon, LockIcon, UserCheckIcon } from "@solar-icons/react/bold";
 import { useForm } from "@tanstack/react-form";
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, redirect } from "@tanstack/react-router";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { AuthLayout } from "#/components/auth-layout";
@@ -9,11 +9,16 @@ import { Field, FieldError } from "#/components/ui/field";
 import { Input } from "#/components/ui/input";
 import { Label } from "#/components/ui/label";
 import { Google } from "#/components/ui/svgs/google";
+import { getSession } from "#/lib/auth.functions";
 import { authClient } from "#/lib/auth-client";
 import { mapAuthError } from "#/lib/auth-errors";
 import { registerSchema } from "#/lib/schemas/auth";
 
 export const Route = createFileRoute("/register")({
+	beforeLoad: async () => {
+		const session = await getSession();
+		if (session) throw redirect({ to: "/dashboard" });
+	},
 	component: RegisterPage,
 });
 

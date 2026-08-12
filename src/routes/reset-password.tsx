@@ -1,12 +1,18 @@
 import { DangerTriangleIcon, LockKeyholeIcon } from "@solar-icons/react/bold";
 import { useForm } from "@tanstack/react-form";
-import { createFileRoute, Link, useSearch } from "@tanstack/react-router";
+import {
+	createFileRoute,
+	Link,
+	redirect,
+	useSearch,
+} from "@tanstack/react-router";
 import { useState } from "react";
 import { AuthLayout } from "#/components/auth-layout";
 import { Button } from "#/components/ui/button";
 import { Field, FieldError } from "#/components/ui/field";
 import { Input } from "#/components/ui/input";
 import { Label } from "#/components/ui/label";
+import { getSession } from "#/lib/auth.functions";
 import { authClient } from "#/lib/auth-client";
 import { mapAuthError } from "#/lib/auth-errors";
 import { resetPasswordSchema } from "#/lib/schemas/auth";
@@ -17,6 +23,10 @@ export const Route = createFileRoute("/reset-password")({
 	validateSearch: (search: Record<string, unknown>): ResetPasswordSearch => ({
 		token: typeof search.token === "string" ? search.token : undefined,
 	}),
+	beforeLoad: async () => {
+		const session = await getSession();
+		if (session) throw redirect({ to: "/dashboard" });
+	},
 	component: ResetPasswordPage,
 });
 

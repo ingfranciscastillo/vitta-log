@@ -3,6 +3,7 @@ import { useForm } from "@tanstack/react-form";
 import {
 	createFileRoute,
 	Link,
+	redirect,
 	useNavigate,
 	useRouter,
 	useSearch,
@@ -15,6 +16,7 @@ import { Field, FieldError } from "#/components/ui/field";
 import { Input } from "#/components/ui/input";
 import { Label } from "#/components/ui/label";
 import { Google } from "#/components/ui/svgs/google";
+import { getSession } from "#/lib/auth.functions";
 import { authClient } from "#/lib/auth-client";
 import { mapAuthError } from "#/lib/auth-errors";
 import { safeReturnTo } from "#/lib/auth-return-to";
@@ -27,6 +29,10 @@ export const Route = createFileRoute("/login")({
 		const raw =
 			typeof search.redirect === "string" ? search.redirect : undefined;
 		return { redirect: safeReturnTo(raw) };
+	},
+	beforeLoad: async () => {
+		const session = await getSession();
+		if (session) throw redirect({ to: "/dashboard" });
 	},
 	component: LoginPage,
 });
@@ -57,7 +63,7 @@ function LoginPage() {
 			}
 			toast.success("Sesión iniciada");
 			await router.invalidate();
-			await navigate({ to: (redirect ?? "/") as string });
+			await navigate({ to: (redirect ?? "/dashboard") as string });
 		},
 	});
 

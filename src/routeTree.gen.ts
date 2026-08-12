@@ -16,6 +16,7 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as RegisterRouteImport } from './routes/register'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
+import { Route as AuthenticatedAchievementsRouteImport } from './routes/_authenticated/achievements'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedGoalsRouteImport } from './routes/_authenticated/goals'
 import { Route as AuthenticatedHistoryRouteImport } from './routes/_authenticated/history'
@@ -58,6 +59,12 @@ const ResetPasswordRoute = ResetPasswordRouteImport.update({
   path: '/reset-password',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedAchievementsRoute =
+  AuthenticatedAchievementsRouteImport.update({
+    id: '/achievements',
+    path: '/achievements',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
@@ -101,6 +108,7 @@ export interface FileRoutesByFullPath {
   '/privacy': typeof PrivacyRoute
   '/register': typeof RegisterRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/achievements': typeof AuthenticatedAchievementsRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/goals': typeof AuthenticatedGoalsRoute
   '/history': typeof AuthenticatedHistoryRoute
@@ -116,6 +124,7 @@ export interface FileRoutesByTo {
   '/privacy': typeof PrivacyRoute
   '/register': typeof RegisterRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/achievements': typeof AuthenticatedAchievementsRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/goals': typeof AuthenticatedGoalsRoute
   '/history': typeof AuthenticatedHistoryRoute
@@ -133,6 +142,7 @@ export interface FileRoutesById {
   '/privacy': typeof PrivacyRoute
   '/register': typeof RegisterRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/_authenticated/achievements': typeof AuthenticatedAchievementsRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/goals': typeof AuthenticatedGoalsRoute
   '/_authenticated/history': typeof AuthenticatedHistoryRoute
@@ -150,6 +160,7 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/register'
     | '/reset-password'
+    | '/achievements'
     | '/dashboard'
     | '/goals'
     | '/history'
@@ -165,6 +176,7 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/register'
     | '/reset-password'
+    | '/achievements'
     | '/dashboard'
     | '/goals'
     | '/history'
@@ -181,6 +193,7 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/register'
     | '/reset-password'
+    | '/_authenticated/achievements'
     | '/_authenticated/dashboard'
     | '/_authenticated/goals'
     | '/_authenticated/history'
@@ -252,6 +265,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ResetPasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/achievements': {
+      id: '/_authenticated/achievements'
+      path: '/achievements'
+      fullPath: '/achievements'
+      preLoaderRoute: typeof AuthenticatedAchievementsRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/dashboard': {
       id: '/_authenticated/dashboard'
       path: '/dashboard'
@@ -305,6 +325,7 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthenticatedRouteChildren {
+  AuthenticatedAchievementsRoute: typeof AuthenticatedAchievementsRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedGoalsRoute: typeof AuthenticatedGoalsRoute
   AuthenticatedHistoryRoute: typeof AuthenticatedHistoryRoute
@@ -314,6 +335,7 @@ interface AuthenticatedRouteChildren {
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
+  AuthenticatedAchievementsRoute: AuthenticatedAchievementsRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedGoalsRoute: AuthenticatedGoalsRoute,
   AuthenticatedHistoryRoute: AuthenticatedHistoryRoute,

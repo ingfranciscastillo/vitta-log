@@ -1,5 +1,4 @@
 import {
-	AddCircleIcon,
 	MagnifierIcon,
 	PenIcon,
 	SortIcon,
@@ -33,7 +32,6 @@ type HistoryTableProps = {
 	unit: WeightUnit;
 	onEdit: (entry: WeightEntry) => void;
 	onDelete: (entry: WeightEntry) => void;
-	onAdd: () => void;
 };
 
 export function HistoryTable({
@@ -41,7 +39,6 @@ export function HistoryTable({
 	unit,
 	onEdit,
 	onDelete,
-	onAdd,
 }: HistoryTableProps) {
 	const [query, setQuery] = useState<string>("");
 	const [from, setFrom] = useState<string>("");
@@ -88,24 +85,21 @@ export function HistoryTable({
 						value={query}
 						onChange={(e) => setQuery(e.target.value)}
 						placeholder="Buscar nota..."
-						className="pl-9 h-10"
+						className="pl-9 h-11"
 					/>
 				</div>
 				<Input
 					type="date"
 					value={from}
 					onChange={(e) => setFrom(e.target.value)}
-					className="h-10 sm:w-36"
+					className="h-11 sm:w-36"
 				/>
 				<Input
 					type="date"
 					value={to}
 					onChange={(e) => setTo(e.target.value)}
-					className="h-10 sm:w-36"
+					className="h-11 sm:w-36"
 				/>
-				<Button onClick={onAdd} className="h-10">
-					<AddCircleIcon className="w-4 h-4 mr-1" /> Añadir
-				</Button>
 			</div>
 			<div className="rounded-2xl border border-border overflow-hidden">
 				<Table>

@@ -1,5 +1,6 @@
 import {
 	DownloadIcon,
+	QuestionCircleIcon,
 	SettingsIcon,
 	ShieldIcon,
 } from "@solar-icons/react/bold";
@@ -346,7 +347,7 @@ function ProfileContent({ initial }: { initial: InitialProfile }) {
 						to={"/support" as string}
 						className="flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-muted transition-colors"
 					>
-						<SettingsIcon className="w-5 h-5 text-primary" />
+						<QuestionCircleIcon className="w-5 h-5 text-primary" />
 						<span className="text-sm">Soporte</span>
 					</Link>
 					<Link

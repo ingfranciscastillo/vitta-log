@@ -85,11 +85,6 @@ function HistoryPage() {
 		},
 	});
 
-	const handleAdd = () => {
-		setEditing(null);
-		setDialogOpen(true);
-	};
-
 	const handleEdit = (e: WeightEntry) => {
 		setEditing(e);
 		setDialogOpen(true);
@@ -117,7 +112,6 @@ function HistoryPage() {
 				entries={entries}
 				unit={me.weightUnit}
 				onEdit={handleEdit}
-				onAdd={handleAdd}
 				onDelete={setDeleting}
 			/>
 			<EntryDialog

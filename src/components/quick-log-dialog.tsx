@@ -105,7 +105,7 @@ export function QuickLogDialog({
 						onClick={() => step(-0.1)}
 						aria-label="Restar 0.1"
 					>
-						<MinusCircleIcon className="w-5 h-5" />
+						<MinusCircleIcon className="w-7 h-7" />
 					</Button>
 					<div className="flex items-baseline">
 						<Input
@@ -133,7 +133,7 @@ export function QuickLogDialog({
 						onClick={() => step(0.1)}
 						aria-label="Sumar 0.1"
 					>
-						<AddCircleIcon className="w-5 h-5" />
+						<AddCircleIcon className="w-7 h-7" />
 					</Button>
 				</div>
 

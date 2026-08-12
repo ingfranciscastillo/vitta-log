@@ -1,4 +1,4 @@
-import { AddSquareIcon } from "@solar-icons/react/bold";
+import { AddCircleIcon } from "@solar-icons/react/bold";
 import {
 	useMutation,
 	useQueryClient,
@@ -95,7 +95,7 @@ function AuthenticatedLayout() {
 						className="w-9 h-9 rounded-full bg-primary text-primary-foreground flex items-center justify-center shadow-sm active:scale-95 transition-transform"
 						aria-label="Registrar peso"
 					>
-						<AddSquareIcon className="w-5 h-5" />
+						<AddCircleIcon className="w-5 h-5" />
 					</button>
 				</div>
 			</header>

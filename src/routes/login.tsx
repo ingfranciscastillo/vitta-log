@@ -166,28 +166,13 @@ function LoginPage() {
 					)}
 				</form.Field>
 
-				<form.Subscribe
-					selector={(s) => ({
-						canSubmit: s.canSubmit,
-						isSubmitting: s.isSubmitting,
-					})}
-					children={({ canSubmit, isSubmitting }) => (
-						<Button
-							type="submit"
-							className="w-full h-12 font-medium"
-							disabled={!canSubmit}
-						>
-							{isSubmitting ? (
-								<>
-									<LoginIcon className="w-4 h-4 mr-2 animate-spin" />
-									Iniciando sesión...
-								</>
-							) : (
-								"Iniciar sesión"
-							)}
-						</Button>
-					)}
-				/>
+				<Button
+					type="submit"
+					className="w-full h-12 font-medium"
+					disabled={!form.state.canSubmit}
+				>
+					{form.state.isSubmitting ? "Iniciando sesión..." : "Iniciar sesión"}
+				</Button>
 			</form>
 		</AuthLayout>
 	);

@@ -17,6 +17,7 @@ import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as RegisterRouteImport } from './routes/register'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as AuthenticatedAchievementsRouteImport } from './routes/_authenticated/achievements'
+import { Route as AuthenticatedCalendarRouteImport } from './routes/_authenticated/calendar'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedGoalsRouteImport } from './routes/_authenticated/goals'
 import { Route as AuthenticatedHistoryRouteImport } from './routes/_authenticated/history'
@@ -65,6 +66,11 @@ const AuthenticatedAchievementsRoute =
     path: '/achievements',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
+const AuthenticatedCalendarRoute = AuthenticatedCalendarRouteImport.update({
+  id: '/calendar',
+  path: '/calendar',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
 const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
@@ -109,6 +115,7 @@ export interface FileRoutesByFullPath {
   '/register': typeof RegisterRoute
   '/reset-password': typeof ResetPasswordRoute
   '/achievements': typeof AuthenticatedAchievementsRoute
+  '/calendar': typeof AuthenticatedCalendarRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/goals': typeof AuthenticatedGoalsRoute
   '/history': typeof AuthenticatedHistoryRoute
@@ -125,6 +132,7 @@ export interface FileRoutesByTo {
   '/register': typeof RegisterRoute
   '/reset-password': typeof ResetPasswordRoute
   '/achievements': typeof AuthenticatedAchievementsRoute
+  '/calendar': typeof AuthenticatedCalendarRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/goals': typeof AuthenticatedGoalsRoute
   '/history': typeof AuthenticatedHistoryRoute
@@ -143,6 +151,7 @@ export interface FileRoutesById {
   '/register': typeof RegisterRoute
   '/reset-password': typeof ResetPasswordRoute
   '/_authenticated/achievements': typeof AuthenticatedAchievementsRoute
+  '/_authenticated/calendar': typeof AuthenticatedCalendarRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/goals': typeof AuthenticatedGoalsRoute
   '/_authenticated/history': typeof AuthenticatedHistoryRoute
@@ -161,6 +170,7 @@ export interface FileRouteTypes {
     | '/register'
     | '/reset-password'
     | '/achievements'
+    | '/calendar'
     | '/dashboard'
     | '/goals'
     | '/history'
@@ -177,6 +187,7 @@ export interface FileRouteTypes {
     | '/register'
     | '/reset-password'
     | '/achievements'
+    | '/calendar'
     | '/dashboard'
     | '/goals'
     | '/history'
@@ -194,6 +205,7 @@ export interface FileRouteTypes {
     | '/register'
     | '/reset-password'
     | '/_authenticated/achievements'
+    | '/_authenticated/calendar'
     | '/_authenticated/dashboard'
     | '/_authenticated/goals'
     | '/_authenticated/history'
@@ -272,6 +284,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAchievementsRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/calendar': {
+      id: '/_authenticated/calendar'
+      path: '/calendar'
+      fullPath: '/calendar'
+      preLoaderRoute: typeof AuthenticatedCalendarRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/dashboard': {
       id: '/_authenticated/dashboard'
       path: '/dashboard'
@@ -326,6 +345,7 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedRouteChildren {
   AuthenticatedAchievementsRoute: typeof AuthenticatedAchievementsRoute
+  AuthenticatedCalendarRoute: typeof AuthenticatedCalendarRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedGoalsRoute: typeof AuthenticatedGoalsRoute
   AuthenticatedHistoryRoute: typeof AuthenticatedHistoryRoute
@@ -336,6 +356,7 @@ interface AuthenticatedRouteChildren {
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedAchievementsRoute: AuthenticatedAchievementsRoute,
+  AuthenticatedCalendarRoute: AuthenticatedCalendarRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedGoalsRoute: AuthenticatedGoalsRoute,
   AuthenticatedHistoryRoute: AuthenticatedHistoryRoute,

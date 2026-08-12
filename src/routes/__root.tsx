@@ -45,7 +45,34 @@ function RootDocument({ children }: { children: React.ReactNode }) {
 				<HeadContent />
 			</head>
 			<body>
-				<Toaster />
+				<Toaster
+					position="top-center"
+					gutter={8}
+					toastOptions={{
+						duration: 4000,
+						className:
+							"rounded-xl border border-border bg-card text-card-foreground font-body shadow-sm",
+						style: {
+							padding: "12px 16px",
+							minWidth: "260px",
+							maxWidth: "420px",
+						},
+						success: {
+							iconTheme: {
+								primary: "hsl(var(--primary))",
+								secondary: "hsl(var(--card))",
+							},
+						},
+						error: {
+							className:
+								"rounded-xl border border-destructive bg-destructive/10 text-destructive font-body shadow-sm",
+							iconTheme: {
+								primary: "hsl(var(--destructive))",
+								secondary: "hsl(var(--card))",
+							},
+						},
+					}}
+				/>
 				{children}
 				<TanStackDevtools
 					config={{

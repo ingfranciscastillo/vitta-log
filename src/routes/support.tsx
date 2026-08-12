@@ -1,6 +1,7 @@
 import { useForm } from "@tanstack/react-form";
 import { useMutation } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
+import toast from "react-hot-toast";
 import { Button } from "#/components/ui/button";
 import { Field, FieldError } from "#/components/ui/field";
 import { Input } from "#/components/ui/input";
@@ -41,10 +42,10 @@ function SupportPage() {
 		mutationFn: (vars: { subject: string; message: string }) =>
 			createSupportTicket({ data: vars }),
 		onSuccess: () => {
-			alert("Reporte enviado. Te responderemos lo antes posible.");
+			toast.success("Reporte enviado. Te responderemos lo antes posible.");
 		},
 		onError: () => {
-			alert("No se pudo enviar el reporte. Intenta de nuevo.");
+			toast.error("No se pudo enviar el reporte. Intenta de nuevo.");
 		},
 	});
 

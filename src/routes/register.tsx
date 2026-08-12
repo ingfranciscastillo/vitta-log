@@ -2,6 +2,7 @@ import { LetterIcon, LockIcon, UserCheckIcon } from "@solar-icons/react/bold";
 import { useForm } from "@tanstack/react-form";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
+import toast from "react-hot-toast";
 import { AuthLayout } from "#/components/auth-layout";
 import { Button } from "#/components/ui/button";
 import { Field, FieldError } from "#/components/ui/field";
@@ -47,6 +48,7 @@ function RegisterPage() {
 				setSubmitError(mapAuthError(error));
 				return;
 			}
+			toast.success("Cuenta creada. Revisa tu email para verificarla.");
 			window.location.assign("/");
 		},
 	});

@@ -4,6 +4,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { AuthLayout } from "#/components/auth-layout";
 import { Button } from "#/components/ui/button";
+import { Field, FieldError } from "#/components/ui/field";
 import { Input } from "#/components/ui/input";
 import { Label } from "#/components/ui/label";
 import { Google } from "#/components/ui/svgs/google";
@@ -98,72 +99,72 @@ function LoginPage() {
 				className="space-y-4"
 			>
 				<form.Field name="email">
-					{(field) => (
-						<div className="space-y-2">
-							<Label htmlFor="email">Email</Label>
-							<div className="relative">
-								<LetterIcon
-									className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground"
-									aria-hidden="true"
-								/>
-								<Input
-									id="email"
-									type="email"
-									autoComplete="email"
-									autoFocus
-									placeholder="tu@ejemplo.com"
-									value={field.state.value}
-									onBlur={field.handleBlur}
-									onChange={(e) => field.handleChange(e.target.value)}
-									className="pl-10 h-12"
-								/>
-							</div>
-							{field.state.meta.isTouched &&
-								field.state.meta.errors.length > 0 && (
-									<em className="block text-xs text-destructive not-italic">
-										{String(field.state.meta.errors[0])}
-									</em>
-								)}
-						</div>
-					)}
+					{(field) => {
+						const isInvalid =
+							field.state.meta.isTouched && !field.state.meta.isValid;
+						return (
+							<Field data-invalid={isInvalid}>
+								<Label htmlFor="email">Email</Label>
+								<div className="relative">
+									<LetterIcon
+										className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground"
+										aria-hidden="true"
+									/>
+									<Input
+										id="email"
+										type="email"
+										autoComplete="email"
+										autoFocus
+										placeholder="tu@ejemplo.com"
+										value={field.state.value}
+										onBlur={field.handleBlur}
+										onChange={(e) => field.handleChange(e.target.value)}
+										className="pl-10 h-12"
+										aria-invalid={isInvalid}
+									/>
+								</div>
+								{isInvalid && <FieldError errors={field.state.meta.errors} />}
+							</Field>
+						);
+					}}
 				</form.Field>
 
 				<form.Field name="password">
-					{(field) => (
-						<div className="space-y-2">
-							<div className="flex items-center justify-between">
-								<Label htmlFor="password">Contraseña</Label>
-								<Link
-									to={"/forgot-password" as string}
-									className="text-xs text-primary hover:underline"
-								>
-									¿Olvidaste tu contraseña?
-								</Link>
-							</div>
-							<div className="relative">
-								<LockIcon
-									className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground"
-									aria-hidden="true"
-								/>
-								<Input
-									id="password"
-									type="password"
-									autoComplete="current-password"
-									placeholder="••••••••"
-									value={field.state.value}
-									onBlur={field.handleBlur}
-									onChange={(e) => field.handleChange(e.target.value)}
-									className="pl-10 h-12"
-								/>
-							</div>
-							{field.state.meta.isTouched &&
-								field.state.meta.errors.length > 0 && (
-									<em className="block text-xs text-destructive not-italic">
-										{String(field.state.meta.errors[0])}
-									</em>
-								)}
-						</div>
-					)}
+					{(field) => {
+						const isInvalid =
+							field.state.meta.isTouched && !field.state.meta.isValid;
+						return (
+							<Field data-invalid={isInvalid}>
+								<div className="flex items-center justify-between">
+									<Label htmlFor="password">Contraseña</Label>
+									<Link
+										to={"/forgot-password" as string}
+										className="text-xs text-primary hover:underline"
+									>
+										¿Olvidaste tu contraseña?
+									</Link>
+								</div>
+								<div className="relative">
+									<LockIcon
+										className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground"
+										aria-hidden="true"
+									/>
+									<Input
+										id="password"
+										type="password"
+										autoComplete="current-password"
+										placeholder="••••••••"
+										value={field.state.value}
+										onBlur={field.handleBlur}
+										onChange={(e) => field.handleChange(e.target.value)}
+										className="pl-10 h-12"
+										aria-invalid={isInvalid}
+									/>
+								</div>
+								{isInvalid && <FieldError errors={field.state.meta.errors} />}
+							</Field>
+						);
+					}}
 				</form.Field>
 
 				<Button

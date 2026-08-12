@@ -4,6 +4,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { AuthLayout } from "#/components/auth-layout";
 import { Button } from "#/components/ui/button";
+import { Field, FieldError } from "#/components/ui/field";
 import { Input } from "#/components/ui/input";
 import { Label } from "#/components/ui/label";
 import { Google } from "#/components/ui/svgs/google";
@@ -108,118 +109,118 @@ function RegisterPage() {
 				className="space-y-4"
 			>
 				<form.Field name="name">
-					{(field) => (
-						<div className="space-y-2">
-							<Label htmlFor="name">Nombre</Label>
-							<Input
-								id="name"
-								type="text"
-								autoComplete="name"
-								autoFocus
-								placeholder="Tu nombre"
-								value={field.state.value}
-								onBlur={field.handleBlur}
-								onChange={(e) => field.handleChange(e.target.value)}
-								className="h-12"
-							/>
-							{field.state.meta.isTouched &&
-								field.state.meta.errors.length > 0 && (
-									<em className="block text-xs text-destructive not-italic">
-										{String(field.state.meta.errors[0])}
-									</em>
-								)}
-						</div>
-					)}
+					{(field) => {
+						const isInvalid =
+							field.state.meta.isTouched && !field.state.meta.isValid;
+						return (
+							<Field data-invalid={isInvalid}>
+								<Label htmlFor="name">Nombre</Label>
+								<Input
+									id="name"
+									type="text"
+									autoComplete="name"
+									autoFocus
+									placeholder="Tu nombre"
+									value={field.state.value}
+									onBlur={field.handleBlur}
+									onChange={(e) => field.handleChange(e.target.value)}
+									className="h-12"
+									aria-invalid={isInvalid}
+								/>
+								{isInvalid && <FieldError errors={field.state.meta.errors} />}
+							</Field>
+						);
+					}}
 				</form.Field>
 
 				<form.Field name="email">
-					{(field) => (
-						<div className="space-y-2">
-							<Label htmlFor="email">Email</Label>
-							<div className="relative">
-								<LetterIcon
-									className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground"
-									aria-hidden="true"
-								/>
-								<Input
-									id="email"
-									type="email"
-									autoComplete="email"
-									placeholder="tu@ejemplo.com"
-									value={field.state.value}
-									onBlur={field.handleBlur}
-									onChange={(e) => field.handleChange(e.target.value)}
-									className="pl-10 h-12"
-								/>
-							</div>
-							{field.state.meta.isTouched &&
-								field.state.meta.errors.length > 0 && (
-									<em className="block text-xs text-destructive not-italic">
-										{String(field.state.meta.errors[0])}
-									</em>
-								)}
-						</div>
-					)}
+					{(field) => {
+						const isInvalid =
+							field.state.meta.isTouched && !field.state.meta.isValid;
+						return (
+							<Field data-invalid={isInvalid}>
+								<Label htmlFor="email">Email</Label>
+								<div className="relative">
+									<LetterIcon
+										className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground"
+										aria-hidden="true"
+									/>
+									<Input
+										id="email"
+										type="email"
+										autoComplete="email"
+										placeholder="tu@ejemplo.com"
+										value={field.state.value}
+										onBlur={field.handleBlur}
+										onChange={(e) => field.handleChange(e.target.value)}
+										className="pl-10 h-12"
+										aria-invalid={isInvalid}
+									/>
+								</div>
+								{isInvalid && <FieldError errors={field.state.meta.errors} />}
+							</Field>
+						);
+					}}
 				</form.Field>
 
 				<form.Field name="password">
-					{(field) => (
-						<div className="space-y-2">
-							<Label htmlFor="password">Contraseña</Label>
-							<div className="relative">
-								<LockIcon
-									className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground"
-									aria-hidden="true"
-								/>
-								<Input
-									id="password"
-									type="password"
-									autoComplete="new-password"
-									placeholder="••••••••"
-									value={field.state.value}
-									onBlur={field.handleBlur}
-									onChange={(e) => field.handleChange(e.target.value)}
-									className="pl-10 h-12"
-								/>
-							</div>
-							{field.state.meta.isTouched &&
-								field.state.meta.errors.length > 0 && (
-									<em className="block text-xs text-destructive not-italic">
-										{String(field.state.meta.errors[0])}
-									</em>
-								)}
-						</div>
-					)}
+					{(field) => {
+						const isInvalid =
+							field.state.meta.isTouched && !field.state.meta.isValid;
+						return (
+							<Field data-invalid={isInvalid}>
+								<Label htmlFor="password">Contraseña</Label>
+								<div className="relative">
+									<LockIcon
+										className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground"
+										aria-hidden="true"
+									/>
+									<Input
+										id="password"
+										type="password"
+										autoComplete="new-password"
+										placeholder="••••••••"
+										value={field.state.value}
+										onBlur={field.handleBlur}
+										onChange={(e) => field.handleChange(e.target.value)}
+										className="pl-10 h-12"
+										aria-invalid={isInvalid}
+									/>
+								</div>
+								{isInvalid && <FieldError errors={field.state.meta.errors} />}
+							</Field>
+						);
+					}}
 				</form.Field>
 
 				<form.Field name="confirmPassword">
-					{(field) => (
-						<div className="space-y-2">
-							<Label htmlFor="confirm">Confirmar contraseña</Label>
-							<div className="relative">
-								<LockIcon
-									className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground"
-									aria-hidden="true"
-								/>
-								<Input
-									id="confirm"
-									type="password"
-									autoComplete="new-password"
-									placeholder="••••••••"
-									value={field.state.value}
-									onBlur={field.handleBlur}
-									onChange={(e) => field.handleChange(e.target.value)}
-									className="pl-10 h-12"
-								/>
-							</div>
-							{field.state.meta.isTouched &&
-								field.state.meta.errors.length > 0 && (
-									<em className="block text-xs text-destructive not-italic">
-										{String(field.state.meta.errors[0])}
-									</em>
-								)}
-						</div>
-					)}
+					{(field) => {
+						const isInvalid =
+							field.state.meta.isTouched && !field.state.meta.isValid;
+						return (
+							<Field data-invalid={isInvalid}>
+								<Label htmlFor="confirm">Confirmar contraseña</Label>
+								<div className="relative">
+									<LockIcon
+										className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground"
+										aria-hidden="true"
+									/>
+									<Input
+										id="confirm"
+										type="password"
+										autoComplete="new-password"
+										placeholder="••••••••"
+										value={field.state.value}
+										onBlur={field.handleBlur}
+										onChange={(e) => field.handleChange(e.target.value)}
+										className="pl-10 h-12"
+										aria-invalid={isInvalid}
+									/>
+								</div>
+								{isInvalid && <FieldError errors={field.state.meta.errors} />}
+							</Field>
+						);
+					}}
 				</form.Field>
 
 				<Button

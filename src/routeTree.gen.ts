@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as RegisterRouteImport } from './routes/register'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 
 const IndexRoute = IndexRouteImport.update({
@@ -29,6 +30,11 @@ const RegisterRoute = RegisterRouteImport.update({
   path: '/register',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
   id: '/api/auth/$',
   path: '/api/auth/$',
@@ -39,12 +45,14 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
 }
 export interface FileRoutesById {
@@ -52,20 +60,28 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/login' | '/register' | '/api/auth/$'
+  fullPaths: '/' | '/login' | '/register' | '/reset-password' | '/api/auth/$'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/login' | '/register' | '/api/auth/$'
-  id: '__root__' | '/' | '/login' | '/register' | '/api/auth/$'
+  to: '/' | '/login' | '/register' | '/reset-password' | '/api/auth/$'
+  id:
+    | '__root__'
+    | '/'
+    | '/login'
+    | '/register'
+    | '/reset-password'
+    | '/api/auth/$'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   LoginRoute: typeof LoginRoute
   RegisterRoute: typeof RegisterRoute
+  ResetPasswordRoute: typeof ResetPasswordRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
 }
 
@@ -92,6 +108,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RegisterRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/auth/$': {
       id: '/api/auth/$'
       path: '/api/auth/$'
@@ -106,6 +129,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   LoginRoute: LoginRoute,
   RegisterRoute: RegisterRoute,
+  ResetPasswordRoute: ResetPasswordRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
 }
 export const routeTree = rootRouteImport

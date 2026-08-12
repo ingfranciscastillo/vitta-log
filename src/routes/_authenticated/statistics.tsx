@@ -18,7 +18,7 @@ import {
 	formatWeightValue,
 } from "#/lib/weight-utils";
 
-export const Route = createFileRoute("/statistics")({
+export const Route = createFileRoute("/_authenticated/statistics")({
 	loader: ({ context }) =>
 		context.queryClient.ensureQueryData(weightStatsQuery()),
 	component: StatisticsPage,

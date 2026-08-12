@@ -1,6 +1,12 @@
 import { LetterIcon, LockIcon, LoginIcon } from "@solar-icons/react/bold";
 import { useForm } from "@tanstack/react-form";
-import { createFileRoute, Link } from "@tanstack/react-router";
+import {
+	createFileRoute,
+	Link,
+	useNavigate,
+	useRouter,
+	useSearch,
+} from "@tanstack/react-router";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { AuthLayout } from "#/components/auth-layout";
@@ -11,13 +17,24 @@ import { Label } from "#/components/ui/label";
 import { Google } from "#/components/ui/svgs/google";
 import { authClient } from "#/lib/auth-client";
 import { mapAuthError } from "#/lib/auth-errors";
+import { safeReturnTo } from "#/lib/auth-return-to";
 import { loginSchema } from "#/lib/schemas/auth";
 
+type LoginSearch = { redirect?: string };
+
 export const Route = createFileRoute("/login")({
+	validateSearch: (search: Record<string, unknown>): LoginSearch => {
+		const raw =
+			typeof search.redirect === "string" ? search.redirect : undefined;
+		return { redirect: safeReturnTo(raw) };
+	},
 	component: LoginPage,
 });
 
 function LoginPage() {
+	const navigate = useNavigate();
+	const router = useRouter();
+	const { redirect } = useSearch({ from: "/login" });
 	const [submitError, setSubmitError] = useState<string | null>(null);
 
 	const form = useForm({
@@ -39,7 +56,8 @@ function LoginPage() {
 				return;
 			}
 			toast.success("Sesión iniciada");
-			window.location.assign("/");
+			await router.invalidate();
+			await navigate({ to: (redirect ?? "/") as string });
 		},
 	});
 

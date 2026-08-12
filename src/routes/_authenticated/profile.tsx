@@ -33,7 +33,7 @@ import {
 } from "#/lib/profile.functions";
 import { cmToInches, inchesToCm } from "#/lib/weight-utils";
 
-export const Route = createFileRoute("/profile")({
+export const Route = createFileRoute("/_authenticated/profile")({
 	loader: ({ context }) =>
 		context.queryClient.ensureQueryData(currentUserQuery()),
 	component: ProfilePage,

@@ -33,7 +33,7 @@ const FAQ: Array<{ q: string; a: string }> = [
 	},
 ];
 
-export const Route = createFileRoute("/support")({
+export const Route = createFileRoute("/_authenticated/support")({
 	component: SupportPage,
 });
 

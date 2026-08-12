@@ -20,32 +20,31 @@ export const Route = createFileRoute("/reset-password")({
 	component: ResetPasswordPage,
 });
 
-function ResetPasswordPage() {
-	const { token } = useSearch({ from: "/reset-password" });
-	const [submitError, setSubmitError] = useState<string | null>(null);
+function InvalidLink() {
+	return (
+		<AuthLayout
+			icon={DangerTriangleIcon}
+			title="Enlace inválido"
+			subtitle="Este enlace de recuperación falta o es inválido"
+			footer={
+				<Link
+					to={"/forgot-password" as string}
+					className="text-primary font-medium hover:underline"
+				>
+					Solicitar uno nuevo
+				</Link>
+			}
+		>
+			<p className="text-sm text-foreground text-center">
+				El enlace que usaste parece estar incompleto. Solicita un nuevo correo
+				de recuperación.
+			</p>
+		</AuthLayout>
+	);
+}
 
-	if (!token) {
-		return (
-			<AuthLayout
-				icon={DangerTriangleIcon}
-				title="Enlace inválido"
-				subtitle="Este enlace de recuperación falta o es inválido"
-				footer={
-					<Link
-						to={"/forgot-password" as string}
-						className="text-primary font-medium hover:underline"
-					>
-						Solicitar uno nuevo
-					</Link>
-				}
-			>
-				<p className="text-sm text-foreground text-center">
-					El enlace que usaste parece estar incompleto. Solicita un nuevo correo
-					de recuperación.
-				</p>
-			</AuthLayout>
-		);
-	}
+function ResetPasswordForm({ token }: { token: string }) {
+	const [submitError, setSubmitError] = useState<string | null>(null);
 
 	const form = useForm({
 		defaultValues: {
@@ -171,4 +170,10 @@ function ResetPasswordPage() {
 			</form>
 		</AuthLayout>
 	);
+}
+
+function ResetPasswordPage() {
+	const { token } = useSearch({ from: "/reset-password" });
+	if (!token) return <InvalidLink />;
+	return <ResetPasswordForm token={token} />;
 }

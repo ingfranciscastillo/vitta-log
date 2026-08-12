@@ -1,14 +1,20 @@
 import { createFileRoute } from "@tanstack/react-router";
+import Features from "#/components/landing/features";
+import Hero from "#/components/landing/hero";
+import LandingFooter from "#/components/landing/landing-footer";
+import LandingNavbar from "#/components/landing/landing-navbar";
 
-export const Route = createFileRoute("/")({ component: Home });
+export const Route = createFileRoute("/")({ component: Landing });
 
-function Home() {
+function Landing() {
 	return (
-		<div className="p-8">
-			<h1 className="text-4xl font-bold">Welcome to TanStack Start</h1>
-			<p className="mt-4 text-lg">
-				Edit <code>src/routes/index.tsx</code> to get started.
-			</p>
+		<div className="min-h-screen bg-background">
+			<LandingNavbar />
+			<main>
+				<Hero />
+				<Features />
+			</main>
+			<LandingFooter />
 		</div>
 	);
 }

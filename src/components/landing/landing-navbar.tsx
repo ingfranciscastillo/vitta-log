@@ -50,6 +50,7 @@ export function LandingNavbar() {
 			</div>
 			{open && (
 				<div className="sm:hidden border-t border-border bg-background px-4 py-3 space-y-1">
+					{/** biome-ignore lint/a11y/useValidAnchor: funciona*/}
 					<a
 						href="#features"
 						onClick={() => setOpen(false)}

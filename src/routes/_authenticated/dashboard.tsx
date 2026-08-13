@@ -3,18 +3,19 @@ import {
 	ChartSquareIcon,
 	GraphDownIcon,
 	GraphUpIcon,
-	MagicWandIcon,
 	MedalRibbonIcon,
 	MinusCircleIcon,
 	PulseIcon,
 	ScaleIcon,
 	TargetIcon,
 } from "@solar-icons/react/bold";
+import { StarsMinimalisticIcon } from "@solar-icons/react/bold/stars-minimalistic";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { GoalCard } from "#/components/goal-card";
 import { InsightsList } from "#/components/insights-list";
+import { PaywallDialog } from "#/components/paywall-dialog";
 import { StatCard } from "#/components/stat-card";
 import { StreakCard } from "#/components/streak-card";
 import { WeightChart } from "#/components/weight-chart";
@@ -45,6 +46,7 @@ export const Route = createFileRoute("/_authenticated/dashboard")({
 
 function DashboardPage() {
 	const navigate = useNavigate();
+	const [paywallOpen, setPaywallOpen] = useState<boolean>(false);
 	const { entries, unit } = useSuspenseQuery(weightStatsQuery()).data!;
 	const { goal } = useSuspenseQuery(currentGoalQuery()).data!;
 	const me = useSuspenseQuery(currentUserQuery()).data!;
@@ -216,16 +218,20 @@ function DashboardPage() {
 			)}
 
 			{!isPremium && (
-				<div className="rounded-2xl bg-accent/20 border border-accent/40 p-4">
+				<button
+					type="button"
+					onClick={() => setPaywallOpen(true)}
+					className="w-full rounded-2xl bg-accent/20 border border-accent/40 p-4 text-left cursor-pointer transition-colors hover:bg-accent/30"
+				>
 					<div className="flex items-center gap-2 mb-1">
-						<MagicWandIcon className="w-4 h-4 text-accent-foreground" />
+						<StarsMinimalisticIcon className="w-4 h-4 text-accent-foreground" />
 						<span className="font-display text-sm">Desbloquea Premium</span>
 					</div>
 					<p className="text-xs text-muted-foreground">
 						Historial ilimitado, estadísticas avanzadas y exportación por
 						$12.99.
 					</p>
-				</div>
+				</button>
 			)}
 
 			<div className="grid grid-cols-2 gap-3 pt-1">
@@ -244,6 +250,7 @@ function DashboardPage() {
 					<span className="text-sm">Logros</span>
 				</Link>
 			</div>
+			<PaywallDialog open={paywallOpen} onOpenChange={setPaywallOpen} />
 		</div>
 	);
 }

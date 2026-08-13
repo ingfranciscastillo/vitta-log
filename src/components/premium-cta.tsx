@@ -1,0 +1,43 @@
+import { CheckCircleIcon, MagicWandIcon } from "@solar-icons/react/bold";
+import { Link } from "@tanstack/react-router";
+import { Button } from "#/components/ui/button";
+
+const BENEFITS = [
+	"Historial ilimitado",
+	"Estadísticas avanzadas",
+	"Exportación CSV/JSON/PDF",
+	"Recordatorios y más",
+];
+
+export function PremiumCTA() {
+	return (
+		<section className="max-w-5xl mx-auto px-4 py-16">
+			<div className="rounded-3xl bg-primary text-primary-foreground p-8 text-center">
+				<div className="inline-flex items-center gap-1.5 rounded-full bg-white/15 px-3 py-1 text-xs font-medium mb-4">
+					<MagicWandIcon className="w-3.5 h-3.5" /> Premium
+				</div>
+				<h2 className="font-display text-3xl">Desbloquea todo por $12.99</h2>
+				<p className="opacity-80 text-sm mt-2 max-w-md mx-auto">
+					Un solo pago, tuyo para siempre. Sin suscripciones.
+				</p>
+				<ul className="grid grid-cols-2 gap-2 max-w-sm mx-auto my-6 text-left text-sm">
+					{BENEFITS.map((b) => (
+						<li key={b} className="flex items-center gap-2">
+							<CheckCircleIcon className="w-4 h-4" /> {b}
+						</li>
+					))}
+				</ul>
+				<Button
+					asChild
+					variant="secondary"
+					size="lg"
+					className="h-12 px-6 font-display"
+				>
+					<Link to={"/pricing" as string}>Comprar Premium</Link>
+				</Button>
+			</div>
+		</section>
+	);
+}
+
+export default PremiumCTA;

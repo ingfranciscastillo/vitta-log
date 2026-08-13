@@ -25,6 +25,14 @@ export function LandingNavbar() {
 					</a>
 					{!signedIn && (
 						<Link
+							to={"/pricing" as string}
+							className="hover:text-foreground transition-colors"
+						>
+							Premium
+						</Link>
+					)}
+					{!signedIn && (
+						<Link
 							to={"/login" as string}
 							className="hover:text-foreground transition-colors"
 						>
@@ -76,6 +84,15 @@ export function LandingNavbar() {
 					>
 						Características
 					</a>
+					{!signedIn && (
+						<Link
+							to={"/pricing"}
+							onClick={() => setOpen(false)}
+							className="block py-2 text-sm"
+						>
+							Premium
+						</Link>
+					)}
 					{signedIn ? (
 						<Button asChild className="w-full mt-1">
 							<Link to={"/dashboard"}>Dashboard</Link>

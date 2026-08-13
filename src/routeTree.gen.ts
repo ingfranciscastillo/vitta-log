@@ -26,6 +26,8 @@ import { Route as AuthenticatedHistoryRouteImport } from './routes/_authenticate
 import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
 import { Route as AuthenticatedStatisticsRouteImport } from './routes/_authenticated/statistics'
 import { Route as AuthenticatedSupportRouteImport } from './routes/_authenticated/support'
+import { Route as AuthenticatedPricingIndexRouteImport } from './routes/_authenticated/pricing/index'
+import { Route as AuthenticatedPricingSuccessRouteImport } from './routes/_authenticated/pricing/success'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 
 const IndexRoute = IndexRouteImport.update({
@@ -113,6 +115,18 @@ const AuthenticatedSupportRoute = AuthenticatedSupportRouteImport.update({
   path: '/support',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const AuthenticatedPricingIndexRoute =
+  AuthenticatedPricingIndexRouteImport.update({
+    id: '/pricing/',
+    path: '/pricing/',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+const AuthenticatedPricingSuccessRoute =
+  AuthenticatedPricingSuccessRouteImport.update({
+    id: '/pricing/success',
+    path: '/pricing/success',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
   id: '/api/auth/$',
   path: '/api/auth/$',
@@ -136,7 +150,9 @@ export interface FileRoutesByFullPath {
   '/profile': typeof AuthenticatedProfileRoute
   '/statistics': typeof AuthenticatedStatisticsRoute
   '/support': typeof AuthenticatedSupportRoute
+  '/pricing/success': typeof AuthenticatedPricingSuccessRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/pricing/': typeof AuthenticatedPricingIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -155,7 +171,9 @@ export interface FileRoutesByTo {
   '/profile': typeof AuthenticatedProfileRoute
   '/statistics': typeof AuthenticatedStatisticsRoute
   '/support': typeof AuthenticatedSupportRoute
+  '/pricing/success': typeof AuthenticatedPricingSuccessRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/pricing': typeof AuthenticatedPricingIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -176,7 +194,9 @@ export interface FileRoutesById {
   '/_authenticated/profile': typeof AuthenticatedProfileRoute
   '/_authenticated/statistics': typeof AuthenticatedStatisticsRoute
   '/_authenticated/support': typeof AuthenticatedSupportRoute
+  '/_authenticated/pricing/success': typeof AuthenticatedPricingSuccessRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/_authenticated/pricing/': typeof AuthenticatedPricingIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -197,7 +217,9 @@ export interface FileRouteTypes {
     | '/profile'
     | '/statistics'
     | '/support'
+    | '/pricing/success'
     | '/api/auth/$'
+    | '/pricing/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -216,7 +238,9 @@ export interface FileRouteTypes {
     | '/profile'
     | '/statistics'
     | '/support'
+    | '/pricing/success'
     | '/api/auth/$'
+    | '/pricing'
   id:
     | '__root__'
     | '/'
@@ -236,7 +260,9 @@ export interface FileRouteTypes {
     | '/_authenticated/profile'
     | '/_authenticated/statistics'
     | '/_authenticated/support'
+    | '/_authenticated/pricing/success'
     | '/api/auth/$'
+    | '/_authenticated/pricing/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -371,6 +397,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSupportRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/pricing/': {
+      id: '/_authenticated/pricing/'
+      path: '/pricing'
+      fullPath: '/pricing/'
+      preLoaderRoute: typeof AuthenticatedPricingIndexRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/pricing/success': {
+      id: '/_authenticated/pricing/success'
+      path: '/pricing/success'
+      fullPath: '/pricing/success'
+      preLoaderRoute: typeof AuthenticatedPricingSuccessRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/api/auth/$': {
       id: '/api/auth/$'
       path: '/api/auth/$'
@@ -392,6 +432,8 @@ interface AuthenticatedRouteChildren {
   AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
   AuthenticatedStatisticsRoute: typeof AuthenticatedStatisticsRoute
   AuthenticatedSupportRoute: typeof AuthenticatedSupportRoute
+  AuthenticatedPricingSuccessRoute: typeof AuthenticatedPricingSuccessRoute
+  AuthenticatedPricingIndexRoute: typeof AuthenticatedPricingIndexRoute
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
@@ -405,6 +447,8 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedProfileRoute: AuthenticatedProfileRoute,
   AuthenticatedStatisticsRoute: AuthenticatedStatisticsRoute,
   AuthenticatedSupportRoute: AuthenticatedSupportRoute,
+  AuthenticatedPricingSuccessRoute: AuthenticatedPricingSuccessRoute,
+  AuthenticatedPricingIndexRoute: AuthenticatedPricingIndexRoute,
 }
 
 const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(

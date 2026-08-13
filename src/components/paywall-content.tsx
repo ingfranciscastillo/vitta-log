@@ -1,5 +1,5 @@
 import { CheckCircleIcon, RestartIcon } from "@solar-icons/react/bold";
-import { StarsMinimalisticIcon } from "@solar-icons/react/bold/stars-minimalistic";
+import { useNavigate } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useState } from "react";
 import toast from "react-hot-toast";
@@ -17,11 +17,20 @@ const BENEFITS = [
 	"Todas las funciones futuras, gratis",
 ];
 
-export function PaywallContent() {
+type PaywallContentProps = {
+	isPro?: boolean;
+};
+
+export function PaywallContent({ isPro = false }: PaywallContentProps = {}) {
 	const [loading, setLoading] = useState(false);
+	const navigate = useNavigate();
 	const checkout = useServerFn(createProCheckout);
 
 	const handleCheckout = async () => {
+		if (isPro) {
+			void navigate({ to: "/dashboard" });
+			return;
+		}
 		if (typeof window !== "undefined" && window.self !== window.top) {
 			toast.error(
 				"El pago solo funciona desde la app publicada. Ábrela en una pestaña nueva para comprar.",
@@ -50,9 +59,6 @@ export function PaywallContent() {
 
 	return (
 		<div className="text-center">
-			<div className="inline-flex items-center gap-1.5 rounded-full bg-accent/25 text-accent-foreground px-3 py-1 text-xs font-medium mb-4">
-				<StarsMinimalisticIcon className="w-3.5 h-3.5" /> MyWeight Premium
-			</div>
 			<h2 className="font-display text-2xl">Desbloquea todo</h2>
 			<p className="text-muted-foreground text-sm mt-1">
 				Un solo pago. Tuyo para siempre.
@@ -66,9 +72,7 @@ export function PaywallContent() {
 			<ul className="text-left space-y-2.5 mb-6">
 				{BENEFITS.map((b) => (
 					<li key={b} className="flex items-start gap-2.5 text-sm">
-						<span className="mt-0.5 w-4 h-4 rounded-full bg-primary/15 text-primary flex items-center justify-center flex-shrink-0">
-							<CheckCircleIcon className="w-3 h-3" />
-						</span>
+						<CheckCircleIcon className="w-4 h-4 text-primary shrink-0 mt-0.5" />
 						<span>{b}</span>
 					</li>
 				))}
@@ -83,13 +87,17 @@ export function PaywallContent() {
 					<>
 						<RestartIcon className="w-4 h-4 mr-2 animate-spin" /> Procesando...
 					</>
+				) : isPro ? (
+					"Ir al Dashboard"
 				) : (
 					"Desbloquear Premium · $12.99"
 				)}
 			</Button>
-			<p className="text-[11px] text-muted-foreground mt-3">
-				Pago seguro vía Stripe
-			</p>
+			{!isPro && (
+				<p className="text-[11px] text-muted-foreground mt-3">
+					Pago seguro vía Stripe
+				</p>
+			)}
 		</div>
 	);
 }

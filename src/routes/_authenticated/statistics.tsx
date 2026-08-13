@@ -10,7 +10,9 @@ import {
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo } from "react";
+import { PremiumGate } from "#/components/premium-gate";
 import { StatCard } from "#/components/stat-card";
+import { currentUserQuery } from "#/lib/profile";
 import { weightStatsQuery } from "#/lib/statistics";
 import {
 	computeStats,
@@ -19,14 +21,30 @@ import {
 } from "#/lib/weight-utils";
 
 export const Route = createFileRoute("/_authenticated/statistics")({
-	loader: ({ context }) =>
-		context.queryClient.ensureQueryData(weightStatsQuery()),
+	loader: ({ context }) => {
+		context.queryClient.ensureQueryData(weightStatsQuery());
+		context.queryClient.ensureQueryData(currentUserQuery());
+	},
 	component: StatisticsPage,
 });
 
 function StatisticsPage() {
 	const { entries, unit } = useSuspenseQuery(weightStatsQuery()).data!;
+	const me = useSuspenseQuery(currentUserQuery()).data!;
+	const isPremium = !!me?.isPro;
 	const s = useMemo(() => computeStats(entries), [entries]);
+
+	if (!isPremium) {
+		return (
+			<div className="space-y-4">
+				<h1 className="font-display text-xl">Estadísticas</h1>
+				<PremiumGate
+					title="Estadísticas avanzadas"
+					description="Análisis completo de tu progreso, tendencias y métricas con Premium."
+				/>
+			</div>
+		);
+	}
 
 	return (
 		<div className="space-y-4">

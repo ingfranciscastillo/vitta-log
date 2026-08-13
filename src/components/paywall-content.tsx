@@ -1,8 +1,5 @@
-import {
-	CheckCircleIcon,
-	MagicWandIcon,
-	RestartIcon,
-} from "@solar-icons/react/bold";
+import { CheckCircleIcon, RestartIcon } from "@solar-icons/react/bold";
+import { StarsMinimalisticIcon } from "@solar-icons/react/bold/stars-minimalistic";
 import { useServerFn } from "@tanstack/react-start";
 import { useState } from "react";
 import toast from "react-hot-toast";
@@ -54,7 +51,7 @@ export function PaywallContent() {
 	return (
 		<div className="text-center">
 			<div className="inline-flex items-center gap-1.5 rounded-full bg-accent/25 text-accent-foreground px-3 py-1 text-xs font-medium mb-4">
-				<MagicWandIcon className="w-3.5 h-3.5" /> MyWeight Premium
+				<StarsMinimalisticIcon className="w-3.5 h-3.5" /> MyWeight Premium
 			</div>
 			<h2 className="font-display text-2xl">Desbloquea todo</h2>
 			<p className="text-muted-foreground text-sm mt-1">

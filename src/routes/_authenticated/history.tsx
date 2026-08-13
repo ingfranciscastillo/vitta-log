@@ -1,3 +1,4 @@
+import { StarsMinimalisticIcon } from "@solar-icons/react/bold/stars-minimalistic";
 import {
 	useMutation,
 	useQueryClient,
@@ -8,6 +9,7 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import { EntryDialog } from "#/components/entry-dialog";
 import { HistoryTable } from "#/components/history-table";
+import { PaywallDialog } from "#/components/paywall-dialog";
 import {
 	AlertDialog,
 	AlertDialogAction,
@@ -47,9 +49,14 @@ function HistoryPage() {
 	const me = useSuspenseQuery(currentUserQuery()).data!;
 	const qc = useQueryClient();
 
+	const isPremium = !!me?.isPro;
+	const visible = isPremium ? entries : entries.slice(0, 30);
+	const limited = !isPremium && entries.length > 30;
+
 	const [dialogOpen, setDialogOpen] = useState<boolean>(false);
 	const [editing, setEditing] = useState<WeightEntry | null>(null);
 	const [deleting, setDeleting] = useState<WeightEntry | null>(null);
+	const [paywallOpen, setPaywallOpen] = useState<boolean>(false);
 
 	const createMut = useMutation({
 		mutationFn: (vars: EntryPayload) => createWeightEntry({ data: vars }),
@@ -108,8 +115,22 @@ function HistoryPage() {
 	return (
 		<div className="space-y-4">
 			<h1 className="font-display text-xl">Historial</h1>
+			{limited && (
+				<button
+					type="button"
+					onClick={() => setPaywallOpen(true)}
+					className="w-full flex items-center gap-2 rounded-2xl bg-accent/20 border border-accent/40 px-4 py-3 text-left"
+				>
+					<StarsMinimalisticIcon className="w-4 h-4 text-accent-foreground flex-shrink-0" />
+					<span className="text-xs flex-1">
+						Mostrando tus últimos 30 registros. Desbloquea el historial
+						ilimitado con Premium.
+					</span>
+					<span className="text-xs font-display text-primary">Ver</span>
+				</button>
+			)}
 			<HistoryTable
-				entries={entries}
+				entries={visible}
 				unit={me.weightUnit}
 				onEdit={handleEdit}
 				onDelete={setDeleting}
@@ -143,6 +164,7 @@ function HistoryPage() {
 					</AlertDialogFooter>
 				</AlertDialogContent>
 			</AlertDialog>
+			<PaywallDialog open={paywallOpen} onOpenChange={setPaywallOpen} />
 		</div>
 	);
 }

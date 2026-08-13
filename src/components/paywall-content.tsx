@@ -35,7 +35,7 @@ export function PaywallContent() {
 		try {
 			const res = await checkout({
 				data: {
-					successUrl: `${window.location.origin}/dashboard?upgraded=1`,
+					successUrl: `${window.location.origin}/pricing/success`,
 					cancelUrl: window.location.href,
 				},
 			});

@@ -4,9 +4,9 @@ import { Button } from "#/components/ui/button";
 
 const BENEFITS = [
 	"Historial ilimitado",
-	"Estadísticas avanzadas",
+	"Estadísticas y tendencias",
 	"Exportación CSV/JSON/PDF",
-	"Recordatorios y más",
+	"Recordatorios y futuras funciones",
 ];
 
 export function PremiumCTA() {

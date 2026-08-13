@@ -1,10 +1,12 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
+import { PremiumGate } from "#/components/premium-gate";
 import { Input } from "#/components/ui/input";
 import { Switch } from "#/components/ui/switch";
 import { WeightChart } from "#/components/weight-chart";
 import { currentGoalQuery } from "#/lib/goals";
+import { currentUserQuery } from "#/lib/profile";
 import { weightEntriesQuery } from "#/lib/weight";
 import { sortByDateAsc } from "#/lib/weight-utils";
 
@@ -40,6 +42,7 @@ export const Route = createFileRoute("/_authenticated/charts")({
 	loader: ({ context }) => {
 		context.queryClient.ensureQueryData(weightEntriesQuery());
 		context.queryClient.ensureQueryData(currentGoalQuery());
+		context.queryClient.ensureQueryData(currentUserQuery());
 	},
 	component: ChartsPage,
 });
@@ -47,6 +50,8 @@ export const Route = createFileRoute("/_authenticated/charts")({
 function ChartsPage() {
 	const entries = useSuspenseQuery(weightEntriesQuery()).data!;
 	const { goal, unit } = useSuspenseQuery(currentGoalQuery()).data!;
+	const me = useSuspenseQuery(currentUserQuery()).data!;
+	const isPremium = !!me?.isPro;
 
 	const [range, setRange] = useState<RangeId>(30);
 	const [from, setFrom] = useState<string>("");
@@ -71,6 +76,18 @@ function ChartsPage() {
 			(e) => new Date(`${e.date}T00:00:00`).getTime() >= cutoff,
 		);
 	}, [entries, range, from, to]);
+
+	if (!isPremium) {
+		return (
+			<div className="space-y-4">
+				<h1 className="font-display text-xl">Gráficos</h1>
+				<PremiumGate
+					title="Gráficos avanzados"
+					description="Tendencias, media móvil y línea de meta con Premium."
+				/>
+			</div>
+		);
+	}
 
 	return (
 		<div className="space-y-4">

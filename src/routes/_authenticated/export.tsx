@@ -3,12 +3,16 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import toast from "react-hot-toast";
+import { PremiumGate } from "#/components/premium-gate";
 import { Button } from "#/components/ui/button";
+import { currentUserQuery } from "#/lib/profile";
 import { weightEntriesQuery } from "#/lib/weight";
 
 export const Route = createFileRoute("/_authenticated/export")({
-	loader: ({ context }) =>
-		context.queryClient.ensureQueryData(weightEntriesQuery()),
+	loader: ({ context }) => {
+		context.queryClient.ensureQueryData(weightEntriesQuery());
+		context.queryClient.ensureQueryData(currentUserQuery());
+	},
 	component: ExportPage,
 });
 
@@ -24,6 +28,8 @@ function download(name: string, content: string, type: string): void {
 
 function ExportPage() {
 	const { data: entries } = useSuspenseQuery(weightEntriesQuery());
+	const me = useSuspenseQuery(currentUserQuery()).data!;
+	const isPremium = !!me?.isPro;
 	const [busy, setBusy] = useState<"csv" | "json" | null>(null);
 
 	const stats = useMemo(() => {
@@ -40,6 +46,18 @@ function ExportPage() {
 		() => [...entries].sort((a, b) => a.date.localeCompare(b.date)),
 		[entries],
 	);
+
+	if (!isPremium) {
+		return (
+			<div className="space-y-6">
+				<h1 className="font-display text-xl">Exportar datos</h1>
+				<PremiumGate
+					title="Exportación de datos"
+					description="Descarga tu historial completo en CSV o JSON con Premium."
+				/>
+			</div>
+		);
+	}
 
 	const exportCSV = () => {
 		setBusy("csv");

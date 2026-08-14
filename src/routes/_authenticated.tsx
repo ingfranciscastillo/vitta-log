@@ -5,9 +5,10 @@ import {
 	useSuspenseQuery,
 } from "@tanstack/react-query";
 import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import toast from "react-hot-toast";
 import { BottomNav } from "#/components/bottom-nav";
+import { DashboardSkeleton } from "#/components/dashboard-skeleton";
 import { QuickLogDialog } from "#/components/quick-log-dialog";
 import { getSession } from "#/lib/auth.functions";
 import { weightStatsQuery } from "#/lib/statistics";
@@ -100,7 +101,9 @@ function AuthenticatedLayout() {
 				</div>
 			</header>
 			<main className="px-4 pt-4 pb-28">
-				<Outlet />
+				<Suspense fallback={<DashboardSkeleton />}>
+					<Outlet />
+				</Suspense>
 			</main>
 			<BottomNav />
 			<QuickLogDialog

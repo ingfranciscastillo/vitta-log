@@ -1,4 +1,4 @@
-import { CheckCircleIcon, RestartIcon } from "@solar-icons/react/bold";
+import { CheckCircleIcon } from "@solar-icons/react/bold";
 import { useQueryClient } from "@tanstack/react-query";
 import {
 	createFileRoute,
@@ -6,6 +6,7 @@ import {
 	useRouter,
 } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
+import { Bars } from "#/components/bars";
 import { Button } from "#/components/ui/button";
 import { currentUserQuery } from "#/lib/profile";
 
@@ -64,7 +65,7 @@ function PricingSuccessPage() {
 	if (status === "verifying") {
 		return (
 			<div className="min-h-[60vh] flex flex-col items-center justify-center gap-3 text-center">
-				<RestartIcon className="w-8 h-8 animate-spin text-primary" />
+				<Bars className="w-8 h-4 text-primary" />
 				<p className="text-muted-foreground text-sm">Verificando tu pago...</p>
 			</div>
 		);

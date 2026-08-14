@@ -12,6 +12,7 @@ import {
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import toast from "react-hot-toast";
+import { Bars } from "#/components/bars";
 import { ExportImport } from "#/components/export-import";
 import { ThemeProvider, useTheme } from "#/components/theme-provider";
 import { Button } from "#/components/ui/button";
@@ -282,7 +283,8 @@ function ProfileContent({ initial }: { initial: InitialProfile }) {
 						disabled={saveMutation.isPending}
 						className="w-full h-11 font-display"
 					>
-						{saveMutation.isPending ? "Guardando..." : "Guardar perfil"}
+						{saveMutation.isPending && <Bars className="w-3 h-3 mr-1.5" />}
+						Guardar perfil
 					</Button>
 				</div>
 			</section>
@@ -326,9 +328,8 @@ function ProfileContent({ initial }: { initial: InitialProfile }) {
 						disabled={deleteAllMutation.isPending}
 						className="w-full h-11 text-destructive"
 					>
-						{deleteAllMutation.isPending
-							? "Eliminando..."
-							: "Eliminar todos mis datos"}
+						{deleteAllMutation.isPending && <Bars className="w-3 h-3 mr-1.5" />}
+						Eliminar todos mis datos
 					</Button>
 				</div>
 			</section>

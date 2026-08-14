@@ -3,6 +3,7 @@ import { useForm } from "@tanstack/react-form";
 import { useMutation } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import toast from "react-hot-toast";
+import { Bars } from "#/components/bars";
 import { Button } from "#/components/ui/button";
 import { Field, FieldError } from "#/components/ui/field";
 import { Input } from "#/components/ui/input";
@@ -135,7 +136,8 @@ function SupportPage() {
 						className="w-full h-11 font-display"
 						disabled={!form.state.canSubmit || mutation.isPending}
 					>
-						{mutation.isPending ? "Enviando..." : "Enviar reporte"}
+						{mutation.isPending && <Bars className="w-3 h-3 mr-1.5" />}
+						Enviar reporte
 					</Button>
 				</form>
 			</section>

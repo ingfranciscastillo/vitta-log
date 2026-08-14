@@ -6,6 +6,7 @@ import {
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import toast from "react-hot-toast";
+import { Bars } from "#/components/bars";
 import { GoalCard } from "#/components/goal-card";
 import { Button } from "#/components/ui/button";
 import { Input } from "#/components/ui/input";
@@ -164,7 +165,8 @@ function GoalsPage() {
 							disabled={saveMut.isPending}
 							className="flex-1 h-11 font-display"
 						>
-							{saveMut.isPending ? "Guardando..." : "Guardar"}
+							{saveMut.isPending && <Bars className="w-3 h-3 mr-1.5" />}
+							Guardar
 						</Button>
 					</div>
 				</div>

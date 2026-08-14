@@ -90,13 +90,11 @@ export const formatDate = (
 
 const average = (arr: number[]): number | null =>
 	!arr || arr.length === 0 ? null : arr.reduce((s, x) => s + x, 0) / arr.length;
-const ts = (e: WeightEntry): number =>
-	new Date(`${e.date}T${e.time || "00:00"}`).getTime();
 
-export const sortByDateAsc = (entries: WeightEntry[]): WeightEntry[] =>
-	[...entries].sort((a, b) => ts(a) - ts(b));
-export const sortByDateDesc = (entries: WeightEntry[]): WeightEntry[] =>
-	[...entries].sort((a, b) => ts(b) - ts(a));
+export const sortByDateAsc = <T extends { date: string }>(entries: T[]): T[] =>
+	[...entries].sort((a, b) => a.date.localeCompare(b.date));
+export const sortByDateDesc = <T extends { date: string }>(entries: T[]): T[] =>
+	[...entries].sort((a, b) => b.date.localeCompare(a.date));
 
 const daysBetween = (d1: string, d2: string): number =>
 	Math.round(

@@ -9,6 +9,7 @@ import {
 	text,
 	time,
 	timestamp,
+	uniqueIndex,
 	uuid,
 } from "drizzle-orm/pg-core";
 
@@ -23,6 +24,28 @@ export const supportStatus = pgEnum("support_status", [
 	"resolved",
 	"closed",
 ]);
+export const bodyMeasurementType = pgEnum("body_measurement_type", [
+	"waist",
+	"hip",
+	"chest",
+	"arm",
+	"thigh",
+	"neck",
+	"body_fat",
+]);
+export const habitType = pgEnum("habit_type", ["water", "steps", "sleep"]);
+export const mealType = pgEnum("meal_type", [
+	"breakfast",
+	"lunch",
+	"dinner",
+	"snack",
+]);
+export const activityIntensity = pgEnum("activity_intensity", [
+	"low",
+	"medium",
+	"high",
+]);
+export const fastStatus = pgEnum("fast_status", ["active", "completed"]);
 
 export const user = pgTable("user", {
 	id: text("id").primaryKey(),
@@ -174,12 +197,149 @@ export const supportTicket = pgTable(
 	],
 );
 
+export const bodyMeasurement = pgTable(
+	"body_measurement",
+	{
+		id: uuid("id").defaultRandom().primaryKey(),
+		createdById: text("created_by_id")
+			.notNull()
+			.references(() => user.id, { onDelete: "cascade" }),
+		type: bodyMeasurementType("type").notNull(),
+		value: numeric("value", { precision: 6, scale: 2 }).notNull(),
+		date: date("date").notNull(),
+		time: time("time"),
+		note: text("note"),
+		createdAt: timestamp("created_at").defaultNow().notNull(),
+		updatedAt: timestamp("updated_at")
+			.defaultNow()
+			.$onUpdate(() => /* @__PURE__ */ new Date())
+			.notNull(),
+	},
+	(table) => [
+		index("body_measurement_created_by_id_idx").on(table.createdById),
+		index("body_measurement_date_idx").on(table.date),
+	],
+);
+
+export const habitLog = pgTable(
+	"habit_log",
+	{
+		id: uuid("id").defaultRandom().primaryKey(),
+		createdById: text("created_by_id")
+			.notNull()
+			.references(() => user.id, { onDelete: "cascade" }),
+		type: habitType("type").notNull(),
+		value: numeric("value", { precision: 8, scale: 2 }).notNull(),
+		date: date("date").notNull(),
+		createdAt: timestamp("created_at").defaultNow().notNull(),
+		updatedAt: timestamp("updated_at")
+			.defaultNow()
+			.$onUpdate(() => /* @__PURE__ */ new Date())
+			.notNull(),
+	},
+	(table) => [
+		index("habit_log_created_by_id_idx").on(table.createdById),
+		index("habit_log_date_idx").on(table.date),
+		uniqueIndex("habit_log_user_type_date_unique").on(
+			table.createdById,
+			table.type,
+			table.date,
+		),
+	],
+);
+
+export const meal = pgTable(
+	"meal",
+	{
+		id: uuid("id").defaultRandom().primaryKey(),
+		createdById: text("created_by_id")
+			.notNull()
+			.references(() => user.id, { onDelete: "cascade" }),
+		date: date("date").notNull(),
+		time: time("time"),
+		name: text("name").notNull(),
+		calories: numeric("calories", { precision: 7, scale: 2 }).notNull(),
+		protein: numeric("protein", { precision: 6, scale: 2 }),
+		carbs: numeric("carbs", { precision: 6, scale: 2 }),
+		fat: numeric("fat", { precision: 6, scale: 2 }),
+		mealType: mealType("meal_type").notNull(),
+		createdAt: timestamp("created_at").defaultNow().notNull(),
+		updatedAt: timestamp("updated_at")
+			.defaultNow()
+			.$onUpdate(() => /* @__PURE__ */ new Date())
+			.notNull(),
+	},
+	(table) => [
+		index("meal_created_by_id_idx").on(table.createdById),
+		index("meal_date_idx").on(table.date),
+	],
+);
+
+export const activity = pgTable(
+	"activity",
+	{
+		id: uuid("id").defaultRandom().primaryKey(),
+		createdById: text("created_by_id")
+			.notNull()
+			.references(() => user.id, { onDelete: "cascade" }),
+		date: date("date").notNull(),
+		time: time("time"),
+		type: text("type").notNull(),
+		durationMinutes: numeric("duration_minutes", {
+			precision: 5,
+			scale: 2,
+		}).notNull(),
+		intensity: activityIntensity("intensity"),
+		createdAt: timestamp("created_at").defaultNow().notNull(),
+		updatedAt: timestamp("updated_at")
+			.defaultNow()
+			.$onUpdate(() => /* @__PURE__ */ new Date())
+			.notNull(),
+	},
+	(table) => [
+		index("activity_created_by_id_idx").on(table.createdById),
+		index("activity_date_idx").on(table.date),
+	],
+);
+
+export const fast = pgTable(
+	"fast",
+	{
+		id: uuid("id").defaultRandom().primaryKey(),
+		createdById: text("created_by_id")
+			.notNull()
+			.references(() => user.id, { onDelete: "cascade" }),
+		status: fastStatus("status").default("active").notNull(),
+		startedAt: timestamp("started_at", { withTimezone: true }).notNull(),
+		endedAt: timestamp("ended_at", { withTimezone: true }),
+		durationMinutes: numeric("duration_minutes", {
+			precision: 8,
+			scale: 2,
+		}),
+		type: text("type"),
+		createdAt: timestamp("created_at").defaultNow().notNull(),
+		updatedAt: timestamp("updated_at")
+			.defaultNow()
+			.$onUpdate(() => /* @__PURE__ */ new Date())
+			.notNull(),
+	},
+	(table) => [
+		index("fast_created_by_id_idx").on(table.createdById),
+		index("fast_started_at_idx").on(table.startedAt),
+	],
+);
+
 export const userRelations = relations(user, ({ many }) => ({
 	sessions: many(session),
 	accounts: many(account),
 	goals: many(goal),
 	weightEntries: many(weightEntry),
 	supportTickets: many(supportTicket),
+	bodyMeasurements: many(bodyMeasurement),
+	habitLogs: many(habitLog),
+	meals: many(meal),
+	activities: many(activity),
+	fasts: many(fast),
 }));
 
 export const sessionRelations = relations(session, ({ one }) => ({
@@ -213,6 +373,44 @@ export const weightEntryRelations = relations(weightEntry, ({ one }) => ({
 export const supportTicketRelations = relations(supportTicket, ({ one }) => ({
 	user: one(user, {
 		fields: [supportTicket.createdById],
+		references: [user.id],
+	}),
+}));
+
+export const bodyMeasurementRelations = relations(
+	bodyMeasurement,
+	({ one }) => ({
+		user: one(user, {
+			fields: [bodyMeasurement.createdById],
+			references: [user.id],
+		}),
+	}),
+);
+
+export const habitLogRelations = relations(habitLog, ({ one }) => ({
+	user: one(user, {
+		fields: [habitLog.createdById],
+		references: [user.id],
+	}),
+}));
+
+export const mealRelations = relations(meal, ({ one }) => ({
+	user: one(user, {
+		fields: [meal.createdById],
+		references: [user.id],
+	}),
+}));
+
+export const activityRelations = relations(activity, ({ one }) => ({
+	user: one(user, {
+		fields: [activity.createdById],
+		references: [user.id],
+	}),
+}));
+
+export const fastRelations = relations(fast, ({ one }) => ({
+	user: one(user, {
+		fields: [fast.createdById],
 		references: [user.id],
 	}),
 }));

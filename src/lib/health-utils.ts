@@ -172,6 +172,14 @@ export const fastElapsedMinutes = (fast: Fast | null | undefined): number => {
 	);
 };
 
+export const fastElapsedSeconds = (fast: Fast | null | undefined): number => {
+	if (fast?.status !== "active" || !fast.startedAt) return 0;
+	return Math.max(
+		0,
+		Math.round((Date.now() - new Date(fast.startedAt).getTime()) / 1000),
+	);
+};
+
 export const imcSeries = (
 	entries: WeightEntry[],
 	heightCm: number,

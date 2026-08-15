@@ -24,6 +24,7 @@ import { fastsQuery } from "#/lib/fasts";
 import { createFast, updateFast } from "#/lib/fasts.functions";
 import {
 	fastElapsedMinutes,
+	fastElapsedSeconds,
 	fastStats,
 	metricExplanations,
 } from "#/lib/health-utils";
@@ -44,10 +45,10 @@ function formatDuration(mins: number): string {
 	return `${h}h ${m}m`;
 }
 
-function formatClock(mins: number): string {
-	const h = Math.floor(mins / 60);
-	const m = Math.floor(mins % 60);
-	const s = Math.floor((mins * 60) % 60);
+function formatClock(seconds: number): string {
+	const h = Math.floor(seconds / 3600);
+	const m = Math.floor((seconds % 3600) / 60);
+	const s = seconds % 60;
 	return `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
 }
 
@@ -166,7 +167,7 @@ function FastingPage() {
 		);
 	}
 
-	const elapsed = stats.active ? fastElapsedMinutes(stats.active) : 0;
+	const elapsed = stats.active ? fastElapsedSeconds(stats.active) : 0;
 
 	const handleStart = () => {
 		startMut.mutate();

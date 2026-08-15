@@ -3,6 +3,7 @@ import {
 	QuestionCircleIcon,
 	SettingsIcon,
 	ShieldIcon,
+	TargetIcon,
 } from "@solar-icons/react/bold";
 import {
 	useMutation,
@@ -33,16 +34,20 @@ import {
 	importEntries,
 	updateProfile,
 } from "#/lib/profile.functions";
-import { cmToInches, inchesToCm } from "#/lib/weight-utils";
+import { weightEntriesQuery } from "#/lib/weight";
+import { cmToInches, inchesToCm, type WeightEntry } from "#/lib/weight-utils";
 
 export const Route = createFileRoute("/_authenticated/profile")({
-	loader: ({ context }) =>
-		context.queryClient.ensureQueryData(currentUserQuery()),
+	loader: ({ context }) => {
+		context.queryClient.ensureQueryData(currentUserQuery());
+		context.queryClient.ensureQueryData(weightEntriesQuery());
+	},
 	component: ProfilePage,
 });
 
 function ProfilePage() {
 	const me = useSuspenseQuery(currentUserQuery()).data!;
+	const entries = useSuspenseQuery(weightEntriesQuery()).data!;
 	return (
 		<ThemeProvider>
 			<ProfileContent
@@ -55,6 +60,7 @@ function ProfilePage() {
 					heightUnit: me.heightUnit,
 					timezone: me.timezone,
 				}}
+				entries={entries}
 			/>
 		</ThemeProvider>
 	);
@@ -70,7 +76,13 @@ type InitialProfile = {
 	timezone: string;
 };
 
-function ProfileContent({ initial }: { initial: InitialProfile }) {
+function ProfileContent({
+	initial,
+	entries,
+}: {
+	initial: InitialProfile;
+	entries: WeightEntry[];
+}) {
 	const qc = useQueryClient();
 	const { theme, setTheme } = useTheme();
 
@@ -320,7 +332,7 @@ function ProfileContent({ initial }: { initial: InitialProfile }) {
 			<section className="space-y-3">
 				<div className="font-display text-sm">Datos</div>
 				<div className="rounded-2xl bg-card border border-border p-4 space-y-3">
-					<ExportImport entries={[]} onImport={handleImport} />
+					<ExportImport entries={entries} onImport={handleImport} />
 					<Button
 						type="button"
 						variant="outline"
@@ -337,6 +349,13 @@ function ProfileContent({ initial }: { initial: InitialProfile }) {
 			<section className="space-y-3">
 				<div className="font-display text-sm">Más</div>
 				<div className="rounded-2xl bg-card border border-border p-2 space-y-1">
+					<Link
+						to="/goals"
+						className="flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-muted transition-colors"
+					>
+						<TargetIcon className="w-5 h-5 text-primary" />
+						<span className="text-sm">Objetivos</span>
+					</Link>
 					<Link
 						to={"/settings" as string}
 						className="flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-muted transition-colors"

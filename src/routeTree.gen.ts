@@ -24,6 +24,7 @@ import { Route as AuthenticatedExportRouteImport } from './routes/_authenticated
 import { Route as AuthenticatedGoalsRouteImport } from './routes/_authenticated/goals'
 import { Route as AuthenticatedHabitsRouteImport } from './routes/_authenticated/habits'
 import { Route as AuthenticatedHistoryRouteImport } from './routes/_authenticated/history'
+import { Route as AuthenticatedImcRouteImport } from './routes/_authenticated/imc'
 import { Route as AuthenticatedMeasurementsRouteImport } from './routes/_authenticated/measurements'
 import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
 import { Route as AuthenticatedStatisticsRouteImport } from './routes/_authenticated/statistics'
@@ -107,6 +108,11 @@ const AuthenticatedHistoryRoute = AuthenticatedHistoryRouteImport.update({
   path: '/history',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const AuthenticatedImcRoute = AuthenticatedImcRouteImport.update({
+  id: '/imc',
+  path: '/imc',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
 const AuthenticatedMeasurementsRoute =
   AuthenticatedMeasurementsRouteImport.update({
     id: '/measurements',
@@ -161,6 +167,7 @@ export interface FileRoutesByFullPath {
   '/goals': typeof AuthenticatedGoalsRoute
   '/habits': typeof AuthenticatedHabitsRoute
   '/history': typeof AuthenticatedHistoryRoute
+  '/imc': typeof AuthenticatedImcRoute
   '/measurements': typeof AuthenticatedMeasurementsRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/statistics': typeof AuthenticatedStatisticsRoute
@@ -184,6 +191,7 @@ export interface FileRoutesByTo {
   '/goals': typeof AuthenticatedGoalsRoute
   '/habits': typeof AuthenticatedHabitsRoute
   '/history': typeof AuthenticatedHistoryRoute
+  '/imc': typeof AuthenticatedImcRoute
   '/measurements': typeof AuthenticatedMeasurementsRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/statistics': typeof AuthenticatedStatisticsRoute
@@ -209,6 +217,7 @@ export interface FileRoutesById {
   '/_authenticated/goals': typeof AuthenticatedGoalsRoute
   '/_authenticated/habits': typeof AuthenticatedHabitsRoute
   '/_authenticated/history': typeof AuthenticatedHistoryRoute
+  '/_authenticated/imc': typeof AuthenticatedImcRoute
   '/_authenticated/measurements': typeof AuthenticatedMeasurementsRoute
   '/_authenticated/profile': typeof AuthenticatedProfileRoute
   '/_authenticated/statistics': typeof AuthenticatedStatisticsRoute
@@ -234,6 +243,7 @@ export interface FileRouteTypes {
     | '/goals'
     | '/habits'
     | '/history'
+    | '/imc'
     | '/measurements'
     | '/profile'
     | '/statistics'
@@ -257,6 +267,7 @@ export interface FileRouteTypes {
     | '/goals'
     | '/habits'
     | '/history'
+    | '/imc'
     | '/measurements'
     | '/profile'
     | '/statistics'
@@ -281,6 +292,7 @@ export interface FileRouteTypes {
     | '/_authenticated/goals'
     | '/_authenticated/habits'
     | '/_authenticated/history'
+    | '/_authenticated/imc'
     | '/_authenticated/measurements'
     | '/_authenticated/profile'
     | '/_authenticated/statistics'
@@ -408,6 +420,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedHistoryRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/imc': {
+      id: '/_authenticated/imc'
+      path: '/imc'
+      fullPath: '/imc'
+      preLoaderRoute: typeof AuthenticatedImcRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/measurements': {
       id: '/_authenticated/measurements'
       path: '/measurements'
@@ -469,6 +488,7 @@ interface AuthenticatedRouteChildren {
   AuthenticatedGoalsRoute: typeof AuthenticatedGoalsRoute
   AuthenticatedHabitsRoute: typeof AuthenticatedHabitsRoute
   AuthenticatedHistoryRoute: typeof AuthenticatedHistoryRoute
+  AuthenticatedImcRoute: typeof AuthenticatedImcRoute
   AuthenticatedMeasurementsRoute: typeof AuthenticatedMeasurementsRoute
   AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
   AuthenticatedStatisticsRoute: typeof AuthenticatedStatisticsRoute
@@ -486,6 +506,7 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedGoalsRoute: AuthenticatedGoalsRoute,
   AuthenticatedHabitsRoute: AuthenticatedHabitsRoute,
   AuthenticatedHistoryRoute: AuthenticatedHistoryRoute,
+  AuthenticatedImcRoute: AuthenticatedImcRoute,
   AuthenticatedMeasurementsRoute: AuthenticatedMeasurementsRoute,
   AuthenticatedProfileRoute: AuthenticatedProfileRoute,
   AuthenticatedStatisticsRoute: AuthenticatedStatisticsRoute,

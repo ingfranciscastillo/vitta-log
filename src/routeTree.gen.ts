@@ -26,11 +26,14 @@ import { Route as AuthenticatedGoalsRouteImport } from './routes/_authenticated/
 import { Route as AuthenticatedHabitsRouteImport } from './routes/_authenticated/habits'
 import { Route as AuthenticatedHistoryRouteImport } from './routes/_authenticated/history'
 import { Route as AuthenticatedImcRouteImport } from './routes/_authenticated/imc'
+import { Route as AuthenticatedInsightsRouteImport } from './routes/_authenticated/insights'
 import { Route as AuthenticatedMeasurementsRouteImport } from './routes/_authenticated/measurements'
+import { Route as AuthenticatedMoreRouteImport } from './routes/_authenticated/more'
 import { Route as AuthenticatedNutritionRouteImport } from './routes/_authenticated/nutrition'
 import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
 import { Route as AuthenticatedStatisticsRouteImport } from './routes/_authenticated/statistics'
 import { Route as AuthenticatedSupportRouteImport } from './routes/_authenticated/support'
+import { Route as AuthenticatedWeeklySummaryRouteImport } from './routes/_authenticated/weekly-summary'
 import { Route as AuthenticatedPricingIndexRouteImport } from './routes/_authenticated/pricing/index'
 import { Route as AuthenticatedPricingSuccessRouteImport } from './routes/_authenticated/pricing/success'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
@@ -120,12 +123,22 @@ const AuthenticatedImcRoute = AuthenticatedImcRouteImport.update({
   path: '/imc',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const AuthenticatedInsightsRoute = AuthenticatedInsightsRouteImport.update({
+  id: '/insights',
+  path: '/insights',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
 const AuthenticatedMeasurementsRoute =
   AuthenticatedMeasurementsRouteImport.update({
     id: '/measurements',
     path: '/measurements',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
+const AuthenticatedMoreRoute = AuthenticatedMoreRouteImport.update({
+  id: '/more',
+  path: '/more',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
 const AuthenticatedNutritionRoute = AuthenticatedNutritionRouteImport.update({
   id: '/nutrition',
   path: '/nutrition',
@@ -146,6 +159,12 @@ const AuthenticatedSupportRoute = AuthenticatedSupportRouteImport.update({
   path: '/support',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const AuthenticatedWeeklySummaryRoute =
+  AuthenticatedWeeklySummaryRouteImport.update({
+    id: '/weekly-summary',
+    path: '/weekly-summary',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 const AuthenticatedPricingIndexRoute =
   AuthenticatedPricingIndexRouteImport.update({
     id: '/pricing/',
@@ -181,11 +200,14 @@ export interface FileRoutesByFullPath {
   '/habits': typeof AuthenticatedHabitsRoute
   '/history': typeof AuthenticatedHistoryRoute
   '/imc': typeof AuthenticatedImcRoute
+  '/insights': typeof AuthenticatedInsightsRoute
   '/measurements': typeof AuthenticatedMeasurementsRoute
+  '/more': typeof AuthenticatedMoreRoute
   '/nutrition': typeof AuthenticatedNutritionRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/statistics': typeof AuthenticatedStatisticsRoute
   '/support': typeof AuthenticatedSupportRoute
+  '/weekly-summary': typeof AuthenticatedWeeklySummaryRoute
   '/pricing/success': typeof AuthenticatedPricingSuccessRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/pricing/': typeof AuthenticatedPricingIndexRoute
@@ -207,11 +229,14 @@ export interface FileRoutesByTo {
   '/habits': typeof AuthenticatedHabitsRoute
   '/history': typeof AuthenticatedHistoryRoute
   '/imc': typeof AuthenticatedImcRoute
+  '/insights': typeof AuthenticatedInsightsRoute
   '/measurements': typeof AuthenticatedMeasurementsRoute
+  '/more': typeof AuthenticatedMoreRoute
   '/nutrition': typeof AuthenticatedNutritionRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/statistics': typeof AuthenticatedStatisticsRoute
   '/support': typeof AuthenticatedSupportRoute
+  '/weekly-summary': typeof AuthenticatedWeeklySummaryRoute
   '/pricing/success': typeof AuthenticatedPricingSuccessRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/pricing': typeof AuthenticatedPricingIndexRoute
@@ -235,11 +260,14 @@ export interface FileRoutesById {
   '/_authenticated/habits': typeof AuthenticatedHabitsRoute
   '/_authenticated/history': typeof AuthenticatedHistoryRoute
   '/_authenticated/imc': typeof AuthenticatedImcRoute
+  '/_authenticated/insights': typeof AuthenticatedInsightsRoute
   '/_authenticated/measurements': typeof AuthenticatedMeasurementsRoute
+  '/_authenticated/more': typeof AuthenticatedMoreRoute
   '/_authenticated/nutrition': typeof AuthenticatedNutritionRoute
   '/_authenticated/profile': typeof AuthenticatedProfileRoute
   '/_authenticated/statistics': typeof AuthenticatedStatisticsRoute
   '/_authenticated/support': typeof AuthenticatedSupportRoute
+  '/_authenticated/weekly-summary': typeof AuthenticatedWeeklySummaryRoute
   '/_authenticated/pricing/success': typeof AuthenticatedPricingSuccessRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/_authenticated/pricing/': typeof AuthenticatedPricingIndexRoute
@@ -263,11 +291,14 @@ export interface FileRouteTypes {
     | '/habits'
     | '/history'
     | '/imc'
+    | '/insights'
     | '/measurements'
+    | '/more'
     | '/nutrition'
     | '/profile'
     | '/statistics'
     | '/support'
+    | '/weekly-summary'
     | '/pricing/success'
     | '/api/auth/$'
     | '/pricing/'
@@ -289,11 +320,14 @@ export interface FileRouteTypes {
     | '/habits'
     | '/history'
     | '/imc'
+    | '/insights'
     | '/measurements'
+    | '/more'
     | '/nutrition'
     | '/profile'
     | '/statistics'
     | '/support'
+    | '/weekly-summary'
     | '/pricing/success'
     | '/api/auth/$'
     | '/pricing'
@@ -316,11 +350,14 @@ export interface FileRouteTypes {
     | '/_authenticated/habits'
     | '/_authenticated/history'
     | '/_authenticated/imc'
+    | '/_authenticated/insights'
     | '/_authenticated/measurements'
+    | '/_authenticated/more'
     | '/_authenticated/nutrition'
     | '/_authenticated/profile'
     | '/_authenticated/statistics'
     | '/_authenticated/support'
+    | '/_authenticated/weekly-summary'
     | '/_authenticated/pricing/success'
     | '/api/auth/$'
     | '/_authenticated/pricing/'
@@ -458,11 +495,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedImcRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/insights': {
+      id: '/_authenticated/insights'
+      path: '/insights'
+      fullPath: '/insights'
+      preLoaderRoute: typeof AuthenticatedInsightsRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/measurements': {
       id: '/_authenticated/measurements'
       path: '/measurements'
       fullPath: '/measurements'
       preLoaderRoute: typeof AuthenticatedMeasurementsRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/more': {
+      id: '/_authenticated/more'
+      path: '/more'
+      fullPath: '/more'
+      preLoaderRoute: typeof AuthenticatedMoreRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
     '/_authenticated/nutrition': {
@@ -491,6 +542,13 @@ declare module '@tanstack/react-router' {
       path: '/support'
       fullPath: '/support'
       preLoaderRoute: typeof AuthenticatedSupportRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/weekly-summary': {
+      id: '/_authenticated/weekly-summary'
+      path: '/weekly-summary'
+      fullPath: '/weekly-summary'
+      preLoaderRoute: typeof AuthenticatedWeeklySummaryRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
     '/_authenticated/pricing/': {
@@ -528,11 +586,14 @@ interface AuthenticatedRouteChildren {
   AuthenticatedHabitsRoute: typeof AuthenticatedHabitsRoute
   AuthenticatedHistoryRoute: typeof AuthenticatedHistoryRoute
   AuthenticatedImcRoute: typeof AuthenticatedImcRoute
+  AuthenticatedInsightsRoute: typeof AuthenticatedInsightsRoute
   AuthenticatedMeasurementsRoute: typeof AuthenticatedMeasurementsRoute
+  AuthenticatedMoreRoute: typeof AuthenticatedMoreRoute
   AuthenticatedNutritionRoute: typeof AuthenticatedNutritionRoute
   AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
   AuthenticatedStatisticsRoute: typeof AuthenticatedStatisticsRoute
   AuthenticatedSupportRoute: typeof AuthenticatedSupportRoute
+  AuthenticatedWeeklySummaryRoute: typeof AuthenticatedWeeklySummaryRoute
   AuthenticatedPricingSuccessRoute: typeof AuthenticatedPricingSuccessRoute
   AuthenticatedPricingIndexRoute: typeof AuthenticatedPricingIndexRoute
 }
@@ -548,11 +609,14 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedHabitsRoute: AuthenticatedHabitsRoute,
   AuthenticatedHistoryRoute: AuthenticatedHistoryRoute,
   AuthenticatedImcRoute: AuthenticatedImcRoute,
+  AuthenticatedInsightsRoute: AuthenticatedInsightsRoute,
   AuthenticatedMeasurementsRoute: AuthenticatedMeasurementsRoute,
+  AuthenticatedMoreRoute: AuthenticatedMoreRoute,
   AuthenticatedNutritionRoute: AuthenticatedNutritionRoute,
   AuthenticatedProfileRoute: AuthenticatedProfileRoute,
   AuthenticatedStatisticsRoute: AuthenticatedStatisticsRoute,
   AuthenticatedSupportRoute: AuthenticatedSupportRoute,
+  AuthenticatedWeeklySummaryRoute: AuthenticatedWeeklySummaryRoute,
   AuthenticatedPricingSuccessRoute: AuthenticatedPricingSuccessRoute,
   AuthenticatedPricingIndexRoute: AuthenticatedPricingIndexRoute,
 }

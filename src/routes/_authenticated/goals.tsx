@@ -4,10 +4,11 @@ import {
 	useSuspenseQuery,
 } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { Bars } from "#/components/bars";
 import { GoalCard } from "#/components/goal-card";
+import { PremiumGate } from "#/components/premium-gate";
 import { Button } from "#/components/ui/button";
 import { Input } from "#/components/ui/input";
 import { Label } from "#/components/ui/label";
@@ -20,23 +21,67 @@ import {
 } from "#/components/ui/select";
 import { currentGoalQuery } from "#/lib/goals";
 import { upsertGoal } from "#/lib/goals.functions";
+import { currentUserQuery } from "#/lib/profile";
+import { updateProfile } from "#/lib/profile.functions";
 import { weightEntriesQuery } from "#/lib/weight";
-import { listWeightEntries } from "#/lib/weight.functions";
 import { computeStats, fromDisplay, toDisplay } from "#/lib/weight-utils";
 
 export const Route = createFileRoute("/_authenticated/goals")({
 	loader: ({ context }) => {
 		context.queryClient.ensureQueryData(currentGoalQuery());
 		context.queryClient.ensureQueryData(weightEntriesQuery());
+		context.queryClient.ensureQueryData(currentUserQuery());
 	},
 	component: GoalsPage,
 });
 
+type Pace = "slow" | "moderate" | "fast";
+
+function NumField({
+	label,
+	unit,
+	value,
+	onChange,
+	placeholder,
+}: {
+	label: string;
+	unit: string;
+	value: string;
+	onChange: (v: string) => void;
+	placeholder?: string;
+}) {
+	return (
+		<div className="space-y-1.5">
+			<Label className="text-[10px] uppercase tracking-wider text-muted-foreground">
+				{label}
+			</Label>
+			<div className="relative">
+				<Input
+					type="number"
+					inputMode="decimal"
+					value={value}
+					onChange={(e) => onChange(e.target.value)}
+					className="h-11 pr-12"
+					placeholder={placeholder}
+				/>
+				{unit && (
+					<span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-muted-foreground">
+						{unit}
+					</span>
+				)}
+			</div>
+		</div>
+	);
+}
+
 function GoalsPage() {
 	const { goal, unit } = useSuspenseQuery(currentGoalQuery()).data!;
 	const entries = useSuspenseQuery(weightEntriesQuery()).data!;
+	const me = useSuspenseQuery(currentUserQuery()).data!;
 	const stats = computeStats(entries);
 	const qc = useQueryClient();
+
+	const isPremium = !!me?.isPro;
 
 	const [editing, setEditing] = useState<boolean>(!goal);
 	const [target, setTarget] = useState<string>(
@@ -45,33 +90,128 @@ function GoalsPage() {
 			: "",
 	);
 	const [date, setDate] = useState<string>(goal?.target_date ?? "");
-	const [pace, setPace] = useState<"slow" | "moderate" | "fast">(
-		(goal?.pace as "slow" | "moderate" | "fast") ?? "moderate",
-	);
+	const [pace, setPace] = useState<Pace>((goal?.pace as Pace) ?? "moderate");
 
-	const saveMut = useMutation({
+	const waterGoal = me?.waterGoal != null ? Number(me.waterGoal) : 2000;
+	const stepsGoal = me?.stepsGoal != null ? Number(me.stepsGoal) : 8000;
+	const sleepGoal = me?.sleepGoal != null ? Number(me.sleepGoal) : 8;
+	const calorieGoal = me?.calorieGoal != null ? Number(me.calorieGoal) : 2000;
+	const proteinGoal = me?.proteinGoal != null ? Number(me.proteinGoal) : 100;
+	const carbsGoal = me?.carbsGoal != null ? Number(me.carbsGoal) : 250;
+	const fatGoal = me?.fatGoal != null ? Number(me.fatGoal) : 70;
+
+	const [water, setWater] = useState<string>(String(waterGoal));
+	const [steps, setSteps] = useState<string>(String(stepsGoal));
+	const [sleep, setSleep] = useState<string>(String(sleepGoal));
+	const [cal, setCal] = useState<string>(String(calorieGoal));
+	const [protein, setProtein] = useState<string>(String(proteinGoal));
+	const [carbs, setCarbs] = useState<string>(String(carbsGoal));
+	const [fat, setFat] = useState<string>(String(fatGoal));
+
+	useEffect(() => {
+		setWater(String(waterGoal));
+		setSteps(String(stepsGoal));
+		setSleep(String(sleepGoal));
+		setCal(String(calorieGoal));
+		setProtein(String(proteinGoal));
+		setCarbs(String(carbsGoal));
+		setFat(String(fatGoal));
+	}, [
+		waterGoal,
+		stepsGoal,
+		sleepGoal,
+		calorieGoal,
+		proteinGoal,
+		carbsGoal,
+		fatGoal,
+	]);
+
+	const saveWeightMut = useMutation({
 		mutationFn: (vars: {
 			targetWeight: number;
 			targetDate: string | null;
-			pace: "slow" | "moderate" | "fast";
+			pace: Pace;
 		}) => upsertGoal({ data: vars }),
 		onSuccess: async () => {
-			toast.success("Objetivo guardado");
+			toast.success("Objetivo de peso guardado");
 			setEditing(false);
 			await qc.invalidateQueries({ queryKey: ["current-goal"] });
 		},
 		onError: () => {
-			toast.error("No se pudo guardar el objetivo");
+			toast.error("No se pudo guardar el objetivo de peso");
 		},
 	});
 
-	const save = () => {
+	const saveHabitsMut = useMutation({
+		mutationFn: (vars: {
+			waterGoal: number;
+			stepsGoal: number;
+			sleepGoal: number;
+		}) =>
+			updateProfile({
+				data: {
+					waterGoal: vars.waterGoal,
+					stepsGoal: vars.stepsGoal,
+					sleepGoal: vars.sleepGoal,
+				},
+			}),
+		onSuccess: async () => {
+			toast.success("Objetivos de hábitos guardados");
+			await qc.invalidateQueries({ queryKey: ["current-user"] });
+		},
+		onError: () => {
+			toast.error("No se pudieron guardar los hábitos");
+		},
+	});
+
+	const saveNutritionMut = useMutation({
+		mutationFn: (vars: {
+			calorieGoal: number;
+			proteinGoal: number;
+			carbsGoal: number;
+			fatGoal: number;
+		}) =>
+			updateProfile({
+				data: {
+					calorieGoal: vars.calorieGoal,
+					proteinGoal: vars.proteinGoal,
+					carbsGoal: vars.carbsGoal,
+					fatGoal: vars.fatGoal,
+				},
+			}),
+		onSuccess: async () => {
+			toast.success("Objetivos nutricionales guardados");
+			await qc.invalidateQueries({ queryKey: ["current-user"] });
+		},
+		onError: () => {
+			toast.error("No se pudieron guardar los objetivos nutricionales");
+		},
+	});
+
+	const saveWeight = () => {
 		const kg = fromDisplay(parseFloat(target), unit);
 		if (Number.isNaN(kg) || kg <= 0) return;
-		saveMut.mutate({
+		saveWeightMut.mutate({
 			targetWeight: kg,
 			targetDate: date || null,
 			pace,
+		});
+	};
+
+	const saveHabits = () => {
+		saveHabitsMut.mutate({
+			waterGoal: parseInt(water, 10) || 0,
+			stepsGoal: parseInt(steps, 10) || 0,
+			sleepGoal: parseFloat(sleep) || 0,
+		});
+	};
+
+	const saveNutrition = () => {
+		saveNutritionMut.mutate({
+			calorieGoal: parseInt(cal, 10) || 0,
+			proteinGoal: parseFloat(protein) || 0,
+			carbsGoal: parseFloat(carbs) || 0,
+			fatGoal: parseFloat(fat) || 0,
 		});
 	};
 
@@ -83,15 +223,105 @@ function GoalsPage() {
 					? toDisplay(goal.target_weight, unit).toFixed(1)
 					: "",
 			);
-			setDate(goal.target_date ?? "");
-			setPace((goal.pace as "slow" | "moderate" | "fast") ?? "moderate");
+			setDate(goal?.target_date ?? "");
+			setPace((goal?.pace as Pace) ?? "moderate");
 		}
 	};
 
 	return (
 		<div className="space-y-4">
-			<h1 className="font-display text-xl">Objetivo</h1>
+			<h1 className="font-display text-xl">Objetivos</h1>
 
+			<div className="rounded-2xl bg-card border border-border p-4 space-y-3">
+				<div className="font-display text-sm">Hábitos diarios</div>
+				<div className="grid grid-cols-3 gap-3">
+					<NumField
+						label="Agua"
+						unit="ml"
+						value={water}
+						onChange={setWater}
+						placeholder="2000"
+					/>
+					<NumField
+						label="Pasos"
+						unit=""
+						value={steps}
+						onChange={setSteps}
+						placeholder="8000"
+					/>
+					<NumField
+						label="Sueño"
+						unit="h"
+						value={sleep}
+						onChange={setSleep}
+						placeholder="8"
+					/>
+				</div>
+				<Button
+					type="button"
+					onClick={saveHabits}
+					disabled={saveHabitsMut.isPending}
+					className="w-full h-11 font-display"
+				>
+					{saveHabitsMut.isPending && <Bars className="w-3 h-3 mr-1.5" />}
+					Guardar hábitos
+				</Button>
+			</div>
+
+			{isPremium ? (
+				<div className="rounded-2xl bg-card border border-border p-4 space-y-3">
+					<div className="font-display text-sm">Nutrición</div>
+					<NumField
+						label="Calorías diarias"
+						unit="kcal"
+						value={cal}
+						onChange={setCal}
+						placeholder="2000"
+					/>
+					<div className="grid grid-cols-3 gap-3">
+						<NumField
+							label="Proteínas"
+							unit="g"
+							value={protein}
+							onChange={setProtein}
+							placeholder="100"
+						/>
+						<NumField
+							label="Carbohidratos"
+							unit="g"
+							value={carbs}
+							onChange={setCarbs}
+							placeholder="250"
+						/>
+						<NumField
+							label="Grasas"
+							unit="g"
+							value={fat}
+							onChange={setFat}
+							placeholder="70"
+						/>
+					</div>
+					<Button
+						type="button"
+						onClick={saveNutrition}
+						disabled={saveNutritionMut.isPending}
+						className="w-full h-11 font-display"
+					>
+						{saveNutritionMut.isPending && <Bars className="w-3 h-3 mr-1.5" />}
+						Guardar nutrición
+					</Button>
+				</div>
+			) : (
+				<div className="space-y-2">
+					<div className="font-display text-sm">Nutrición</div>
+					<PremiumGate
+						title="Objetivos nutricionales"
+						description="Personaliza tus calorías y macros diarias con Premium."
+					/>
+				</div>
+			)}
+
+			<div className="font-display text-sm">Peso</div>
 			{goal && !editing ? (
 				<>
 					<GoalCard
@@ -101,6 +331,7 @@ function GoalsPage() {
 						onEdit={() => setEditing(true)}
 					/>
 					<Button
+						type="button"
 						variant="outline"
 						onClick={() => setEditing(true)}
 						className="w-full"
@@ -136,10 +367,7 @@ function GoalsPage() {
 					</div>
 					<div className="space-y-1.5">
 						<Label>Ritmo deseado</Label>
-						<Select
-							value={pace}
-							onValueChange={(v) => setPace(v as "slow" | "moderate" | "fast")}
-						>
+						<Select value={pace} onValueChange={(v) => setPace(v as Pace)}>
 							<SelectTrigger className="h-11">
 								<SelectValue />
 							</SelectTrigger>
@@ -153,6 +381,7 @@ function GoalsPage() {
 					<div className="flex gap-2">
 						{goal && (
 							<Button
+								type="button"
 								variant="outline"
 								onClick={handleCancel}
 								className="flex-1 h-11"
@@ -161,11 +390,12 @@ function GoalsPage() {
 							</Button>
 						)}
 						<Button
-							onClick={save}
-							disabled={saveMut.isPending}
+							type="button"
+							onClick={saveWeight}
+							disabled={saveWeightMut.isPending}
 							className="flex-1 h-11 font-display"
 						>
-							{saveMut.isPending && <Bars className="w-3 h-3 mr-1.5" />}
+							{saveWeightMut.isPending && <Bars className="w-3 h-3 mr-1.5" />}
 							Guardar
 						</Button>
 					</div>
@@ -174,6 +404,3 @@ function GoalsPage() {
 		</div>
 	);
 }
-
-// Suppress unused warning: listWeightEntries is used by the server fn via the weight.functions module path
-void listWeightEntries;

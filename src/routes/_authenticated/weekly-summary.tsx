@@ -1,5 +1,4 @@
 import {
-	DropperIcon,
 	DumbbellIcon,
 	FireIcon,
 	GraphDownIcon,
@@ -8,6 +7,7 @@ import {
 	StopwatchIcon,
 	WalkingIcon,
 } from "@solar-icons/react/bold";
+import { WaterdropIcon } from "@solar-icons/react/bold/waterdrop";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo } from "react";
@@ -108,7 +108,7 @@ function WeeklySummaryPage() {
 				<StatCard
 					label="Agua (prom)"
 					value={`${Math.round(w.waterAvg)} ml`}
-					icon={DropperIcon}
+					icon={WaterdropIcon}
 				/>
 				<StatCard
 					label="Pasos (prom)"

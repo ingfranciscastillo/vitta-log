@@ -1,25 +1,44 @@
 import {
+	AddSquareIcon,
+	BellIcon,
 	CalendarIcon,
 	ChartSquareIcon,
+	FireIcon,
 	GraphDownIcon,
 	GraphUpIcon,
-	MedalRibbonIcon,
+	LockIcon,
 	MinusCircleIcon,
+	MoonIcon,
 	PulseIcon,
-	ScaleIcon,
 	TargetIcon,
+	WalkingIcon,
 } from "@solar-icons/react/bold";
 import { StarsMinimalisticIcon } from "@solar-icons/react/bold/stars-minimalistic";
-import { useSuspenseQuery } from "@tanstack/react-query";
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
+import {
+	useMutation,
+	useQueryClient,
+	useSuspenseQuery,
+} from "@tanstack/react-query";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { useMemo } from "react";
 import { GoalCard } from "#/components/goal-card";
 import { InsightsList } from "#/components/insights-list";
-import { PaywallDialog } from "#/components/paywall-dialog";
+import { ProgressBar } from "#/components/progress-bar";
 import { StatCard } from "#/components/stat-card";
 import { StreakCard } from "#/components/streak-card";
+import { WaterCounter } from "#/components/water-counter";
 import { WeightChart } from "#/components/weight-chart";
 import { currentGoalQuery } from "#/lib/goals";
+import { habitLogsQuery } from "#/lib/habits";
+import { addHabitLog } from "#/lib/habits.functions";
+import type { HealthGoals } from "#/lib/health-types";
+import {
+	dailySuggestion,
+	habitToday,
+	mealTotals,
+	reminders,
+} from "#/lib/health-utils";
+import { mealsQuery } from "#/lib/meals";
 import { currentUserQuery } from "#/lib/profile";
 import { weightStatsQuery } from "#/lib/statistics";
 import { weightEntriesQuery } from "#/lib/weight";
@@ -32,6 +51,7 @@ import {
 	formatWeightValue,
 	imcCategory,
 	sortByDateAsc,
+	todayStr,
 } from "#/lib/weight-utils";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
@@ -40,16 +60,30 @@ export const Route = createFileRoute("/_authenticated/dashboard")({
 		context.queryClient.ensureQueryData(weightEntriesQuery());
 		context.queryClient.ensureQueryData(currentGoalQuery());
 		context.queryClient.ensureQueryData(currentUserQuery());
+		context.queryClient.ensureQueryData(habitLogsQuery());
+		context.queryClient.ensureQueryData(mealsQuery());
 	},
 	component: DashboardPage,
 });
 
+const HABITS: Array<{
+	type: "steps" | "sleep";
+	label: string;
+	icon: typeof WalkingIcon;
+	unit: string;
+	step: number;
+}> = [
+	{ type: "steps", label: "Pasos", icon: WalkingIcon, unit: "", step: 500 },
+	{ type: "sleep", label: "Sueño", icon: MoonIcon, unit: "h", step: 0.5 },
+];
+
 function DashboardPage() {
-	const navigate = useNavigate();
-	const [paywallOpen, setPaywallOpen] = useState<boolean>(false);
 	const { entries, unit } = useSuspenseQuery(weightStatsQuery()).data!;
 	const { goal } = useSuspenseQuery(currentGoalQuery()).data!;
 	const me = useSuspenseQuery(currentUserQuery()).data!;
+	const habits = useSuspenseQuery(habitLogsQuery()).data!;
+	const meals = useSuspenseQuery(mealsQuery()).data!;
+	const qc = useQueryClient();
 
 	const isPremium = !!me?.isPro;
 	const heightCm = me?.height != null ? Number(me.height) : null;
@@ -64,13 +98,43 @@ function DashboardPage() {
 	const imcCat = imcCategory(imc);
 	const last30 = useMemo(() => sortByDateAsc(entries).slice(-30), [entries]);
 
+	const goals: HealthGoals = useMemo(
+		() => ({
+			water: me?.waterGoal != null ? Number(me.waterGoal) : 2000,
+			steps: me?.stepsGoal != null ? Number(me.stepsGoal) : 8000,
+			sleep: me?.sleepGoal != null ? Number(me.sleepGoal) : 8,
+			calories: me?.calorieGoal != null ? Number(me.calorieGoal) : 2000,
+		}),
+		[me],
+	);
+
+	const today = todayStr();
+	const suggestion = useMemo(
+		() => dailySuggestion({ entries, habits, meals, goals }),
+		[entries, habits, meals, goals],
+	);
+	const rems = useMemo(
+		() => reminders({ entries, habits, meals }),
+		[entries, habits, meals],
+	);
+	const calsToday = useMemo(
+		() => mealTotals(meals, today).calories,
+		[meals, today],
+	);
+
 	const delta = stats.changeVsLast;
 	const DeltaIcon =
 		delta < 0 ? GraphDownIcon : delta > 0 ? GraphUpIcon : MinusCircleIcon;
 
-	const goToGoals = () => {
-		void navigate({ to: "/goals" });
-	};
+	const logHabitMut = useMutation({
+		mutationFn: (vars: { type: "steps" | "sleep"; step: number }) =>
+			addHabitLog({
+				data: { type: vars.type, date: today, step: vars.step },
+			}),
+		onSuccess: async () => {
+			await qc.invalidateQueries({ queryKey: ["habit-logs"] });
+		},
+	});
 
 	return (
 		<div className="space-y-4">
@@ -116,24 +180,6 @@ function DashboardPage() {
 					sub={`${stats.count} registros`}
 					icon={CalendarIcon}
 				/>
-				<StatCard
-					label="Media 7 días"
-					value={
-						stats.avg7 != null
-							? `${formatWeightValue(stats.avg7, unit)} ${unit}`
-							: "—"
-					}
-					icon={ScaleIcon}
-				/>
-				<StatCard
-					label="Media 30 días"
-					value={
-						stats.avg30 != null
-							? `${formatWeightValue(stats.avg30, unit)} ${unit}`
-							: "—"
-					}
-					icon={ScaleIcon}
-				/>
 			</div>
 
 			{imc != null && (
@@ -154,24 +200,6 @@ function DashboardPage() {
 				/>
 			)}
 
-			{entries.length > 0 && (
-				<div className="rounded-2xl bg-card border border-border p-4">
-					<div className="flex items-center justify-between mb-2">
-						<span className="font-display text-sm">Últimos 30 días</span>
-						<Link to="/charts" className="text-xs text-primary">
-							Ver más
-						</Link>
-					</div>
-					<WeightChart
-						entries={last30}
-						goal={goal}
-						unit={unit}
-						showTrend={false}
-						showGoal={false}
-					/>
-				</div>
-			)}
-
 			{goal ? (
 				<div>
 					<div className="flex items-center justify-between mb-2">
@@ -184,7 +212,9 @@ function DashboardPage() {
 						goal={goal}
 						current={stats.current ?? 0}
 						unit={unit}
-						onEdit={goToGoals}
+						onEdit={() => {
+							window.location.href = "/goals";
+						}}
 					/>
 				</div>
 			) : (
@@ -197,12 +227,112 @@ function DashboardPage() {
 				</Link>
 			)}
 
-			<div>
-				<div className="flex items-center justify-between mb-2">
-					<span className="font-display text-sm">Rachas</span>
-					<Link to="/achievements" className="text-xs text-primary">
-						Logros
+			<WaterCounter />
+
+			<div className="rounded-2xl bg-card border border-border p-4 space-y-3">
+				<div className="flex items-center justify-between">
+					<span className="font-display text-sm">Hábitos de hoy</span>
+					<Link to="/habits" className="text-xs text-primary">
+						Ver todo
 					</Link>
+				</div>
+				{HABITS.map((h) => {
+					const v = habitToday(habits, h.type);
+					const g = goals[h.type];
+					const Icon = h.icon;
+					return (
+						<div key={h.type} className="flex items-center gap-3">
+							<Icon className="w-4 h-4 text-muted-foreground shrink-0" />
+							<div className="flex-1">
+								<div className="flex justify-between text-xs mb-1">
+									<span>{h.label}</span>
+									<span className="text-muted-foreground">
+										{Math.round(v).toLocaleString()} / {g.toLocaleString()}{" "}
+										{h.unit}
+									</span>
+								</div>
+								<ProgressBar value={v} goal={g} />
+							</div>
+							<button
+								type="button"
+								onClick={() =>
+									logHabitMut.mutate({ type: h.type, step: h.step })
+								}
+								className="w-7 h-7 rounded-full bg-primary/10 text-primary flex items-center justify-center active:scale-95 transition-transform"
+								aria-label={`Añadir ${h.label}`}
+							>
+								<AddSquareIcon className="w-3.5 h-3.5" />
+							</button>
+						</div>
+					);
+				})}
+			</div>
+
+			<Link
+				to="/nutrition"
+				className="block rounded-2xl bg-card border border-border p-4 hover:bg-muted transition-colors"
+			>
+				<div className="flex items-center justify-between">
+					<div className="flex items-center gap-2">
+						<FireIcon className="w-4 h-4 text-primary" />
+						<span className="font-display text-sm">Nutrición</span>
+					</div>
+					{!isPremium && (
+						<LockIcon className="w-3.5 h-3.5 text-muted-foreground" />
+					)}
+				</div>
+				<p className="text-xs text-muted-foreground mt-1">
+					{isPremium
+						? `${Math.round(calsToday)} / ${goals.calories} kcal hoy`
+						: "Desbloquea con Premium"}
+				</p>
+			</Link>
+
+			{entries.length > 0 && (
+				<div className="rounded-2xl bg-card border border-border p-4">
+					<div className="flex items-center justify-between mb-2">
+						<span className="font-display text-sm">Tendencia (30 días)</span>
+						<Link to="/charts" className="text-xs text-primary">
+							Ver más
+						</Link>
+					</div>
+					<WeightChart
+						entries={last30}
+						goal={goal}
+						unit={unit}
+						showMA={false}
+						showTrend
+						showGoal={false}
+					/>
+				</div>
+			)}
+
+			<div className="rounded-2xl bg-accent/15 border border-accent/40 p-4">
+				<div className="flex items-center gap-2 mb-1">
+					<StarsMinimalisticIcon className="w-4 h-4 text-accent-foreground" />
+					<span className="font-display text-sm">Sugerencia del día</span>
+				</div>
+				<p className="text-sm">{suggestion}</p>
+			</div>
+
+			{rems.length > 0 && (
+				<div className="space-y-2">
+					{rems.map((r, i) => (
+						<div
+							key={i}
+							className="flex items-start gap-2.5 rounded-xl bg-muted/50 p-3"
+						>
+							<BellIcon className="w-4 h-4 mt-0.5 text-primary shrink-0" />
+							<span className="text-sm">{r}</span>
+						</div>
+					))}
+				</div>
+			)}
+
+			<div>
+				<div className="flex items-center gap-2 mb-2">
+					<ChartSquareIcon className="w-4 h-4 text-primary" />
+					<span className="font-display text-sm">Rachas</span>
 				</div>
 				<StreakCard current={streaks.current} best={streaks.best} />
 			</div>
@@ -218,39 +348,19 @@ function DashboardPage() {
 			)}
 
 			{!isPremium && (
-				<button
-					type="button"
-					onClick={() => setPaywallOpen(true)}
-					className="w-full rounded-2xl bg-accent/20 border border-accent/40 p-4 text-left cursor-pointer transition-colors hover:bg-accent/30"
+				<Link
+					to="/pricing"
+					className="block rounded-2xl bg-accent/20 border border-accent/40 p-4 hover:bg-accent/30 transition-colors"
 				>
 					<div className="flex items-center gap-2 mb-1">
 						<StarsMinimalisticIcon className="w-4 h-4 text-accent-foreground" />
 						<span className="font-display text-sm">Desbloquea Premium</span>
 					</div>
 					<p className="text-xs text-muted-foreground">
-						Historial ilimitado, estadísticas avanzadas y exportación por
-						$12.99.
+						Medidas, nutrición, ayuno, actividad y resumen semanal por $12.99.
 					</p>
-				</button>
+				</Link>
 			)}
-
-			<div className="grid grid-cols-2 gap-3 pt-1">
-				<Link
-					to="/statistics"
-					className="rounded-2xl border border-border p-4 text-center hover:bg-muted transition-colors"
-				>
-					<ChartSquareIcon className="w-5 h-5 mx-auto text-primary mb-1" />
-					<span className="text-sm">Estadísticas</span>
-				</Link>
-				<Link
-					to="/achievements"
-					className="rounded-2xl border border-border p-4 text-center hover:bg-muted transition-colors"
-				>
-					<MedalRibbonIcon className="w-5 h-5 mx-auto text-primary mb-1" />
-					<span className="text-sm">Logros</span>
-				</Link>
-			</div>
-			<PaywallDialog open={paywallOpen} onOpenChange={setPaywallOpen} />
 		</div>
 	);
 }

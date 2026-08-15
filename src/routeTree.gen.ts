@@ -21,6 +21,7 @@ import { Route as AuthenticatedCalendarRouteImport } from './routes/_authenticat
 import { Route as AuthenticatedChartsRouteImport } from './routes/_authenticated/charts'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedExportRouteImport } from './routes/_authenticated/export'
+import { Route as AuthenticatedFastingRouteImport } from './routes/_authenticated/fasting'
 import { Route as AuthenticatedGoalsRouteImport } from './routes/_authenticated/goals'
 import { Route as AuthenticatedHabitsRouteImport } from './routes/_authenticated/habits'
 import { Route as AuthenticatedHistoryRouteImport } from './routes/_authenticated/history'
@@ -92,6 +93,11 @@ const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
 const AuthenticatedExportRoute = AuthenticatedExportRouteImport.update({
   id: '/export',
   path: '/export',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedFastingRoute = AuthenticatedFastingRouteImport.update({
+  id: '/fasting',
+  path: '/fasting',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
 const AuthenticatedGoalsRoute = AuthenticatedGoalsRouteImport.update({
@@ -170,6 +176,7 @@ export interface FileRoutesByFullPath {
   '/charts': typeof AuthenticatedChartsRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/export': typeof AuthenticatedExportRoute
+  '/fasting': typeof AuthenticatedFastingRoute
   '/goals': typeof AuthenticatedGoalsRoute
   '/habits': typeof AuthenticatedHabitsRoute
   '/history': typeof AuthenticatedHistoryRoute
@@ -195,6 +202,7 @@ export interface FileRoutesByTo {
   '/charts': typeof AuthenticatedChartsRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/export': typeof AuthenticatedExportRoute
+  '/fasting': typeof AuthenticatedFastingRoute
   '/goals': typeof AuthenticatedGoalsRoute
   '/habits': typeof AuthenticatedHabitsRoute
   '/history': typeof AuthenticatedHistoryRoute
@@ -222,6 +230,7 @@ export interface FileRoutesById {
   '/_authenticated/charts': typeof AuthenticatedChartsRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/export': typeof AuthenticatedExportRoute
+  '/_authenticated/fasting': typeof AuthenticatedFastingRoute
   '/_authenticated/goals': typeof AuthenticatedGoalsRoute
   '/_authenticated/habits': typeof AuthenticatedHabitsRoute
   '/_authenticated/history': typeof AuthenticatedHistoryRoute
@@ -249,6 +258,7 @@ export interface FileRouteTypes {
     | '/charts'
     | '/dashboard'
     | '/export'
+    | '/fasting'
     | '/goals'
     | '/habits'
     | '/history'
@@ -274,6 +284,7 @@ export interface FileRouteTypes {
     | '/charts'
     | '/dashboard'
     | '/export'
+    | '/fasting'
     | '/goals'
     | '/habits'
     | '/history'
@@ -300,6 +311,7 @@ export interface FileRouteTypes {
     | '/_authenticated/charts'
     | '/_authenticated/dashboard'
     | '/_authenticated/export'
+    | '/_authenticated/fasting'
     | '/_authenticated/goals'
     | '/_authenticated/habits'
     | '/_authenticated/history'
@@ -411,6 +423,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedExportRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/fasting': {
+      id: '/_authenticated/fasting'
+      path: '/fasting'
+      fullPath: '/fasting'
+      preLoaderRoute: typeof AuthenticatedFastingRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/goals': {
       id: '/_authenticated/goals'
       path: '/goals'
@@ -504,6 +523,7 @@ interface AuthenticatedRouteChildren {
   AuthenticatedChartsRoute: typeof AuthenticatedChartsRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedExportRoute: typeof AuthenticatedExportRoute
+  AuthenticatedFastingRoute: typeof AuthenticatedFastingRoute
   AuthenticatedGoalsRoute: typeof AuthenticatedGoalsRoute
   AuthenticatedHabitsRoute: typeof AuthenticatedHabitsRoute
   AuthenticatedHistoryRoute: typeof AuthenticatedHistoryRoute
@@ -523,6 +543,7 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedChartsRoute: AuthenticatedChartsRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedExportRoute: AuthenticatedExportRoute,
+  AuthenticatedFastingRoute: AuthenticatedFastingRoute,
   AuthenticatedGoalsRoute: AuthenticatedGoalsRoute,
   AuthenticatedHabitsRoute: AuthenticatedHabitsRoute,
   AuthenticatedHistoryRoute: AuthenticatedHistoryRoute,

@@ -37,12 +37,6 @@ export const Route = createFileRoute("/_authenticated/habits")({
 	component: HabitsPage,
 });
 
-const DEFAULT_GOALS = {
-	water: 2000,
-	steps: 10000,
-	sleep: 8,
-};
-
 function HabitsPage() {
 	const habits = useSuspenseQuery(habitLogsQuery()).data!;
 	const me = useSuspenseQuery(currentUserQuery()).data!;
@@ -57,6 +51,10 @@ function HabitsPage() {
 	const steps = habitToday(habits, "steps");
 	const sleep = habitToday(habits, "sleep");
 	const series = useMemo(() => habitHistory(habits, sel, 7), [habits, sel]);
+
+	const waterGoal = me?.waterGoal != null ? Number(me.waterGoal) : 2000;
+	const stepsGoal = me?.stepsGoal != null ? Number(me.stepsGoal) : 8000;
+	const sleepGoal = me?.sleepGoal != null ? Number(me.sleepGoal) : 8;
 
 	const invalidate = async () => {
 		await qc.invalidateQueries({ queryKey: ["habit-logs"] });
@@ -135,7 +133,7 @@ function HabitsPage() {
 					label="Agua"
 					icon={DropperIcon}
 					value={water}
-					goal={DEFAULT_GOALS.water}
+					goal={waterGoal}
 					unit="ml"
 					step={250}
 					onAdd={(s) => addMut.mutate({ type: "water", step: s })}
@@ -145,7 +143,7 @@ function HabitsPage() {
 					label="Pasos"
 					icon={WalkingIcon}
 					value={steps}
-					goal={DEFAULT_GOALS.steps}
+					goal={stepsGoal}
 					unit=""
 					step={500}
 					onAdd={(s) => addMut.mutate({ type: "steps", step: s })}
@@ -155,7 +153,7 @@ function HabitsPage() {
 					label="Sueño"
 					icon={MoonIcon}
 					value={sleep}
-					goal={DEFAULT_GOALS.sleep}
+					goal={sleepGoal}
 					unit="h"
 					step={0.5}
 					onAdd={(s) => addMut.mutate({ type: "sleep", step: s })}

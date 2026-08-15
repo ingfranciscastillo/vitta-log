@@ -22,9 +22,16 @@ const updateProfileSchema = z.object({
 	sex: z.enum(["male", "female", "other"]).optional(),
 	birthDate: z.string().optional(),
 	height: z.number().positive().optional(),
-	weightUnit: z.enum(["kg", "lb"]),
-	heightUnit: z.enum(["cm", "ft"]),
-	timezone: z.string().min(1).max(100),
+	weightUnit: z.enum(["kg", "lb"]).optional(),
+	heightUnit: z.enum(["cm", "ft"]).optional(),
+	timezone: z.string().min(1).max(100).optional(),
+	waterGoal: z.number().positive().optional(),
+	stepsGoal: z.number().positive().optional(),
+	sleepGoal: z.number().positive().optional(),
+	calorieGoal: z.number().positive().optional(),
+	proteinGoal: z.number().positive().optional(),
+	carbsGoal: z.number().positive().optional(),
+	fatGoal: z.number().positive().optional(),
 });
 
 export const updateProfile = createServerFn({ method: "POST" })
@@ -32,16 +39,27 @@ export const updateProfile = createServerFn({ method: "POST" })
 	.handler(async ({ data }) => {
 		const session = await getSession();
 		if (!session) throw new Error("Unauthorized");
-		const { weightUnit, heightUnit, timezone, ...rest } = data;
-		const update: Record<string, unknown> = {
-			weightUnit,
-			heightUnit,
-			timezone,
-		};
-		if (rest.name !== undefined) update.name = rest.name;
-		if (rest.sex !== undefined) update.sex = rest.sex;
-		if (rest.birthDate !== undefined) update.birthDate = rest.birthDate;
-		if (rest.height !== undefined) update.height = rest.height;
+		const update: Record<string, unknown> = {};
+		if (data.name !== undefined) update.name = data.name;
+		if (data.sex !== undefined) update.sex = data.sex;
+		if (data.birthDate !== undefined) update.birthDate = data.birthDate;
+		if (data.height !== undefined) update.height = data.height;
+		if (data.weightUnit !== undefined) update.weightUnit = data.weightUnit;
+		if (data.heightUnit !== undefined) update.heightUnit = data.heightUnit;
+		if (data.timezone !== undefined) update.timezone = data.timezone;
+		if (data.waterGoal !== undefined)
+			update.waterGoal = data.waterGoal.toString();
+		if (data.stepsGoal !== undefined)
+			update.stepsGoal = data.stepsGoal.toString();
+		if (data.sleepGoal !== undefined)
+			update.sleepGoal = data.sleepGoal.toString();
+		if (data.calorieGoal !== undefined)
+			update.calorieGoal = data.calorieGoal.toString();
+		if (data.proteinGoal !== undefined)
+			update.proteinGoal = data.proteinGoal.toString();
+		if (data.carbsGoal !== undefined)
+			update.carbsGoal = data.carbsGoal.toString();
+		if (data.fatGoal !== undefined) update.fatGoal = data.fatGoal.toString();
 		await db.update(user).set(update).where(eq(user.id, session.user.id));
 		return { ok: true };
 	});

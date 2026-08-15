@@ -9,7 +9,7 @@ import {
 	useSuspenseQuery,
 } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import toast from "react-hot-toast";
 import { PremiumGate } from "#/components/premium-gate";
 import { Button } from "#/components/ui/button";
@@ -31,6 +31,7 @@ import {
 import { mealsQuery } from "#/lib/meals";
 import { createMeal, deleteMeal } from "#/lib/meals.functions";
 import { currentUserQuery } from "#/lib/profile";
+import { updateProfile } from "#/lib/profile.functions";
 import { nowTimeStr, sortByDateDesc, todayStr } from "#/lib/weight-utils";
 
 export const Route = createFileRoute("/_authenticated/nutrition")({
@@ -49,22 +50,6 @@ const MEAL_TYPES: Array<{ id: MealTypeId; label: string }> = [
 	{ id: "dinner", label: "Cena" },
 	{ id: "snack", label: "Snack" },
 ];
-
-const DEFAULT_GOALS = {
-	calories: 2000,
-	protein: 150,
-	carbs: 250,
-	fat: 70,
-};
-
-const STORAGE_KEY = "peso_log:nutrition_goals";
-
-type NutritionGoals = {
-	calories: number;
-	protein: number;
-	carbs: number;
-	fat: number;
-};
 
 function MacroBar({
 	label,
@@ -96,32 +81,6 @@ function MacroBar({
 	);
 }
 
-function loadGoals(): NutritionGoals {
-	if (typeof window === "undefined") return DEFAULT_GOALS;
-	try {
-		const raw = window.localStorage.getItem(STORAGE_KEY);
-		if (!raw) return DEFAULT_GOALS;
-		const parsed = JSON.parse(raw) as Partial<NutritionGoals>;
-		return {
-			calories: parsed.calories ?? DEFAULT_GOALS.calories,
-			protein: parsed.protein ?? DEFAULT_GOALS.protein,
-			carbs: parsed.carbs ?? DEFAULT_GOALS.carbs,
-			fat: parsed.fat ?? DEFAULT_GOALS.fat,
-		};
-	} catch {
-		return DEFAULT_GOALS;
-	}
-}
-
-function saveGoals(goals: NutritionGoals) {
-	if (typeof window === "undefined") return;
-	try {
-		window.localStorage.setItem(STORAGE_KEY, JSON.stringify(goals));
-	} catch {
-		// ignore quota / private mode errors
-	}
-}
-
 function NutritionPage() {
 	const meals = useSuspenseQuery(mealsQuery()).data!;
 	const me = useSuspenseQuery(currentUserQuery()).data!;
@@ -140,16 +99,13 @@ function NutritionPage() {
 		[meals, weekDates],
 	);
 
-	const [goals, setGoals] = useState<NutritionGoals>(DEFAULT_GOALS);
-	const [goalCal, setGoalCal] = useState<string>(
-		String(DEFAULT_GOALS.calories),
-	);
+	const calorieGoal = me?.calorieGoal != null ? Number(me.calorieGoal) : 2000;
+	const proteinGoal = me?.proteinGoal != null ? Number(me.proteinGoal) : 100;
+	const carbsGoal = me?.carbsGoal != null ? Number(me.carbsGoal) : 250;
+	const fatGoal = me?.fatGoal != null ? Number(me.fatGoal) : 70;
 
-	useEffect(() => {
-		const g = loadGoals();
-		setGoals(g);
-		setGoalCal(String(g.calories));
-	}, []);
+	const [goalCal, setGoalCal] = useState<string>(String(calorieGoal));
+	const [showGoal, setShowGoal] = useState<boolean>(false);
 
 	const [name, setName] = useState<string>("");
 	const [cal, setCal] = useState<string>("");
@@ -158,7 +114,6 @@ function NutritionPage() {
 	const [fat, setFat] = useState<string>("");
 	const [mealType, setMealType] = useState<MealTypeId>("breakfast");
 	const [time] = useState<string>(nowTimeStr());
-	const [showGoal, setShowGoal] = useState<boolean>(false);
 
 	const invalidate = async () => {
 		await qc.invalidateQueries({ queryKey: ["meals"] });
@@ -212,6 +167,18 @@ function NutritionPage() {
 		},
 	});
 
+	const updateGoalMut = useMutation({
+		mutationFn: (calorieGoal: number) =>
+			updateProfile({ data: { calorieGoal } }),
+		onSuccess: async () => {
+			toast.success("Objetivo calórico guardado");
+			await qc.invalidateQueries({ queryKey: ["current-user"] });
+		},
+		onError: () => {
+			toast.error("No se pudo guardar el objetivo");
+		},
+	});
+
 	if (!isPremium) {
 		return (
 			<div className="space-y-4">
@@ -242,14 +209,11 @@ function NutritionPage() {
 	const saveGoal = () => {
 		const v = parseInt(goalCal, 10);
 		if (Number.isNaN(v) || v <= 0) return;
-		const next: NutritionGoals = { ...goals, calories: v };
-		setGoals(next);
-		saveGoals(next);
+		updateGoalMut.mutate(v);
 		setShowGoal(false);
-		toast.success("Objetivo calórico guardado");
 	};
 
-	const remaining = goals.calories - totals.calories;
+	const remaining = calorieGoal - totals.calories;
 
 	return (
 		<div className="space-y-4">
@@ -264,14 +228,14 @@ function NutritionPage() {
 						{Math.round(totals.calories)}
 					</span>
 					<span className="font-display text-lg opacity-70">
-						/ {goals.calories} kcal
+						/ {calorieGoal} kcal
 					</span>
 				</div>
 				<div className="mt-3 h-2 rounded-full bg-white/20 overflow-hidden">
 					<div
 						className="h-full rounded-full bg-white"
 						style={{
-							width: `${Math.min(100, (totals.calories / goals.calories) * 100)}%`,
+							width: `${Math.min(100, (totals.calories / calorieGoal) * 100)}%`,
 						}}
 					/>
 				</div>
@@ -286,19 +250,19 @@ function NutritionPage() {
 				<MacroBar
 					label="Proteínas"
 					value={totals.protein}
-					goal={goals.protein}
+					goal={proteinGoal}
 					color="hsl(var(--primary))"
 				/>
 				<MacroBar
 					label="Carbohidratos"
 					value={totals.carbs}
-					goal={goals.carbs}
+					goal={carbsGoal}
 					color="hsl(var(--accent))"
 				/>
 				<MacroBar
 					label="Grasas"
 					value={totals.fat}
-					goal={goals.fat}
+					goal={fatGoal}
 					color="hsl(var(--chart-3))"
 				/>
 			</div>

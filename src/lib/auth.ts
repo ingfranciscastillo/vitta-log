@@ -72,6 +72,48 @@ export const auth = betterAuth({
 				input: false,
 				returned: true,
 			},
+			waterGoal: {
+				type: "number",
+				defaultValue: 2000,
+				input: true,
+				returned: true,
+			},
+			stepsGoal: {
+				type: "number",
+				defaultValue: 8000,
+				input: true,
+				returned: true,
+			},
+			sleepGoal: {
+				type: "number",
+				defaultValue: 8,
+				input: true,
+				returned: true,
+			},
+			calorieGoal: {
+				type: "number",
+				defaultValue: 2000,
+				input: true,
+				returned: true,
+			},
+			proteinGoal: {
+				type: "number",
+				defaultValue: 100,
+				input: true,
+				returned: true,
+			},
+			carbsGoal: {
+				type: "number",
+				defaultValue: 250,
+				input: true,
+				returned: true,
+			},
+			fatGoal: {
+				type: "number",
+				defaultValue: 70,
+				input: true,
+				returned: true,
+			},
 		},
 	},
 	emailAndPassword: {

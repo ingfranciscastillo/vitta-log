@@ -67,6 +67,27 @@ export const user = pgTable("user", {
 	timezone: text("timezone").default("UTC").notNull(),
 	stripeCustomerId: text("stripe_customer_id"),
 	isPro: boolean("is_pro").default(false).notNull(),
+	waterGoal: numeric("water_goal", { precision: 7, scale: 2 })
+		.default("2000")
+		.notNull(),
+	stepsGoal: numeric("steps_goal", { precision: 8, scale: 2 })
+		.default("8000")
+		.notNull(),
+	sleepGoal: numeric("sleep_goal", { precision: 4, scale: 2 })
+		.default("8")
+		.notNull(),
+	calorieGoal: numeric("calorie_goal", { precision: 7, scale: 2 })
+		.default("2000")
+		.notNull(),
+	proteinGoal: numeric("protein_goal", { precision: 6, scale: 2 })
+		.default("100")
+		.notNull(),
+	carbsGoal: numeric("carbs_goal", { precision: 6, scale: 2 })
+		.default("250")
+		.notNull(),
+	fatGoal: numeric("fat_goal", { precision: 6, scale: 2 })
+		.default("70")
+		.notNull(),
 });
 
 export const session = pgTable(

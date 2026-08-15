@@ -1,8 +1,4 @@
-import {
-	AddSquareIcon,
-	DumbbellIcon,
-	TrashBinTrashIcon,
-} from "@solar-icons/react/outline";
+import { DumbbellIcon, TrashBinTrashIcon } from "@solar-icons/react/outline";
 import {
 	useMutation,
 	useQueryClient,
@@ -206,7 +202,7 @@ function ActivityPage() {
 					className="w-full h-11 font-display"
 					disabled={createMut.isPending}
 				>
-					<AddSquareIcon className="w-4 h-4 mr-2" /> Añadir actividad
+					Añadir actividad
 				</Button>
 			</div>
 

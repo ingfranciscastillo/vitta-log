@@ -1,5 +1,4 @@
 import {
-	AddSquareIcon,
 	GraphUpIcon,
 	InfoCircleIcon,
 	MedalRibbonIcon,
@@ -277,7 +276,7 @@ function FastingPage() {
 					disabled={!mStart || !mEnd || manualMut.isPending}
 					className="w-full h-11 font-display"
 				>
-					<AddSquareIcon className="w-4 h-4 mr-2" /> Guardar ayuno
+					Guardar ayuno
 				</Button>
 			</div>
 

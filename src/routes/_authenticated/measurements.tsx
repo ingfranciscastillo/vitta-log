@@ -1,4 +1,4 @@
-import { AddSquareIcon, TrashBinTrashIcon } from "@solar-icons/react/outline";
+import { TrashBinTrashIcon } from "@solar-icons/react/outline";
 import {
 	useMutation,
 	useQueryClient,
@@ -180,7 +180,7 @@ function MeasurementsPage() {
 					className="w-full h-11 font-display"
 					disabled={createMut.isPending}
 				>
-					<AddSquareIcon className="w-4 h-4 mr-2" /> Añadir medida
+					Añadir medida
 				</Button>
 			</div>
 

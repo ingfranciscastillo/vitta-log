@@ -4,6 +4,7 @@ import {
 	GraphDownIcon,
 	GraphUpIcon,
 	MoonIcon,
+	ScaleIcon,
 	StopwatchIcon,
 	WalkingIcon,
 	WaterdropIcon,
@@ -104,6 +105,7 @@ function WeeklySummaryPage() {
 							? `${formatWeightValue(w.avgWeight, unit)} ${unit}`
 							: "—"
 					}
+					icon={ScaleIcon}
 				/>
 				<StatCard
 					label="Agua (prom)"

@@ -4,6 +4,7 @@ import {
 	ChartSquareIcon,
 	CrownIcon,
 	DownloadIcon,
+	DumbbellIcon,
 	HistoryIcon,
 	LightbulbIcon,
 	MedalRibbonIcon,
@@ -27,6 +28,7 @@ const LINKS: Array<{
 		| "/imc"
 		| "/nutrition"
 		| "/fasting"
+		| "/activity"
 		| "/insights"
 		| "/weekly-summary"
 		| "/history"
@@ -45,6 +47,7 @@ const LINKS: Array<{
 	{ to: "/imc", label: "IMC", icon: PulseIcon },
 	{ to: "/nutrition", label: "Nutrición", icon: PlateIcon },
 	{ to: "/fasting", label: "Ayuno", icon: StopwatchIcon },
+	{ to: "/activity", label: "Actividad", icon: DumbbellIcon },
 	{ to: "/insights", label: "Recomendaciones", icon: LightbulbIcon },
 	{ to: "/weekly-summary", label: "Resumen semanal", icon: CalendarDateIcon },
 	{ to: "/history", label: "Historial", icon: HistoryIcon },

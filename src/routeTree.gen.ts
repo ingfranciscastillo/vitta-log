@@ -24,6 +24,7 @@ import { Route as AuthenticatedExportRouteImport } from './routes/_authenticated
 import { Route as AuthenticatedGoalsRouteImport } from './routes/_authenticated/goals'
 import { Route as AuthenticatedHabitsRouteImport } from './routes/_authenticated/habits'
 import { Route as AuthenticatedHistoryRouteImport } from './routes/_authenticated/history'
+import { Route as AuthenticatedMeasurementsRouteImport } from './routes/_authenticated/measurements'
 import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
 import { Route as AuthenticatedStatisticsRouteImport } from './routes/_authenticated/statistics'
 import { Route as AuthenticatedSupportRouteImport } from './routes/_authenticated/support'
@@ -106,6 +107,12 @@ const AuthenticatedHistoryRoute = AuthenticatedHistoryRouteImport.update({
   path: '/history',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const AuthenticatedMeasurementsRoute =
+  AuthenticatedMeasurementsRouteImport.update({
+    id: '/measurements',
+    path: '/measurements',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 const AuthenticatedProfileRoute = AuthenticatedProfileRouteImport.update({
   id: '/profile',
   path: '/profile',
@@ -154,6 +161,7 @@ export interface FileRoutesByFullPath {
   '/goals': typeof AuthenticatedGoalsRoute
   '/habits': typeof AuthenticatedHabitsRoute
   '/history': typeof AuthenticatedHistoryRoute
+  '/measurements': typeof AuthenticatedMeasurementsRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/statistics': typeof AuthenticatedStatisticsRoute
   '/support': typeof AuthenticatedSupportRoute
@@ -176,6 +184,7 @@ export interface FileRoutesByTo {
   '/goals': typeof AuthenticatedGoalsRoute
   '/habits': typeof AuthenticatedHabitsRoute
   '/history': typeof AuthenticatedHistoryRoute
+  '/measurements': typeof AuthenticatedMeasurementsRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/statistics': typeof AuthenticatedStatisticsRoute
   '/support': typeof AuthenticatedSupportRoute
@@ -200,6 +209,7 @@ export interface FileRoutesById {
   '/_authenticated/goals': typeof AuthenticatedGoalsRoute
   '/_authenticated/habits': typeof AuthenticatedHabitsRoute
   '/_authenticated/history': typeof AuthenticatedHistoryRoute
+  '/_authenticated/measurements': typeof AuthenticatedMeasurementsRoute
   '/_authenticated/profile': typeof AuthenticatedProfileRoute
   '/_authenticated/statistics': typeof AuthenticatedStatisticsRoute
   '/_authenticated/support': typeof AuthenticatedSupportRoute
@@ -224,6 +234,7 @@ export interface FileRouteTypes {
     | '/goals'
     | '/habits'
     | '/history'
+    | '/measurements'
     | '/profile'
     | '/statistics'
     | '/support'
@@ -246,6 +257,7 @@ export interface FileRouteTypes {
     | '/goals'
     | '/habits'
     | '/history'
+    | '/measurements'
     | '/profile'
     | '/statistics'
     | '/support'
@@ -269,6 +281,7 @@ export interface FileRouteTypes {
     | '/_authenticated/goals'
     | '/_authenticated/habits'
     | '/_authenticated/history'
+    | '/_authenticated/measurements'
     | '/_authenticated/profile'
     | '/_authenticated/statistics'
     | '/_authenticated/support'
@@ -395,6 +408,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedHistoryRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/measurements': {
+      id: '/_authenticated/measurements'
+      path: '/measurements'
+      fullPath: '/measurements'
+      preLoaderRoute: typeof AuthenticatedMeasurementsRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/profile': {
       id: '/_authenticated/profile'
       path: '/profile'
@@ -449,6 +469,7 @@ interface AuthenticatedRouteChildren {
   AuthenticatedGoalsRoute: typeof AuthenticatedGoalsRoute
   AuthenticatedHabitsRoute: typeof AuthenticatedHabitsRoute
   AuthenticatedHistoryRoute: typeof AuthenticatedHistoryRoute
+  AuthenticatedMeasurementsRoute: typeof AuthenticatedMeasurementsRoute
   AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
   AuthenticatedStatisticsRoute: typeof AuthenticatedStatisticsRoute
   AuthenticatedSupportRoute: typeof AuthenticatedSupportRoute
@@ -465,6 +486,7 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedGoalsRoute: AuthenticatedGoalsRoute,
   AuthenticatedHabitsRoute: AuthenticatedHabitsRoute,
   AuthenticatedHistoryRoute: AuthenticatedHistoryRoute,
+  AuthenticatedMeasurementsRoute: AuthenticatedMeasurementsRoute,
   AuthenticatedProfileRoute: AuthenticatedProfileRoute,
   AuthenticatedStatisticsRoute: AuthenticatedStatisticsRoute,
   AuthenticatedSupportRoute: AuthenticatedSupportRoute,

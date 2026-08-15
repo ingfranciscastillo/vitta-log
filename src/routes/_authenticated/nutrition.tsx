@@ -1,0 +1,479 @@
+import {
+	AddSquareIcon,
+	FireIcon,
+	TrashBinTrashIcon,
+} from "@solar-icons/react/bold";
+import {
+	useMutation,
+	useQueryClient,
+	useSuspenseQuery,
+} from "@tanstack/react-query";
+import { createFileRoute } from "@tanstack/react-router";
+import { useEffect, useMemo, useState } from "react";
+import toast from "react-hot-toast";
+import { PremiumGate } from "#/components/premium-gate";
+import { Button } from "#/components/ui/button";
+import { Input } from "#/components/ui/input";
+import { Label } from "#/components/ui/label";
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "#/components/ui/select";
+import {
+	lastNDateStrings,
+	mealTotals,
+	mealTotalsRange,
+	metricExplanations,
+} from "#/lib/health-utils";
+import { mealsQuery } from "#/lib/meals";
+import { createMeal, deleteMeal } from "#/lib/meals.functions";
+import { currentUserQuery } from "#/lib/profile";
+import { nowTimeStr, sortByDateDesc, todayStr } from "#/lib/weight-utils";
+
+export const Route = createFileRoute("/_authenticated/nutrition")({
+	loader: ({ context }) => {
+		context.queryClient.ensureQueryData(mealsQuery());
+		context.queryClient.ensureQueryData(currentUserQuery());
+	},
+	component: NutritionPage,
+});
+
+type MealTypeId = "breakfast" | "lunch" | "dinner" | "snack";
+
+const MEAL_TYPES: Array<{ id: MealTypeId; label: string }> = [
+	{ id: "breakfast", label: "Desayuno" },
+	{ id: "lunch", label: "Almuerzo" },
+	{ id: "dinner", label: "Cena" },
+	{ id: "snack", label: "Snack" },
+];
+
+const DEFAULT_GOALS = {
+	calories: 2000,
+	protein: 150,
+	carbs: 250,
+	fat: 70,
+};
+
+const STORAGE_KEY = "peso_log:nutrition_goals";
+
+type NutritionGoals = {
+	calories: number;
+	protein: number;
+	carbs: number;
+	fat: number;
+};
+
+function MacroBar({
+	label,
+	value,
+	goal,
+	color,
+}: {
+	label: string;
+	value: number;
+	goal: number;
+	color: string;
+}) {
+	const pct = goal > 0 ? Math.min(100, Math.round((value / goal) * 100)) : 0;
+	return (
+		<div>
+			<div className="flex justify-between text-xs mb-1">
+				<span className="text-muted-foreground">{label}</span>
+				<span>
+					{Math.round(value)} / {goal}g
+				</span>
+			</div>
+			<div className="h-1.5 rounded-full bg-muted overflow-hidden">
+				<div
+					className="h-full rounded-full"
+					style={{ width: `${pct}%`, background: color }}
+				/>
+			</div>
+		</div>
+	);
+}
+
+function loadGoals(): NutritionGoals {
+	if (typeof window === "undefined") return DEFAULT_GOALS;
+	try {
+		const raw = window.localStorage.getItem(STORAGE_KEY);
+		if (!raw) return DEFAULT_GOALS;
+		const parsed = JSON.parse(raw) as Partial<NutritionGoals>;
+		return {
+			calories: parsed.calories ?? DEFAULT_GOALS.calories,
+			protein: parsed.protein ?? DEFAULT_GOALS.protein,
+			carbs: parsed.carbs ?? DEFAULT_GOALS.carbs,
+			fat: parsed.fat ?? DEFAULT_GOALS.fat,
+		};
+	} catch {
+		return DEFAULT_GOALS;
+	}
+}
+
+function saveGoals(goals: NutritionGoals) {
+	if (typeof window === "undefined") return;
+	try {
+		window.localStorage.setItem(STORAGE_KEY, JSON.stringify(goals));
+	} catch {
+		// ignore quota / private mode errors
+	}
+}
+
+function NutritionPage() {
+	const meals = useSuspenseQuery(mealsQuery()).data!;
+	const me = useSuspenseQuery(currentUserQuery()).data!;
+	const isPremium = !!me?.isPro;
+	const qc = useQueryClient();
+
+	const today = todayStr();
+	const totals = useMemo(() => mealTotals(meals, today), [meals, today]);
+	const todayMeals = useMemo(
+		() => sortByDateDesc(meals.filter((m) => m.date === today)),
+		[meals, today],
+	);
+	const weekDates = useMemo(() => lastNDateStrings(7), []);
+	const weekTotals = useMemo(
+		() => mealTotalsRange(meals, weekDates),
+		[meals, weekDates],
+	);
+
+	const [goals, setGoals] = useState<NutritionGoals>(DEFAULT_GOALS);
+	const [goalCal, setGoalCal] = useState<string>(
+		String(DEFAULT_GOALS.calories),
+	);
+
+	useEffect(() => {
+		const g = loadGoals();
+		setGoals(g);
+		setGoalCal(String(g.calories));
+	}, []);
+
+	const [name, setName] = useState<string>("");
+	const [cal, setCal] = useState<string>("");
+	const [protein, setProtein] = useState<string>("");
+	const [carbs, setCarbs] = useState<string>("");
+	const [fat, setFat] = useState<string>("");
+	const [mealType, setMealType] = useState<MealTypeId>("breakfast");
+	const [time] = useState<string>(nowTimeStr());
+	const [showGoal, setShowGoal] = useState<boolean>(false);
+
+	const invalidate = async () => {
+		await qc.invalidateQueries({ queryKey: ["meals"] });
+	};
+
+	const createMut = useMutation({
+		mutationFn: (vars: {
+			date: string;
+			time: string;
+			name: string;
+			calories: number;
+			protein: number;
+			carbs: number;
+			fat: number;
+			mealType: MealTypeId;
+		}) =>
+			createMeal({
+				data: {
+					date: vars.date,
+					time: vars.time,
+					name: vars.name,
+					calories: vars.calories,
+					protein: vars.protein,
+					carbs: vars.carbs,
+					fat: vars.fat,
+					mealType: vars.mealType,
+				},
+			}),
+		onSuccess: async () => {
+			toast.success("Comida añadida");
+			setName("");
+			setCal("");
+			setProtein("");
+			setCarbs("");
+			setFat("");
+			await invalidate();
+		},
+		onError: () => {
+			toast.error("No se pudo añadir la comida");
+		},
+	});
+
+	const deleteMut = useMutation({
+		mutationFn: (id: string) => deleteMeal({ data: { id } }),
+		onSuccess: async () => {
+			toast.success("Comida eliminada");
+			await invalidate();
+		},
+		onError: () => {
+			toast.error("No se pudo eliminar la comida");
+		},
+	});
+
+	if (!isPremium) {
+		return (
+			<div className="space-y-4">
+				<h1 className="font-display text-xl">Nutrición</h1>
+				<PremiumGate
+					title="Nutrición"
+					description="Registra comidas, calorías y macros, y sigue tu objetivo calórico diario con Premium."
+				/>
+			</div>
+		);
+	}
+
+	const addMeal = () => {
+		const c = parseFloat(cal);
+		if (!name.trim() || Number.isNaN(c) || c <= 0) return;
+		createMut.mutate({
+			date: today,
+			time,
+			name: name.trim(),
+			calories: c,
+			protein: parseFloat(protein) || 0,
+			carbs: parseFloat(carbs) || 0,
+			fat: parseFloat(fat) || 0,
+			mealType,
+		});
+	};
+
+	const saveGoal = () => {
+		const v = parseInt(goalCal, 10);
+		if (Number.isNaN(v) || v <= 0) return;
+		const next: NutritionGoals = { ...goals, calories: v };
+		setGoals(next);
+		saveGoals(next);
+		setShowGoal(false);
+		toast.success("Objetivo calórico guardado");
+	};
+
+	const remaining = goals.calories - totals.calories;
+
+	return (
+		<div className="space-y-4">
+			<h1 className="font-display text-xl">Nutrición</h1>
+
+			<div className="rounded-3xl bg-primary text-primary-foreground p-5">
+				<div className="text-[11px] uppercase tracking-wider opacity-70">
+					Calorías hoy
+				</div>
+				<div className="flex items-baseline gap-2 mt-1">
+					<span className="font-display text-4xl leading-none">
+						{Math.round(totals.calories)}
+					</span>
+					<span className="font-display text-lg opacity-70">
+						/ {goals.calories} kcal
+					</span>
+				</div>
+				<div className="mt-3 h-2 rounded-full bg-white/20 overflow-hidden">
+					<div
+						className="h-full rounded-full bg-white"
+						style={{
+							width: `${Math.min(100, (totals.calories / goals.calories) * 100)}%`,
+						}}
+					/>
+				</div>
+				<div className="text-xs opacity-80 mt-2">
+					{remaining >= 0
+						? `${remaining} kcal restantes`
+						: `${Math.abs(remaining)} kcal de más`}
+				</div>
+			</div>
+
+			<div className="rounded-2xl bg-card border border-border p-4 space-y-3">
+				<MacroBar
+					label="Proteínas"
+					value={totals.protein}
+					goal={goals.protein}
+					color="hsl(var(--primary))"
+				/>
+				<MacroBar
+					label="Carbohidratos"
+					value={totals.carbs}
+					goal={goals.carbs}
+					color="hsl(var(--accent))"
+				/>
+				<MacroBar
+					label="Grasas"
+					value={totals.fat}
+					goal={goals.fat}
+					color="hsl(var(--chart-3))"
+				/>
+			</div>
+
+			<div className="rounded-2xl bg-card border border-border p-4 space-y-3">
+				<div className="flex items-center justify-between">
+					<span className="font-display text-sm">Objetivo calórico</span>
+					<button
+						type="button"
+						onClick={() => setShowGoal((s) => !s)}
+						className="text-xs text-primary"
+					>
+						{showGoal ? "Cancelar" : "Modificar"}
+					</button>
+				</div>
+				{showGoal ? (
+					<div className="flex gap-2">
+						<Input
+							type="number"
+							value={goalCal}
+							onChange={(e) => setGoalCal(e.target.value)}
+							className="h-10"
+						/>
+						<Button onClick={saveGoal} className="h-10">
+							Guardar
+						</Button>
+					</div>
+				) : (
+					<p className="text-xs text-muted-foreground">
+						{metricExplanations.calorieGoal}
+					</p>
+				)}
+			</div>
+
+			<div className="rounded-2xl bg-card border border-border p-4 space-y-3">
+				<div className="font-display text-sm">Añadir comida</div>
+				<Input
+					value={name}
+					onChange={(e) => setName(e.target.value)}
+					placeholder="Nombre del alimento"
+					className="h-10"
+				/>
+				<div className="grid grid-cols-2 gap-3">
+					<div className="space-y-1.5">
+						<Label className="text-[10px] uppercase tracking-wider text-muted-foreground">
+							Calorías
+						</Label>
+						<Input
+							type="number"
+							inputMode="decimal"
+							value={cal}
+							onChange={(e) => setCal(e.target.value)}
+							className="h-10"
+						/>
+					</div>
+					<div className="space-y-1.5">
+						<Label className="text-[10px] uppercase tracking-wider text-muted-foreground">
+							Tipo
+						</Label>
+						<Select
+							value={mealType}
+							onValueChange={(v) => setMealType(v as MealTypeId)}
+						>
+							<SelectTrigger className="h-10">
+								<SelectValue />
+							</SelectTrigger>
+							<SelectContent>
+								{MEAL_TYPES.map((m) => (
+									<SelectItem key={m.id} value={m.id}>
+										{m.label}
+									</SelectItem>
+								))}
+							</SelectContent>
+						</Select>
+					</div>
+				</div>
+				<div className="grid grid-cols-3 gap-3">
+					<div className="space-y-1.5">
+						<Label className="text-[10px] uppercase tracking-wider text-muted-foreground">
+							Prot (g)
+						</Label>
+						<Input
+							type="number"
+							inputMode="decimal"
+							value={protein}
+							onChange={(e) => setProtein(e.target.value)}
+							className="h-10"
+						/>
+					</div>
+					<div className="space-y-1.5">
+						<Label className="text-[10px] uppercase tracking-wider text-muted-foreground">
+							Carb (g)
+						</Label>
+						<Input
+							type="number"
+							inputMode="decimal"
+							value={carbs}
+							onChange={(e) => setCarbs(e.target.value)}
+							className="h-10"
+						/>
+					</div>
+					<div className="space-y-1.5">
+						<Label className="text-[10px] uppercase tracking-wider text-muted-foreground">
+							Gras (g)
+						</Label>
+						<Input
+							type="number"
+							inputMode="decimal"
+							value={fat}
+							onChange={(e) => setFat(e.target.value)}
+							className="h-10"
+						/>
+					</div>
+				</div>
+				<Button
+					onClick={addMeal}
+					className="w-full h-11 font-display"
+					disabled={createMut.isPending}
+				>
+					<AddSquareIcon className="w-4 h-4 mr-2" /> Añadir
+				</Button>
+			</div>
+
+			<div className="rounded-2xl bg-card border border-border p-4">
+				<div className="font-display text-sm mb-2">Comidas de hoy</div>
+				{todayMeals.length === 0 ? (
+					<p className="text-sm text-muted-foreground">
+						Aún no has registrado comidas hoy.
+					</p>
+				) : (
+					<div className="space-y-2">
+						{todayMeals.map((m) => (
+							<div
+								key={m.id ?? `${m.date}-${m.name}-${m.time}`}
+								className="flex items-center justify-between text-sm"
+							>
+								<div>
+									<div className="font-medium">{m.name}</div>
+									<div className="text-xs text-muted-foreground">
+										{Math.round(m.calories)} kcal · P
+										{Math.round(m.protein ?? 0)} C{Math.round(m.carbs ?? 0)} G
+										{Math.round(m.fat ?? 0)}
+									</div>
+								</div>
+								<button
+									type="button"
+									onClick={() => m.id && deleteMut.mutate(m.id)}
+									className="text-muted-foreground hover:text-destructive"
+									aria-label="Eliminar"
+								>
+									<TrashBinTrashIcon className="w-4 h-4" />
+								</button>
+							</div>
+						))}
+					</div>
+				)}
+			</div>
+
+			<div className="rounded-2xl bg-card border border-border p-4">
+				<div className="flex items-center gap-2 mb-2">
+					<FireIcon className="w-4 h-4 text-primary" />
+					<span className="font-display text-sm">Promedio semanal</span>
+				</div>
+				<div className="text-sm">
+					<span className="font-display text-2xl">
+						{Math.round(weekTotals.calories / 7)}
+					</span>{" "}
+					<span className="text-muted-foreground">kcal/día</span>
+				</div>
+				<div className="text-xs text-muted-foreground mt-1">
+					Proteínas {Math.round(weekTotals.protein / 7)}g · Carbs{" "}
+					{Math.round(weekTotals.carbs / 7)}g · Grasas{" "}
+					{Math.round(weekTotals.fat / 7)}g (promedio diario)
+				</div>
+			</div>
+		</div>
+	);
+}

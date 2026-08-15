@@ -1,9 +1,9 @@
 import {
-	CalendarIcon,
-	GraphNewIcon,
-	HistoryIcon,
+	CalendarDateIcon,
 	HomeIcon,
+	PulseIcon,
 	UserIcon,
+	WidgetIcon,
 } from "@solar-icons/react/bold";
 import { Link } from "@tanstack/react-router";
 import type { ComponentType, SVGProps } from "react";
@@ -21,9 +21,9 @@ type NavItem = {
 
 const items: NavItem[] = [
 	{ to: "/dashboard", label: "Inicio", icon: HomeIcon, end: true },
-	{ to: "/history", label: "Historial", icon: HistoryIcon },
-	{ to: "/charts", label: "Gráficos", icon: GraphNewIcon },
-	{ to: "/calendar", label: "Calendario", icon: CalendarIcon },
+	{ to: "/habits", label: "Hábitos", icon: PulseIcon },
+	{ to: "/weekly-summary", label: "Resumen", icon: CalendarDateIcon },
+	{ to: "/more", label: "Más", icon: WidgetIcon },
 	{ to: "/profile", label: "Perfil", icon: UserIcon },
 ];
 

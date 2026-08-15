@@ -1,4 +1,5 @@
-import { AddSquareIcon, DropperIcon } from "@solar-icons/react/bold";
+import { AddCircleIcon } from "@solar-icons/react/bold";
+import { WaterdropIcon } from "@solar-icons/react/bold/waterdrop";
 import {
 	useMutation,
 	useQueryClient,
@@ -54,7 +55,7 @@ export function WaterCounter() {
 			<div className="flex items-center gap-4">
 				<div className="flex-1">
 					<div className="flex items-center gap-2 mb-1">
-						<DropperIcon className="w-4 h-4 text-primary" />
+						<WaterdropIcon className="w-4 h-4 text-primary" />
 						<span className="font-display text-sm">Agua hoy</span>
 					</div>
 					<div className="flex items-baseline gap-2">
@@ -70,11 +71,10 @@ export function WaterCounter() {
 					type="button"
 					onClick={add}
 					disabled={addMut.isPending}
-					className="w-16 h-16 rounded-full bg-primary text-primary-foreground flex flex-col items-center justify-center shadow-sm active:scale-95 transition-transform shrink-0"
+					className="group relative w-14 h-14 rounded-full bg-primary text-primary-foreground flex items-center justify-center shadow-sm active:scale-95 transition-transform shrink-0 ring-2 ring-primary/15 hover:ring-primary/25"
 					aria-label="Añadir un vaso de agua"
 				>
-					<AddSquareIcon className="w-6 h-6" />
-					<span className="text-[10px] font-medium">+1 vaso</span>
+					<AddCircleIcon className="w-7 h-7 transition-transform group-hover:rotate-90" />
 				</button>
 			</div>
 			<div className="mt-3">

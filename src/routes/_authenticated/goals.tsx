@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { Bars } from "#/components/bars";
 import { GoalCard } from "#/components/goal-card";
+import { GoalStepper } from "#/components/goal-stepper";
 import { PremiumGate } from "#/components/premium-gate";
 import { Button } from "#/components/ui/button";
 import { Input } from "#/components/ui/input";
@@ -36,43 +37,6 @@ export const Route = createFileRoute("/_authenticated/goals")({
 });
 
 type Pace = "slow" | "moderate" | "fast";
-
-function NumField({
-	label,
-	unit,
-	value,
-	onChange,
-	placeholder,
-}: {
-	label: string;
-	unit: string;
-	value: string;
-	onChange: (v: string) => void;
-	placeholder?: string;
-}) {
-	return (
-		<div className="space-y-1.5">
-			<Label className="text-[10px] uppercase tracking-wider text-muted-foreground">
-				{label}
-			</Label>
-			<div className="relative">
-				<Input
-					type="number"
-					inputMode="decimal"
-					value={value}
-					onChange={(e) => onChange(e.target.value)}
-					className="h-11 pr-12"
-					placeholder={placeholder}
-				/>
-				{unit && (
-					<span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-muted-foreground">
-						{unit}
-					</span>
-				)}
-			</div>
-		</div>
-	);
-}
 
 function GoalsPage() {
 	const { goal, unit } = useSuspenseQuery(currentGoalQuery()).data!;
@@ -234,27 +198,27 @@ function GoalsPage() {
 
 			<div className="rounded-2xl bg-card border border-border p-4 space-y-3">
 				<div className="font-display text-sm">Hábitos diarios</div>
-				<div className="grid grid-cols-3 gap-3">
-					<NumField
+				<div className="divide-y divide-border">
+					<GoalStepper
 						label="Agua"
 						unit="ml"
 						value={water}
 						onChange={setWater}
-						placeholder="2000"
+						step={250}
 					/>
-					<NumField
+					<GoalStepper
 						label="Pasos"
-						unit=""
 						value={steps}
 						onChange={setSteps}
-						placeholder="8000"
+						step={500}
 					/>
-					<NumField
+					<GoalStepper
 						label="Sueño"
 						unit="h"
 						value={sleep}
 						onChange={setSleep}
-						placeholder="8"
+						step={0.5}
+						decimals={1}
 					/>
 				</div>
 				<Button
@@ -271,34 +235,37 @@ function GoalsPage() {
 			{isPremium ? (
 				<div className="rounded-2xl bg-card border border-border p-4 space-y-3">
 					<div className="font-display text-sm">Nutrición</div>
-					<NumField
-						label="Calorías diarias"
-						unit="kcal"
-						value={cal}
-						onChange={setCal}
-						placeholder="2000"
-					/>
-					<div className="grid grid-cols-3 gap-3">
-						<NumField
+					<div className="divide-y divide-border">
+						<GoalStepper
+							label="Calorías"
+							unit="kcal"
+							value={cal}
+							onChange={setCal}
+							step={50}
+						/>
+						<GoalStepper
 							label="Proteínas"
 							unit="g"
 							value={protein}
 							onChange={setProtein}
-							placeholder="100"
+							step={5}
+							decimals={1}
 						/>
-						<NumField
+						<GoalStepper
 							label="Carbohidratos"
 							unit="g"
 							value={carbs}
 							onChange={setCarbs}
-							placeholder="250"
+							step={5}
+							decimals={1}
 						/>
-						<NumField
+						<GoalStepper
 							label="Grasas"
 							unit="g"
 							value={fat}
 							onChange={setFat}
-							placeholder="70"
+							step={5}
+							decimals={1}
 						/>
 					</div>
 					<Button
@@ -323,39 +290,22 @@ function GoalsPage() {
 
 			<div className="font-display text-sm">Peso</div>
 			{goal && !editing ? (
-				<>
-					<GoalCard
-						goal={goal}
-						current={stats.current ?? 0}
-						unit={unit}
-						onEdit={() => setEditing(true)}
-					/>
-					<Button
-						type="button"
-						variant="outline"
-						onClick={() => setEditing(true)}
-						className="w-full"
-					>
-						Editar objetivo
-					</Button>
-				</>
+				<GoalCard
+					goal={goal}
+					current={stats.current ?? 0}
+					unit={unit}
+					onEdit={() => setEditing(true)}
+				/>
 			) : (
-				<div className="rounded-2xl bg-card border border-border p-5 space-y-4">
-					<div className="space-y-1.5">
-						<Label>Peso objetivo ({unit})</Label>
-						<Input
-							type="text"
-							inputMode="decimal"
-							value={target}
-							onChange={(e) =>
-								setTarget(
-									e.target.value.replace(/[^0-9.,]/g, "").replace(",", "."),
-								)
-							}
-							className="h-11"
-							placeholder="0.0"
-						/>
-					</div>
+				<div className="rounded-2xl bg-card border border-border p-4 space-y-4">
+					<GoalStepper
+						label="Peso objetivo"
+						unit={unit}
+						value={target}
+						onChange={setTarget}
+						step={0.1}
+						decimals={1}
+					/>
 					<div className="space-y-1.5">
 						<Label>Fecha objetivo (opcional)</Label>
 						<Input

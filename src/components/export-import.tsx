@@ -1,4 +1,5 @@
-import { DownloadIcon, UploadIcon } from "@solar-icons/react/bold";
+import { ExportIcon } from "@solar-icons/react/outline/export";
+import { ImportIcon } from "@solar-icons/react/outline/import";
 import { useRef } from "react";
 import { Button } from "#/components/ui/button";
 import type { WeightEntry } from "#/lib/weight-utils";
@@ -74,17 +75,17 @@ export function ExportImport({ entries, onImport }: ExportImportProps) {
 	return (
 		<div className="flex flex-wrap gap-2">
 			<Button variant="outline" onClick={exportCSV} className="h-10">
-				<DownloadIcon className="w-4 h-4 mr-1.5" /> CSV
+				<ExportIcon className="w-4 h-4 mr-1.5" /> CSV
 			</Button>
 			<Button variant="outline" onClick={exportJSON} className="h-10">
-				<DownloadIcon className="w-4 h-4 mr-1.5" /> JSON
+				<ExportIcon className="w-4 h-4 mr-1.5" /> JSON
 			</Button>
 			<Button
 				variant="outline"
 				onClick={() => fileRef.current?.click()}
 				className="h-10"
 			>
-				<UploadIcon className="w-4 h-4 mr-1.5" /> Importar
+				<ImportIcon className="w-4 h-4 mr-1.5" /> Importar
 			</Button>
 			<input
 				ref={fileRef}

@@ -5,6 +5,7 @@ import {
 	ShieldIcon,
 	TargetIcon,
 } from "@solar-icons/react/bold";
+import { Logout2Icon } from "@solar-icons/react/bold/logout-2";
 import {
 	useMutation,
 	useQueryClient,
@@ -338,7 +339,7 @@ function ProfileContent({
 						variant="outline"
 						onClick={handleDeleteAll}
 						disabled={deleteAllMutation.isPending}
-						className="w-full h-11 text-destructive"
+						className="w-full h-10 text-destructive"
 					>
 						{deleteAllMutation.isPending && <Bars className="w-3 h-3 mr-1.5" />}
 						Eliminar todos mis datos
@@ -389,10 +390,11 @@ function ProfileContent({
 
 			<Button
 				type="button"
-				variant="ghost"
+				variant="outline"
 				onClick={handleLogout}
-				className="w-full h-11"
+				className="w-full h-14 mt-2 font-display text-base tracking-wider uppercase border-2 border-destructive/40 text-destructive bg-destructive/5 hover:bg-destructive hover:text-destructive-foreground hover:border-destructive active:scale-[0.98] transition-all duration-150 shadow-sm hover:shadow-md"
 			>
+				<Logout2Icon className="w-5 h-5 mr-2" />
 				Cerrar sesión
 			</Button>
 		</div>

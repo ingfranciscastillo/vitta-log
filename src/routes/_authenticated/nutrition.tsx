@@ -2,7 +2,7 @@ import {
 	AddSquareIcon,
 	FireIcon,
 	TrashBinTrashIcon,
-} from "@solar-icons/react/bold";
+} from "@solar-icons/react/outline";
 import {
 	useMutation,
 	useQueryClient,

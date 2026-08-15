@@ -1,4 +1,4 @@
-import { ArrowRightIcon, BoltIcon } from "@solar-icons/react/bold";
+import { ArrowRightIcon, BoltIcon } from "@solar-icons/react/outline";
 import { Link } from "@tanstack/react-router";
 import { Button } from "#/components/ui/button";
 

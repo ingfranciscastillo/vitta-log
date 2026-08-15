@@ -1,12 +1,9 @@
 import {
 	AddSquareIcon,
 	DisketteIcon,
-	DropperIcon,
 	MinusSquareIcon,
-	MoonIcon,
-	WalkingIcon,
-} from "@solar-icons/react/bold";
-import { type ComponentType, useEffect, useState } from "react";
+} from "@solar-icons/react/outline";
+import { useEffect, useState } from "react";
 import { Button } from "#/components/ui/button";
 import {
 	Dialog,
@@ -22,13 +19,12 @@ type HabitConfig = {
 	label: string;
 	unit: string;
 	step: number;
-	Icon: ComponentType<{ className?: string }>;
 };
 
 const CONFIG: Record<HabitType, HabitConfig> = {
-	water: { label: "Agua", unit: "ml", step: 250, Icon: DropperIcon },
-	steps: { label: "Pasos", unit: "", step: 500, Icon: WalkingIcon },
-	sleep: { label: "Sueño", unit: "h", step: 0.5, Icon: MoonIcon },
+	water: { label: "Agua", unit: "ml", step: 250 },
+	steps: { label: "Pasos", unit: "", step: 500 },
+	sleep: { label: "Sueño", unit: "h", step: 0.5 },
 };
 
 type HabitLogDialogProps = {
@@ -47,12 +43,12 @@ export function HabitLogDialog({
 	onSave,
 }: HabitLogDialogProps) {
 	const cfg = CONFIG[type] ?? CONFIG.water;
-	const { label, unit, step, Icon } = cfg;
+	const { label, unit, step } = cfg;
 	const [val, setVal] = useState<string>(String(step));
 
 	useEffect(() => {
 		if (open) setVal(String(step));
-	}, [open, type, step]);
+	}, [open, step]);
 
 	const stepVal = (delta: number) => {
 		const n = parseFloat(val || "0") || 0;
@@ -74,9 +70,8 @@ export function HabitLogDialog({
 		<Dialog open={open} onOpenChange={onOpenChange}>
 			<DialogContent className="sm:max-w-sm rounded-3xl">
 				<DialogHeader>
-					<DialogTitle className="font-display text-center text-lg flex items-center justify-center gap-2">
-						<Icon className="w-4 h-4 text-primary" /> Añadir{" "}
-						{label.toLowerCase()}
+					<DialogTitle className="font-display text-center text-lg">
+						Añadir {label.toLowerCase()}
 					</DialogTitle>
 				</DialogHeader>
 

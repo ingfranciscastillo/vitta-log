@@ -1,4 +1,4 @@
-import { PenIcon, TargetIcon } from "@solar-icons/react/bold";
+import { PenIcon, TargetIcon } from "@solar-icons/react/outline";
 import { Progress } from "#/components/ui/progress";
 import {
 	estimateGoalDate,

@@ -1,11 +1,11 @@
 import {
-	DropperIcon,
 	LockIcon,
 	MoonIcon,
 	PulseIcon,
 	StopwatchIcon,
 	WalkingIcon,
-} from "@solar-icons/react/bold";
+	WaterdropIcon,
+} from "@solar-icons/react/outline";
 import {
 	useMutation,
 	useQueryClient,
@@ -131,7 +131,7 @@ function HabitsPage() {
 			<div className="space-y-3">
 				<HabitCard
 					label="Agua"
-					icon={DropperIcon}
+					icon={WaterdropIcon}
 					value={water}
 					goal={waterGoal}
 					unit="ml"

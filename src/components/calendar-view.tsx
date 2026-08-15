@@ -1,4 +1,7 @@
-import { AltArrowLeftIcon, AltArrowRightIcon } from "@solar-icons/react/bold";
+import {
+	AltArrowLeftIcon,
+	AltArrowRightIcon,
+} from "@solar-icons/react/outline";
 import {
 	addMonths,
 	eachDayOfInterval,

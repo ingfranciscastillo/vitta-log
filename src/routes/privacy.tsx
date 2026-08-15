@@ -1,4 +1,4 @@
-import { ArrowLeftIcon, ShieldIcon } from "@solar-icons/react/bold";
+import { ArrowLeftIcon, ShieldIcon } from "@solar-icons/react/outline";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Button } from "#/components/ui/button";
 

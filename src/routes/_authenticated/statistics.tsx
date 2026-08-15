@@ -6,7 +6,7 @@ import {
 	GraphUpIcon,
 	RestartIcon,
 	ScaleIcon,
-} from "@solar-icons/react/bold";
+} from "@solar-icons/react/outline";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo } from "react";

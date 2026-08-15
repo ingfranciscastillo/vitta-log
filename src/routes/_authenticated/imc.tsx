@@ -2,7 +2,7 @@ import {
 	GraphUpIcon,
 	InfoCircleIcon,
 	PulseIcon,
-} from "@solar-icons/react/bold";
+} from "@solar-icons/react/outline";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo } from "react";

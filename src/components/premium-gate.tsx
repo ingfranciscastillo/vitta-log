@@ -1,4 +1,4 @@
-import { StarsMinimalisticIcon } from "@solar-icons/react/bold/stars-minimalistic";
+import { StarsMinimalisticIcon } from "@solar-icons/react/outline";
 import { useState } from "react";
 import { PaywallDialog } from "#/components/paywall-dialog";
 import { Button } from "#/components/ui/button";

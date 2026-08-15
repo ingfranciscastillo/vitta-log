@@ -1,4 +1,4 @@
-import { AddSquareIcon, TrashBinTrashIcon } from "@solar-icons/react/bold";
+import { AddSquareIcon, TrashBinTrashIcon } from "@solar-icons/react/outline";
 import {
 	useMutation,
 	useQueryClient,

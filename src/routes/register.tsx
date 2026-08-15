@@ -1,4 +1,8 @@
-import { LetterIcon, LockIcon, UserCheckIcon } from "@solar-icons/react/bold";
+import {
+	LetterIcon,
+	LockIcon,
+	UserCheckIcon,
+} from "@solar-icons/react/outline";
 import { useForm } from "@tanstack/react-form";
 import { createFileRoute, Link, redirect } from "@tanstack/react-router";
 import { useState } from "react";

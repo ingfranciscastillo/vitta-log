@@ -3,7 +3,7 @@ import {
 	PenIcon,
 	SortIcon,
 	TrashBinTrashIcon,
-} from "@solar-icons/react/bold";
+} from "@solar-icons/react/outline";
 import { useMemo, useState } from "react";
 import { Button } from "#/components/ui/button";
 import { Input } from "#/components/ui/input";

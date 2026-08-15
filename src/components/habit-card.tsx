@@ -1,4 +1,4 @@
-import { AddSquareIcon } from "@solar-icons/react/bold";
+import { AddCircleIcon } from "@solar-icons/react/outline/add-circle";
 import { type ComponentType, useState } from "react";
 import { ProgressBar } from "#/components/progress-bar";
 import { QuickAddDialog } from "#/components/quick-add-dialog";
@@ -59,7 +59,7 @@ export function HabitCard({
 					className="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center active:scale-95 transition-transform"
 					aria-label={`Añadir ${label}`}
 				>
-					<AddSquareIcon className="w-4 h-4" />
+					<AddCircleIcon className="w-4 h-4" />
 				</button>
 			</div>
 			<QuickAddDialog

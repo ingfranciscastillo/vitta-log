@@ -1,4 +1,7 @@
-import { DangerTriangleIcon, LockKeyholeIcon } from "@solar-icons/react/bold";
+import {
+	DangerTriangleIcon,
+	LockKeyholeIcon,
+} from "@solar-icons/react/outline";
 import { useForm } from "@tanstack/react-form";
 import {
 	createFileRoute,

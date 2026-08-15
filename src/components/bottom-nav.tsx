@@ -4,7 +4,7 @@ import {
 	PulseIcon,
 	UserIcon,
 	WidgetIcon,
-} from "@solar-icons/react/bold";
+} from "@solar-icons/react/outline";
 import { Link } from "@tanstack/react-router";
 import type { ComponentType, SVGProps } from "react";
 

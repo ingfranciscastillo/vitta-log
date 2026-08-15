@@ -1,4 +1,4 @@
-import { LetterIcon, LockIcon, LoginIcon } from "@solar-icons/react/bold";
+import { LetterIcon, LockIcon, LoginIcon } from "@solar-icons/react/outline";
 import { useForm } from "@tanstack/react-form";
 import {
 	createFileRoute,

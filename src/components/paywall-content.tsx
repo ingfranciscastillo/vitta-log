@@ -1,4 +1,4 @@
-import { CheckCircleIcon, RestartIcon } from "@solar-icons/react/bold";
+import { CheckCircleIcon, RestartIcon } from "@solar-icons/react/outline";
 import { useNavigate } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useState } from "react";

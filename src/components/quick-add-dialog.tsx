@@ -2,7 +2,7 @@ import {
 	AddSquareIcon,
 	DisketteIcon,
 	MinusSquareIcon,
-} from "@solar-icons/react/bold";
+} from "@solar-icons/react/outline";
 import { useEffect, useState } from "react";
 import { Button } from "#/components/ui/button";
 import {

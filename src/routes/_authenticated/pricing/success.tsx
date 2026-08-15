@@ -1,4 +1,4 @@
-import { CheckCircleIcon } from "@solar-icons/react/bold";
+import { CheckCircleIcon } from "@solar-icons/react/outline";
 import { useQueryClient } from "@tanstack/react-query";
 import {
 	createFileRoute,

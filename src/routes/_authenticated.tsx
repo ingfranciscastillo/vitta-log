@@ -1,8 +1,10 @@
-import { AddCircleIcon } from "@solar-icons/react/bold";
-import { MoonIcon } from "@solar-icons/react/outline/moon";
-import { ScaleIcon } from "@solar-icons/react/outline/scale";
-import { WalkingIcon } from "@solar-icons/react/outline/walking";
-import { WaterdropIcon } from "@solar-icons/react/outline/waterdrop";
+import {
+	AddCircleIcon,
+	MoonIcon,
+	ScaleIcon,
+	WalkingIcon,
+	WaterdropIcon,
+} from "@solar-icons/react/outline";
 import {
 	useMutation,
 	useQueryClient,

@@ -1,4 +1,4 @@
-import { MinusCircleIcon } from "@solar-icons/react/bold";
+import { MinusCircleIcon } from "@solar-icons/react/outline";
 import { OTPInput, OTPInputContext } from "input-otp";
 import * as React from "react";
 

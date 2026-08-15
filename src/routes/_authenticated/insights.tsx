@@ -2,8 +2,8 @@ import {
 	BellIcon,
 	GraphDownIcon,
 	InfoCircleIcon,
-} from "@solar-icons/react/bold";
-import { StarsMinimalisticIcon } from "@solar-icons/react/bold/stars-minimalistic";
+} from "@solar-icons/react/outline";
+import { StarsMinimalisticIcon } from "@solar-icons/react/outline/stars-minimalistic";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo } from "react";

@@ -1,4 +1,4 @@
-import { QuestionCircleIcon } from "@solar-icons/react/bold";
+import { QuestionCircleIcon } from "@solar-icons/react/outline";
 import { useForm } from "@tanstack/react-form";
 import { useMutation } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";

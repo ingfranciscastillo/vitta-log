@@ -1,4 +1,4 @@
-import { CloseCircleIcon, HamburgerMenuIcon } from "@solar-icons/react/bold";
+import { CloseCircleIcon, HamburgerMenuIcon } from "@solar-icons/react/outline";
 import { Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { Button } from "#/components/ui/button";

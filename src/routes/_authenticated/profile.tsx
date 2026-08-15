@@ -1,11 +1,11 @@
 import {
 	DownloadIcon,
+	Logout2Icon,
 	QuestionCircleIcon,
 	SettingsIcon,
 	ShieldIcon,
 	TargetIcon,
-} from "@solar-icons/react/bold";
-import { Logout2Icon } from "@solar-icons/react/bold/logout-2";
+} from "@solar-icons/react/outline";
 import {
 	useMutation,
 	useQueryClient,

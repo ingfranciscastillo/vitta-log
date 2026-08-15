@@ -1,4 +1,4 @@
-import { CloseCircleIcon } from "@solar-icons/react/bold";
+import { CloseCircleIcon } from "@solar-icons/react/outline";
 import { Dialog as DialogPrimitive } from "radix-ui";
 import type * as React from "react";
 import { Button } from "#/components/ui/button.tsx";

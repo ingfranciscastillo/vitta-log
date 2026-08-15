@@ -6,8 +6,8 @@ import {
 	MoonIcon,
 	StopwatchIcon,
 	WalkingIcon,
-} from "@solar-icons/react/bold";
-import { WaterdropIcon } from "@solar-icons/react/bold/waterdrop";
+	WaterdropIcon,
+} from "@solar-icons/react/outline";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo } from "react";

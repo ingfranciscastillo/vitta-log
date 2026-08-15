@@ -12,8 +12,8 @@ import {
 	PulseIcon,
 	TargetIcon,
 	WalkingIcon,
-} from "@solar-icons/react/bold";
-import { StarsMinimalisticIcon } from "@solar-icons/react/bold/stars-minimalistic";
+} from "@solar-icons/react/outline";
+import { StarsMinimalisticIcon } from "@solar-icons/react/outline/stars-minimalistic";
 import {
 	useMutation,
 	useQueryClient,

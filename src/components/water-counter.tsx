@@ -1,5 +1,4 @@
-import { AddCircleIcon } from "@solar-icons/react/bold";
-import { WaterdropIcon } from "@solar-icons/react/bold/waterdrop";
+import { AddCircleIcon, WaterdropIcon } from "@solar-icons/react/outline";
 import {
 	useMutation,
 	useQueryClient,

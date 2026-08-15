@@ -14,7 +14,7 @@ import {
 	SettingsIcon,
 	StopwatchIcon,
 	TargetIcon,
-} from "@solar-icons/react/bold";
+} from "@solar-icons/react/outline";
 import { createFileRoute, Link } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_authenticated/more")({

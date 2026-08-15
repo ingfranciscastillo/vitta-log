@@ -1,4 +1,4 @@
-import { DocumentIcon, FileIcon } from "@solar-icons/react/bold";
+import { DocumentIcon, FileIcon } from "@solar-icons/react/outline";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";

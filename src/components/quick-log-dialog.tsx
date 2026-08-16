@@ -1,6 +1,5 @@
 import {
 	AddCircleIcon,
-	DisketteIcon,
 	MinusCircleIcon,
 	NotebookIcon,
 	RestartIcon,
@@ -8,11 +7,12 @@ import {
 import { useEffect, useState } from "react";
 import { Button } from "#/components/ui/button";
 import {
-	Dialog,
-	DialogContent,
-	DialogHeader,
-	DialogTitle,
-} from "#/components/ui/dialog";
+	Drawer,
+	DrawerContent,
+	DrawerFooter,
+	DrawerHeader,
+	DrawerTitle,
+} from "#/components/ui/drawer";
 import { Input } from "#/components/ui/input";
 import { Label } from "#/components/ui/label";
 import {
@@ -88,106 +88,109 @@ export function QuickLogDialog({
 	};
 
 	return (
-		<Dialog open={open} onOpenChange={onOpenChange}>
-			<DialogContent className="sm:max-w-sm rounded-3xl">
-				<DialogHeader>
-					<DialogTitle className="font-display text-center text-lg">
+		<Drawer open={open} onOpenChange={onOpenChange}>
+			<DrawerContent className="rounded-t-3xl max-w-md mx-auto">
+				<DrawerHeader className="text-center pb-0">
+					<DrawerTitle className="font-display text-lg">
 						Registrar peso
-					</DialogTitle>
-				</DialogHeader>
+					</DrawerTitle>
+				</DrawerHeader>
 
-				<div className="flex items-center justify-center gap-3 mt-2">
-					<Button
-						type="button"
-						variant="outline"
-						size="icon"
-						className="rounded-full h-12 w-12 shrink-0"
-						onClick={() => step(-0.1)}
-						aria-label="Restar 0.1"
-					>
-						<MinusCircleIcon className="w-7 h-7" />
-					</Button>
-					<div className="flex items-baseline">
-						<Input
-							type="text"
-							inputMode="decimal"
-							autoFocus
-							value={val}
-							onChange={(e) =>
-								setVal(
-									e.target.value.replace(/[^0-9.,]/g, "").replace(",", "."),
-								)
-							}
-							className="font-display text-4xl text-center border-0 bg-transparent focus-visible:ring-0 w-32 px-0 h-14"
-							placeholder="0.0"
-						/>
-						<span className="font-display text-lg text-muted-foreground ml-1">
-							{unit}
-						</span>
+				<div className="px-4 pt-2 space-y-3">
+					<div className="flex items-center justify-center gap-3">
+						<Button
+							type="button"
+							variant="outline"
+							size="icon"
+							className="rounded-full h-12 w-12 shrink-0"
+							onClick={() => step(-0.1)}
+							aria-label="Restar 0.1"
+						>
+							<MinusCircleIcon className="w-7 h-7" />
+						</Button>
+						<div className="flex items-baseline">
+							<Input
+								type="text"
+								inputMode="decimal"
+								value={val}
+								onChange={(e) =>
+									setVal(
+										e.target.value.replace(/[^0-9.,]/g, "").replace(",", "."),
+									)
+								}
+								className="font-display text-4xl text-center border-0 bg-transparent focus-visible:ring-0 w-32 px-0 h-14"
+								placeholder="0.0"
+							/>
+							<span className="font-display text-lg text-muted-foreground ml-1">
+								{unit}
+							</span>
+						</div>
+						<Button
+							type="button"
+							variant="outline"
+							size="icon"
+							className="rounded-full h-12 w-12 shrink-0"
+							onClick={() => step(0.1)}
+							aria-label="Sumar 0.1"
+						>
+							<AddCircleIcon className="w-7 h-7" />
+						</Button>
 					</div>
-					<Button
-						type="button"
-						variant="outline"
-						size="icon"
-						className="rounded-full h-12 w-12 shrink-0"
-						onClick={() => step(0.1)}
-						aria-label="Sumar 0.1"
-					>
-						<AddCircleIcon className="w-7 h-7" />
-					</Button>
-				</div>
 
-				<div className="grid grid-cols-2 gap-3 mt-3">
-					<div className="space-y-1.5">
-						<Label className="text-[10px] uppercase tracking-wider text-muted-foreground">
-							Fecha
-						</Label>
+					<div className="grid grid-cols-2 gap-3">
+						<div className="space-y-1.5">
+							<Label className="text-[10px] uppercase tracking-wider text-muted-foreground">
+								Fecha
+							</Label>
+							<Input
+								type="date"
+								value={date}
+								onChange={(e) => setDate(e.target.value)}
+								className="h-10"
+							/>
+						</div>
+						<div className="space-y-1.5">
+							<Label className="text-[10px] uppercase tracking-wider text-muted-foreground">
+								Hora
+							</Label>
+							<Input
+								type="time"
+								value={time}
+								onChange={(e) => setTime(e.target.value)}
+								className="h-10"
+							/>
+						</div>
+					</div>
+
+					{showNote ? (
 						<Input
-							type="date"
-							value={date}
-							onChange={(e) => setDate(e.target.value)}
+							value={note}
+							onChange={(e) => setNote(e.target.value)}
+							placeholder="Nota (opcional)"
 							className="h-10"
 						/>
-					</div>
-					<div className="space-y-1.5">
-						<Label className="text-[10px] uppercase tracking-wider text-muted-foreground">
-							Hora
-						</Label>
-						<Input
-							type="time"
-							value={time}
-							onChange={(e) => setTime(e.target.value)}
-							className="h-10"
-						/>
-					</div>
+					) : (
+						<button
+							type="button"
+							onClick={() => setShowNote(true)}
+							className="flex items-center justify-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors"
+						>
+							<NotebookIcon className="w-3.5 h-3.5" /> Añadir nota
+						</button>
+					)}
 				</div>
 
-				{showNote ? (
-					<Input
-						value={note}
-						onChange={(e) => setNote(e.target.value)}
-						placeholder="Nota (opcional)"
-						className="h-10"
-					/>
-				) : (
-					<button
-						type="button"
-						onClick={() => setShowNote(true)}
-						className="flex items-center justify-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors"
-					>
-						<NotebookIcon className="w-3.5 h-3.5" /> Añadir nota
-					</button>
-				)}
-
-				<div className="space-y-2 mt-2">
+				<DrawerFooter className="px-4 pb-[max(1rem,env(safe-area-inset-bottom))] pt-3">
 					<Button
+						type="button"
 						onClick={handleSave}
 						className="w-full h-12 rounded-xl font-display text-sm"
 					>
-						<DisketteIcon className="w-4 h-4 mr-2" /> Guardar
+						Guardar
 					</Button>
 					{lastWeightKg != null && (
 						<Button
+							type="button"
 							onClick={handleRepeat}
 							variant="secondary"
 							className="w-full h-11 rounded-xl text-sm"
@@ -196,9 +199,9 @@ export function QuickLogDialog({
 							{lastDisp} {unit}
 						</Button>
 					)}
-				</div>
-			</DialogContent>
-		</Dialog>
+				</DrawerFooter>
+			</DrawerContent>
+		</Drawer>
 	);
 }
 

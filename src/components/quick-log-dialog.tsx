@@ -13,8 +13,8 @@ import {
 	DrawerHeader,
 	DrawerTitle,
 } from "#/components/ui/drawer";
+import { Field, FieldGroup, FieldLabel } from "#/components/ui/field";
 import { Input } from "#/components/ui/input";
-import { Label } from "#/components/ui/label";
 import {
 	fromDisplay,
 	nowTimeStr,
@@ -106,7 +106,7 @@ export function QuickLogDialog({
 							onClick={() => step(-0.1)}
 							aria-label="Restar 0.1"
 						>
-							<MinusCircleIcon className="w-7 h-7" />
+							<MinusCircleIcon className="w-11 h-11" />
 						</Button>
 						<div className="flex items-baseline">
 							<Input
@@ -137,29 +137,39 @@ export function QuickLogDialog({
 						</Button>
 					</div>
 
-					<div className="grid grid-cols-2 gap-3">
-						<div className="space-y-1.5">
-							<Label className="text-[10px] uppercase tracking-wider text-muted-foreground">
-								Fecha
-							</Label>
-							<Input
-								type="date"
-								value={date}
-								onChange={(e) => setDate(e.target.value)}
-								className="h-10"
-							/>
-						</div>
-						<div className="space-y-1.5">
-							<Label className="text-[10px] uppercase tracking-wider text-muted-foreground">
-								Hora
-							</Label>
-							<Input
-								type="time"
-								value={time}
-								onChange={(e) => setTime(e.target.value)}
-								className="h-10"
-							/>
-						</div>
+					<div onPointerDownCapture={(e) => e.stopPropagation()}>
+						<FieldGroup className="grid grid-cols-2 gap-3">
+							<Field>
+								<FieldLabel
+									htmlFor="weight-date"
+									className="text-[10px] uppercase tracking-wider text-muted-foreground"
+								>
+									Fecha
+								</FieldLabel>
+								<Input
+									id="weight-date"
+									type="date"
+									value={date}
+									onChange={(e) => setDate(e.target.value)}
+									className="h-10"
+								/>
+							</Field>
+							<Field>
+								<FieldLabel
+									htmlFor="weight-time"
+									className="text-[10px] uppercase tracking-wider text-muted-foreground"
+								>
+									Hora
+								</FieldLabel>
+								<Input
+									id="weight-time"
+									type="time"
+									value={time}
+									onChange={(e) => setTime(e.target.value)}
+									className="h-10"
+								/>
+							</Field>
+						</FieldGroup>
 					</div>
 
 					{showNote ? (

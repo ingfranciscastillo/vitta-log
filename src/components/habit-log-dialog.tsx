@@ -6,11 +6,12 @@ import {
 import { useEffect, useState } from "react";
 import { Button } from "#/components/ui/button";
 import {
-	Dialog,
-	DialogContent,
-	DialogHeader,
-	DialogTitle,
-} from "#/components/ui/dialog";
+	Drawer,
+	DrawerContent,
+	DrawerFooter,
+	DrawerHeader,
+	DrawerTitle,
+} from "#/components/ui/drawer";
 import { Input } from "#/components/ui/input";
 
 type HabitType = "water" | "steps" | "sleep";
@@ -67,68 +68,71 @@ export function HabitLogDialog({
 		step < 1 ? v.toFixed(1) : Math.round(v).toLocaleString();
 
 	return (
-		<Dialog open={open} onOpenChange={onOpenChange}>
-			<DialogContent className="sm:max-w-sm rounded-3xl">
-				<DialogHeader>
-					<DialogTitle className="font-display text-center text-lg">
+		<Drawer open={open} onOpenChange={onOpenChange}>
+			<DrawerContent className="rounded-t-3xl max-w-md mx-auto">
+				<DrawerHeader className="text-center pb-0">
+					<DrawerTitle className="font-display text-lg">
 						Añadir {label.toLowerCase()}
-					</DialogTitle>
-				</DialogHeader>
+					</DrawerTitle>
+				</DrawerHeader>
 
-				<div className="text-center text-xs text-muted-foreground -mt-1">
-					Hoy: {displayCurrent(currentToday)} {unit}
-				</div>
-
-				<div className="flex items-center justify-center gap-3 mt-2">
-					<Button
-						type="button"
-						variant="outline"
-						size="icon"
-						className="rounded-full h-12 w-12 shrink-0"
-						onClick={() => stepVal(-step)}
-					>
-						<MinusSquareIcon className="w-5 h-5" />
-					</Button>
-					<div className="flex items-baseline">
-						<Input
-							type="text"
-							inputMode="decimal"
-							autoFocus
-							value={val}
-							onChange={(e) =>
-								setVal(
-									e.target.value.replace(/[^0-9.,]/g, "").replace(",", "."),
-								)
-							}
-							className="font-display text-4xl text-center border-0 bg-transparent focus-visible:ring-0 w-32 px-0 h-14"
-							placeholder={String(step)}
-						/>
-						{unit && (
-							<span className="font-display text-lg text-muted-foreground ml-1">
-								{unit}
-							</span>
-						)}
+				<div className="px-4 pt-2 space-y-2">
+					<div className="text-center text-xs text-muted-foreground">
+						Hoy: {displayCurrent(currentToday)} {unit}
 					</div>
-					<Button
-						type="button"
-						variant="outline"
-						size="icon"
-						className="rounded-full h-12 w-12 shrink-0"
-						onClick={() => stepVal(step)}
-					>
-						<AddSquareIcon className="w-5 h-5" />
-					</Button>
+
+					<div className="flex items-center justify-center gap-3 py-2">
+						<Button
+							type="button"
+							variant="outline"
+							size="icon"
+							className="rounded-full h-12 w-12 shrink-0"
+							onClick={() => stepVal(-step)}
+						>
+							<MinusSquareIcon className="w-5 h-5" />
+						</Button>
+						<div className="flex items-baseline">
+							<Input
+								type="text"
+								inputMode="decimal"
+								value={val}
+								onChange={(e) =>
+									setVal(
+										e.target.value.replace(/[^0-9.,]/g, "").replace(",", "."),
+									)
+								}
+								className="font-display text-4xl text-center border-0 bg-transparent focus-visible:ring-0 w-32 px-0 h-14"
+								placeholder={String(step)}
+							/>
+							{unit && (
+								<span className="font-display text-lg text-muted-foreground ml-1">
+									{unit}
+								</span>
+							)}
+						</div>
+						<Button
+							type="button"
+							variant="outline"
+							size="icon"
+							className="rounded-full h-12 w-12 shrink-0"
+							onClick={() => stepVal(step)}
+						>
+							<AddSquareIcon className="w-5 h-5" />
+						</Button>
+					</div>
 				</div>
 
-				<Button
-					type="button"
-					onClick={handleSave}
-					className="w-full h-12 rounded-xl font-display text-sm mt-2"
-				>
-					<DisketteIcon className="w-4 h-4 mr-2" /> Guardar
-				</Button>
-			</DialogContent>
-		</Dialog>
+				<DrawerFooter className="px-4 pb-[max(1rem,env(safe-area-inset-bottom))] pt-3">
+					<Button
+						type="button"
+						onClick={handleSave}
+						className="w-full h-12 rounded-xl font-display text-sm"
+					>
+						<DisketteIcon className="w-4 h-4 mr-2" /> Guardar
+					</Button>
+				</DrawerFooter>
+			</DrawerContent>
+		</Drawer>
 	);
 }
 

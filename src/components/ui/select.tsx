@@ -1,7 +1,7 @@
 import {
 	AltArrowDownIcon,
 	AltArrowUpIcon,
-	CheckReadIcon,
+	UnreadIcon,
 } from "@solar-icons/react/outline";
 import { Select as SelectPrimitive } from "radix-ui";
 import type * as React from "react";
@@ -121,7 +121,7 @@ function SelectItem({
 				className="absolute right-2 flex size-3.5 items-center justify-center"
 			>
 				<SelectPrimitive.ItemIndicator>
-					<CheckReadIcon className="size-4" />
+					<UnreadIcon className="size-4" />
 				</SelectPrimitive.ItemIndicator>
 			</span>
 			<SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>

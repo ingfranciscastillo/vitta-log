@@ -39,6 +39,7 @@ export function GoalStepper({
 					type="button"
 					variant="outline"
 					size="icon"
+					aria-label="Restar"
 					className="rounded-full h-7 w-7 shrink-0 hover:bg-primary/10 hover:text-primary transition-colors"
 					onClick={() => stepVal(-step)}
 				>
@@ -61,6 +62,7 @@ export function GoalStepper({
 					type="button"
 					variant="outline"
 					size="icon"
+					aria-label="Sumar"
 					className="rounded-full h-7 w-7 shrink-0 hover:bg-primary/10 hover:text-primary transition-colors"
 					onClick={() => stepVal(step)}
 				>

@@ -10,6 +10,7 @@ import toast from "react-hot-toast";
 import { EntryDialog } from "#/components/entry-dialog";
 import { HistoryTable } from "#/components/history-table";
 import { PaywallDialog } from "#/components/paywall-dialog";
+import { useQuickLog } from "#/components/quick-log-context";
 import {
 	AlertDialog,
 	AlertDialogAction,
@@ -46,6 +47,7 @@ type EntryPayload = {
 
 function HistoryPage() {
 	const entries = useSuspenseQuery(weightEntriesQuery()).data!;
+	const { open: openQuickLog } = useQuickLog();
 	const me = useSuspenseQuery(currentUserQuery()).data!;
 	const qc = useQueryClient();
 
@@ -134,6 +136,7 @@ function HistoryPage() {
 				unit={me.weightUnit}
 				onEdit={handleEdit}
 				onDelete={setDeleting}
+				onCreateFirst={openQuickLog}
 			/>
 			<EntryDialog
 				open={dialogOpen}

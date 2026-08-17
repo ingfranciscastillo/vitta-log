@@ -2,7 +2,9 @@ import { InfoCircleIcon, RulerIcon } from "@solar-icons/react/outline";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo } from "react";
+import { EmptyState } from "#/components/empty-state";
 import { PremiumGate } from "#/components/premium-gate";
+import { useQuickLog } from "#/components/quick-log-context";
 import { StatCard } from "#/components/stat-card";
 import { TrendChart } from "#/components/trend-chart";
 import {
@@ -30,6 +32,7 @@ export const Route = createFileRoute("/_authenticated/imc")({
 function IMCPage() {
 	const { entries, unit } = useSuspenseQuery(weightStatsQuery()).data!;
 	const me = useSuspenseQuery(currentUserQuery()).data!;
+	const { open: openQuickLog } = useQuickLog();
 	const heightCm = me?.height != null ? Number(me.height) : null;
 	const isPremium = !!me?.isPro;
 
@@ -67,11 +70,12 @@ function IMCPage() {
 					</Link>
 				</div>
 			) : !latest ? (
-				<div className="rounded-2xl border border-dashed border-border p-6 text-center">
-					<p className="text-sm text-muted-foreground">
-						Registra tu peso para calcular el IMC.
-					</p>
-				</div>
+				<EmptyState
+					icon={<RulerIcon className="size-6" />}
+					title="Registra tu peso para calcular el IMC"
+					description="Anade tu primer peso para empezar a visualizar tu IMC."
+					action={{ label: "Anadir peso", onClick: openQuickLog }}
+				/>
 			) : (
 				<>
 					<div className="rounded-3xl bg-primary text-primary-foreground p-6">

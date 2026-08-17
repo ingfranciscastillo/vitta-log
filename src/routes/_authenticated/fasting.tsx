@@ -12,8 +12,9 @@ import {
 	useSuspenseQuery,
 } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
+import { EmptyState } from "#/components/empty-state";
 import { PremiumGate } from "#/components/premium-gate";
 import { StatCard } from "#/components/stat-card";
 import { Button } from "#/components/ui/button";
@@ -59,9 +60,9 @@ function FastingPage() {
 
 	const stats = fastStats(fasts);
 	const [, setTick] = useState<number>(0);
-
 	const [mStart, setMStart] = useState<string>("");
 	const [mEnd, setMEnd] = useState<string>("");
+	const startButtonRef = useRef<HTMLButtonElement | null>(null);
 
 	const mDuration =
 		mStart && mEnd
@@ -227,6 +228,7 @@ function FastingPage() {
 							Sin ayuno activo
 						</div>
 						<Button
+							ref={startButtonRef}
 							type="button"
 							onClick={handleStart}
 							className="mt-4 h-11 font-display"
@@ -301,9 +303,15 @@ function FastingPage() {
 			<div className="rounded-2xl bg-card border border-border p-4">
 				<div className="font-display text-sm mb-2">Historial</div>
 				{completed.length === 0 ? (
-					<p className="text-sm text-muted-foreground">
-						Aún no has completado ayunos.
-					</p>
+					<EmptyState
+						icon={<StopwatchIcon className="size-6" />}
+						title="Aun no has completado ayunos"
+						description="Inicia tu primer ayuno para empezar a registrar tu historial."
+						action={{
+							label: "Iniciar ayuno",
+							onClick: handleStart,
+						}}
+					/>
 				) : (
 					<div className="space-y-1.5">
 						{completed.slice(0, 10).map((f) => (

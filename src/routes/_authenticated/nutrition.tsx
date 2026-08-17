@@ -5,8 +5,10 @@ import {
 	useSuspenseQuery,
 } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import toast from "react-hot-toast";
+import { ConfirmDeleteDialog } from "#/components/confirm-delete-dialog";
+import { EmptyState } from "#/components/empty-state";
 import { PremiumGate } from "#/components/premium-gate";
 import { Button } from "#/components/ui/button";
 import { Input } from "#/components/ui/input";
@@ -110,6 +112,11 @@ function NutritionPage() {
 	const [fat, setFat] = useState<string>("");
 	const [mealType, setMealType] = useState<MealTypeId>("breakfast");
 	const [time] = useState<string>(nowTimeStr());
+	const [deletingMeal, setDeletingMeal] = useState<{
+		id: string;
+		name: string;
+	} | null>(null);
+	const nameInputRef = useRef<HTMLInputElement | null>(null);
 
 	const invalidate = async () => {
 		await qc.invalidateQueries({ queryKey: ["meals"] });
@@ -296,6 +303,7 @@ function NutritionPage() {
 			<div className="rounded-2xl bg-card border border-border p-4 space-y-3">
 				<div className="font-display text-sm">Añadir comida</div>
 				<Input
+					ref={nameInputRef}
 					value={name}
 					onChange={(e) => setName(e.target.value)}
 					placeholder="Nombre del alimento"
@@ -385,9 +393,14 @@ function NutritionPage() {
 			<div className="rounded-2xl bg-card border border-border p-4">
 				<div className="font-display text-sm mb-2">Comidas de hoy</div>
 				{todayMeals.length === 0 ? (
-					<p className="text-sm text-muted-foreground">
-						Aún no has registrado comidas hoy.
-					</p>
+					<EmptyState
+						title="Aun no has registrado comidas hoy"
+						description="Anade tu primera comida para empezar a llevar el conteo."
+						action={{
+							label: "Anadir comida",
+							onClick: () => nameInputRef.current?.focus(),
+						}}
+					/>
 				) : (
 					<div className="space-y-2">
 						{todayMeals.map((m) => (
@@ -405,7 +418,9 @@ function NutritionPage() {
 								</div>
 								<button
 									type="button"
-									onClick={() => m.id && deleteMut.mutate(m.id)}
+									onClick={() =>
+										m.id && setDeletingMeal({ id: m.id, name: m.name })
+									}
 									className="text-muted-foreground hover:text-destructive"
 									aria-label="Eliminar"
 								>
@@ -416,6 +431,16 @@ function NutritionPage() {
 					</div>
 				)}
 			</div>
+			<ConfirmDeleteDialog
+				open={deletingMeal !== null}
+				onOpenChange={(o) => !o && setDeletingMeal(null)}
+				onConfirm={() => {
+					if (deletingMeal) deleteMut.mutate(deletingMeal.id);
+					setDeletingMeal(null);
+				}}
+				title="Eliminar comida"
+				description={`Se eliminara "${deletingMeal?.name ?? ""}". Esta accion no se puede deshacer.`}
+			/>
 
 			<div className="rounded-2xl bg-card border border-border p-4">
 				<div className="flex items-center gap-2 mb-2">

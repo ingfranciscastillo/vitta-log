@@ -2,7 +2,7 @@ import { ShieldKeyholeIcon } from "@solar-icons/react/outline";
 
 function UserNotRegisteredError() {
 	return (
-		<div className="flex flex-col items-center justify-center min-h-screen bg-background">
+		<div className="flex flex-col items-center justify-center min-h-dvh bg-background">
 			<div className="max-w-md w-full p-8 bg-card rounded-2xl shadow-sm border border-border">
 				<div className="text-center">
 					<div className="inline-flex items-center justify-center w-16 h-16 mb-6 rounded-full bg-destructive/10">

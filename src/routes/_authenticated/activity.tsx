@@ -5,8 +5,10 @@ import {
 	useSuspenseQuery,
 } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import toast from "react-hot-toast";
+import { ConfirmDeleteDialog } from "#/components/confirm-delete-dialog";
+import { EmptyState } from "#/components/empty-state";
 import { PremiumGate } from "#/components/premium-gate";
 import { StatCard } from "#/components/stat-card";
 import { Button } from "#/components/ui/button";
@@ -62,6 +64,11 @@ function ActivityPage() {
 	const [duration, setDuration] = useState<string>("");
 	const [date, setDate] = useState<string>(todayStr());
 	const [intensity, setIntensity] = useState<ActivityIntensity>("medium");
+	const [deletingActivity, setDeletingActivity] = useState<{
+		id: string;
+		type: string;
+	} | null>(null);
+	const typeInputRef = useRef<HTMLInputElement | null>(null);
 
 	const invalidate = async () => {
 		await qc.invalidateQueries({ queryKey: ["activities"] });
@@ -147,6 +154,7 @@ function ActivityPage() {
 			<div className="rounded-2xl bg-card border border-border p-4 space-y-3">
 				<div className="font-display text-sm">Registrar actividad</div>
 				<Input
+					ref={typeInputRef}
 					value={type}
 					onChange={(e) => setType(e.target.value)}
 					placeholder="Tipo (correr, pesas, yoga...)"
@@ -209,9 +217,15 @@ function ActivityPage() {
 			<div className="rounded-2xl bg-card border border-border p-4">
 				<div className="font-display text-sm mb-2">Historial</div>
 				{history.length === 0 ? (
-					<p className="text-sm text-muted-foreground">
-						Sin actividades registradas.
-					</p>
+					<EmptyState
+						icon={<DumbbellIcon className="size-6" />}
+						title="Sin actividades registradas"
+						description="Registra tu primera actividad para ver tu progreso aqui."
+						action={{
+							label: "Anadir actividad",
+							onClick: () => typeInputRef.current?.focus(),
+						}}
+					/>
 				) : (
 					<div className="space-y-2">
 						{history.map((a) => (
@@ -230,7 +244,9 @@ function ActivityPage() {
 								</div>
 								<button
 									type="button"
-									onClick={() => a.id && deleteMut.mutate(a.id)}
+									onClick={() =>
+										a.id && setDeletingActivity({ id: a.id, type: a.type })
+									}
 									className="text-muted-foreground hover:text-destructive"
 									aria-label="Eliminar"
 								>
@@ -241,6 +257,16 @@ function ActivityPage() {
 					</div>
 				)}
 			</div>
+			<ConfirmDeleteDialog
+				open={deletingActivity !== null}
+				onOpenChange={(o) => !o && setDeletingActivity(null)}
+				onConfirm={() => {
+					if (deletingActivity) deleteMut.mutate(deletingActivity.id);
+					setDeletingActivity(null);
+				}}
+				title="Eliminar actividad"
+				description={`Se eliminara "${deletingActivity?.type ?? ""}". Esta accion no se puede deshacer.`}
+			/>
 		</div>
 	);
 }

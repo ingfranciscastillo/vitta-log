@@ -101,6 +101,9 @@ export function CalendarView({ entries, unit, onDayClick }: CalendarViewProps) {
 							type="button"
 							key={ds}
 							onClick={() => onDayClick(ds, entry)}
+							aria-label={`${format(day, "PPP", { locale: es })}${
+								entry ? ", peso registrado" : ""
+							}`}
 							className={`aspect-square rounded-xl flex flex-col items-center justify-center text-xs transition-colors ${
 								inMonth ? "" : "opacity-30"
 							} ${entry ? tone : inMonth ? "hover:bg-muted text-muted-foreground" : ""}`}

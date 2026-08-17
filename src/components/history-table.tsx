@@ -1,10 +1,12 @@
 import {
 	MagnifierIcon,
 	PenIcon,
+	ScaleIcon,
 	SortIcon,
 	TrashBinTrashIcon,
 } from "@solar-icons/react/outline";
 import { useMemo, useState } from "react";
+import { EmptyState } from "#/components/empty-state";
 import { Button } from "#/components/ui/button";
 import { DatePicker } from "#/components/ui/date-picker";
 import { Input } from "#/components/ui/input";
@@ -33,6 +35,7 @@ type HistoryTableProps = {
 	unit: WeightUnit;
 	onEdit: (entry: WeightEntry) => void;
 	onDelete: (entry: WeightEntry) => void;
+	onCreateFirst?: () => void;
 };
 
 export function HistoryTable({
@@ -40,6 +43,7 @@ export function HistoryTable({
 	unit,
 	onEdit,
 	onDelete,
+	onCreateFirst,
 }: HistoryTableProps) {
 	const [query, setQuery] = useState<string>("");
 	const [from, setFrom] = useState<string>("");
@@ -106,19 +110,37 @@ export function HistoryTable({
 				<Table>
 					<TableHeader>
 						<TableRow>
-							<TableHead>
+							<TableHead
+								aria-sort={
+									sort.key === "date"
+										? sort.dir === "asc"
+											? "ascending"
+											: "descending"
+										: "none"
+								}
+							>
 								<button
 									type="button"
 									className="flex items-center gap-1"
+									aria-label="Ordenar por fecha"
 									onClick={() => toggle("date")}
 								>
 									Fecha <SortIcon className="w-3 h-3" />
 								</button>
 							</TableHead>
-							<TableHead>
+							<TableHead
+								aria-sort={
+									sort.key === "weight"
+										? sort.dir === "asc"
+											? "ascending"
+											: "descending"
+										: "none"
+								}
+							>
 								<button
 									type="button"
 									className="flex items-center gap-1"
+									aria-label="Ordenar por peso"
 									onClick={() => toggle("weight")}
 								>
 									Peso <SortIcon className="w-3 h-3" />
@@ -132,11 +154,17 @@ export function HistoryTable({
 					<TableBody>
 						{rows.length === 0 && (
 							<TableRow>
-								<TableCell
-									colSpan={5}
-									className="text-center text-muted-foreground py-8"
-								>
-									Sin registros
+								<TableCell colSpan={5} className="p-0">
+									<EmptyState
+										icon={<ScaleIcon className="size-6" />}
+										title="Sin registros"
+										description="Anade tu primer peso para empezar tu historial."
+										action={
+											onCreateFirst
+												? { label: "Anadir peso", onClick: onCreateFirst }
+												: undefined
+										}
+									/>
 								</TableCell>
 							</TableRow>
 						)}

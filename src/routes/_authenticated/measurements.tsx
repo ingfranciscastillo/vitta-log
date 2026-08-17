@@ -1,12 +1,14 @@
-import { TrashBinTrashIcon } from "@solar-icons/react/outline";
+import { RulerIcon, TrashBinTrashIcon } from "@solar-icons/react/outline";
 import {
 	useMutation,
 	useQueryClient,
 	useSuspenseQuery,
 } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import toast from "react-hot-toast";
+import { ConfirmDeleteDialog } from "#/components/confirm-delete-dialog";
+import { EmptyState } from "#/components/empty-state";
 import { PremiumGate } from "#/components/premium-gate";
 import { TrendChart } from "#/components/trend-chart";
 import { Button } from "#/components/ui/button";
@@ -45,6 +47,10 @@ function MeasurementsPage() {
 	const [sel, setSel] = useState<MeasurementTypeId>("waist");
 	const [val, setVal] = useState<string>("");
 	const [date, setDate] = useState<string>(todayStr());
+	const [deletingMeasurement, setDeletingMeasurement] = useState<string | null>(
+		null,
+	);
+	const valInputRef = useRef<HTMLInputElement | null>(null);
 
 	const meta = MEASUREMENT_TYPES.find((m) => m.id === sel)!;
 	const series = useMemo(
@@ -156,6 +162,7 @@ function MeasurementsPage() {
 							Valor ({meta.unit})
 						</Label>
 						<Input
+							ref={valInputRef}
 							type="number"
 							inputMode="decimal"
 							value={val}
@@ -199,9 +206,15 @@ function MeasurementsPage() {
 			<div className="rounded-2xl bg-card border border-border p-4">
 				<div className="font-display text-sm mb-2">Historial</div>
 				{history.length === 0 ? (
-					<p className="text-sm text-muted-foreground">
-						Sin registros de {meta.label.toLowerCase()}.
-					</p>
+					<EmptyState
+						icon={<RulerIcon className="size-6" />}
+						title={`Sin registros de ${meta.label.toLowerCase()}`}
+						description="Registra tu primera medida para ver tu evolucion aqui."
+						action={{
+							label: "Anadir medida",
+							onClick: () => valInputRef.current?.focus(),
+						}}
+					/>
 				) : (
 					<div className="space-y-1.5">
 						{history.map((m) => (
@@ -217,7 +230,7 @@ function MeasurementsPage() {
 								</span>
 								<button
 									type="button"
-									onClick={() => m.id && deleteMut.mutate(m.id)}
+									onClick={() => m.id && setDeletingMeasurement(m.id)}
 									className="text-muted-foreground hover:text-destructive"
 									aria-label="Eliminar"
 								>
@@ -228,6 +241,16 @@ function MeasurementsPage() {
 					</div>
 				)}
 			</div>
+			<ConfirmDeleteDialog
+				open={deletingMeasurement !== null}
+				onOpenChange={(o) => !o && setDeletingMeasurement(null)}
+				onConfirm={() => {
+					if (deletingMeasurement) deleteMut.mutate(deletingMeasurement);
+					setDeletingMeasurement(null);
+				}}
+				title="Eliminar registro"
+				description={`Se eliminara el registro de ${meta.label.toLowerCase()}. Esta accion no se puede deshacer.`}
+			/>
 		</div>
 	);
 }

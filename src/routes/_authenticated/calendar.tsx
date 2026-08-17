@@ -7,6 +7,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { CalendarView } from "#/components/calendar-view";
+import { ConfirmDeleteDialog } from "#/components/confirm-delete-dialog";
 import { EntryDialog } from "#/components/entry-dialog";
 import { Button } from "#/components/ui/button";
 import {
@@ -52,6 +53,7 @@ function CalendarPage() {
 	const [selected, setSelected] = useState<Selection | null>(null);
 	const [editing, setEditing] = useState<WeightEntry | null>(null);
 	const [newDate, setNewDate] = useState<string | null>(null);
+	const [confirmDelete, setConfirmDelete] = useState(false);
 
 	const dialogOpen = !!editing || !!newDate;
 
@@ -102,6 +104,7 @@ function CalendarPage() {
 			await deleteMut.mutateAsync({ id: e.id });
 		}
 		setSelected(null);
+		setConfirmDelete(false);
 	};
 
 	const handleSubmit = async (payload: EntryPayload) => {
@@ -181,7 +184,7 @@ function CalendarPage() {
 								</Button>
 								<Button
 									variant="outline"
-									onClick={handleDelete}
+									onClick={() => setConfirmDelete(true)}
 									className="w-full text-destructive"
 								>
 									Eliminar
@@ -195,6 +198,13 @@ function CalendarPage() {
 					</DialogFooter>
 				</DialogContent>
 			</Dialog>
+			<ConfirmDeleteDialog
+				open={confirmDelete}
+				onOpenChange={setConfirmDelete}
+				onConfirm={handleDelete}
+				title="Eliminar registro"
+				description="Se eliminara este registro de peso. Esta accion no se puede deshacer."
+			/>
 		</div>
 	);
 }

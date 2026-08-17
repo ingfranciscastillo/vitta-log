@@ -15,6 +15,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { Bars } from "#/components/bars";
+import { ConfirmDeleteDialog } from "#/components/confirm-delete-dialog";
 import { ExportImport } from "#/components/export-import";
 import { ThemeProvider, useTheme } from "#/components/theme-provider";
 import { Button } from "#/components/ui/button";
@@ -105,6 +106,7 @@ function ProfileContent({
 	const [wUnit, setWUnit] = useState<"kg" | "lb">(initial.weightUnit);
 	const [hUnit, setHUnit] = useState<"cm" | "ft">(initial.heightUnit);
 	const [tz, setTz] = useState<string>(initial.timezone);
+	const [confirmDeleteAll, setConfirmDeleteAll] = useState(false);
 
 	const saveMutation = useMutation({
 		mutationFn: (vars: {
@@ -181,13 +183,6 @@ function ProfileContent({
 	};
 
 	const handleDeleteAll = () => {
-		if (
-			!confirm(
-				"¿Eliminar todos tus registros? Esta acción no se puede deshacer.",
-			)
-		) {
-			return;
-		}
 		deleteAllMutation.mutate();
 	};
 
@@ -352,13 +347,20 @@ function ProfileContent({
 					<Button
 						type="button"
 						variant="outline"
-						onClick={handleDeleteAll}
+						onClick={() => setConfirmDeleteAll(true)}
 						disabled={deleteAllMutation.isPending}
 						className="w-full h-10 text-destructive font-display text-xs"
 					>
 						{deleteAllMutation.isPending && <Bars className="w-3 h-3 mr-1.5" />}
 						Eliminar todos mis datos
 					</Button>
+					<ConfirmDeleteDialog
+						open={confirmDeleteAll}
+						onOpenChange={setConfirmDeleteAll}
+						onConfirm={handleDeleteAll}
+						title="Eliminar todos mis datos"
+						description="Se eliminaran todos tus registros. Esta accion no se puede deshacer."
+					/>
 				</div>
 			</section>
 

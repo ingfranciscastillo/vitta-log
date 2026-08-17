@@ -6,6 +6,7 @@ import {
 } from "@solar-icons/react/outline";
 import { useMemo, useState } from "react";
 import { Button } from "#/components/ui/button";
+import { DatePicker } from "#/components/ui/date-picker";
 import { Input } from "#/components/ui/input";
 import {
 	Table,
@@ -88,17 +89,17 @@ export function HistoryTable({
 						className="pl-9 h-11"
 					/>
 				</div>
-				<Input
-					type="date"
+				<DatePicker
+					id="history-from"
 					value={from}
-					onChange={(e) => setFrom(e.target.value)}
-					className="h-11 sm:w-36"
+					onChange={(v) => setFrom(v ?? "")}
+					className="sm:w-36"
 				/>
-				<Input
-					type="date"
+				<DatePicker
+					id="history-to"
 					value={to}
-					onChange={(e) => setTo(e.target.value)}
-					className="h-11 sm:w-36"
+					onChange={(v) => setTo(v ?? "")}
+					className="sm:w-36"
 				/>
 			</div>
 			<div className="rounded-2xl border border-border overflow-hidden">

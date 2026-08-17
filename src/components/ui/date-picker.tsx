@@ -18,6 +18,7 @@ type DatePickerProps = {
 	disabled?: boolean;
 	className?: string;
 	id?: string;
+	captionLayout?: "dropdown" | "dropdown-months" | "dropdown-years" | "label";
 };
 
 export function DatePicker({
@@ -27,6 +28,7 @@ export function DatePicker({
 	disabled,
 	className,
 	id,
+	captionLayout,
 }: DatePickerProps) {
 	const [open, setOpen] = useState<boolean>(false);
 	const date = value ? new Date(`${value}T00:00:00`) : undefined;
@@ -39,13 +41,15 @@ export function DatePicker({
 					variant="outline"
 					disabled={disabled}
 					className={cn(
-						"w-full justify-start text-left font-normal h-11 px-3",
+						"w-full justify-start text-left font-normal h-11 px-3 bg-transparent border-input",
 						!date && "text-muted-foreground",
 						className,
 					)}
 				>
-					<CalendarMinimalisticIcon className="mr-2 size-4" />
-					{date ? format(date, "PPP", { locale: es }) : placeholder}
+					<CalendarMinimalisticIcon className="mr-2 size-4 shrink-0" />
+					<span className="truncate">
+						{date ? format(date, "PPP", { locale: es }) : placeholder}
+					</span>
 				</Button>
 			</PopoverTrigger>
 			<PopoverContent className="w-auto p-0" align="start">
@@ -57,6 +61,7 @@ export function DatePicker({
 						setOpen(false);
 					}}
 					locale={es}
+					captionLayout={captionLayout}
 				/>
 			</PopoverContent>
 		</Popover>

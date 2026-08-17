@@ -18,7 +18,8 @@ import { Bars } from "#/components/bars";
 import { ExportImport } from "#/components/export-import";
 import { ThemeProvider, useTheme } from "#/components/theme-provider";
 import { Button } from "#/components/ui/button";
-import { Field } from "#/components/ui/field";
+import { DatePicker } from "#/components/ui/date-picker";
+import { Field, FieldLabel } from "#/components/ui/field";
 import { Input } from "#/components/ui/input";
 import { Label } from "#/components/ui/label";
 import {
@@ -216,23 +217,29 @@ function ProfileContent({
 							value={sex || undefined}
 							onValueChange={(v) => setSex(v as "male" | "female" | "other")}
 						>
-							<SelectTrigger className="h-11">
+							<SelectTrigger className="h-11!">
 								<SelectValue placeholder="Seleccionar" />
 							</SelectTrigger>
 							<SelectContent>
-								<SelectItem value="male">Masculino</SelectItem>
-								<SelectItem value="female">Femenino</SelectItem>
-								<SelectItem value="other">Otro</SelectItem>
+								<SelectItem value="male" className="h-11">
+									Masculino
+								</SelectItem>
+								<SelectItem value="female" className="h-11">
+									Femenino
+								</SelectItem>
+								<SelectItem value="other" className="h-11">
+									Otro
+								</SelectItem>
 							</SelectContent>
 						</Select>
 					</Field>
 					<Field>
-						<Label>Fecha de nacimiento</Label>
-						<Input
-							type="date"
+						<FieldLabel>Fecha de nacimiento</FieldLabel>
+						<DatePicker
+							id="birth-date"
 							value={birth}
-							onChange={(e) => setBirth(e.target.value)}
-							className="h-11"
+							onChange={(v) => setBirth(v ?? "")}
+							captionLayout="dropdown"
 						/>
 					</Field>
 					<div className="grid grid-cols-2 gap-3">
@@ -240,9 +247,9 @@ function ProfileContent({
 							<Label>Altura ({hUnit === "ft" ? "in" : "cm"})</Label>
 							<Input
 								type="number"
+								className="h-11"
 								value={heightDisplay}
 								onChange={(e) => setHeightDisplay(e.target.value)}
-								className="h-11"
 							/>
 						</Field>
 						<Field>
@@ -251,12 +258,16 @@ function ProfileContent({
 								value={hUnit}
 								onValueChange={(v) => setHUnit(v as "cm" | "ft")}
 							>
-								<SelectTrigger className="h-11">
+								<SelectTrigger className="h-11!">
 									<SelectValue />
 								</SelectTrigger>
 								<SelectContent>
-									<SelectItem value="cm">cm</SelectItem>
-									<SelectItem value="ft">in</SelectItem>
+									<SelectItem value="cm" className="h-11">
+										cm
+									</SelectItem>
+									<SelectItem value="ft" className="h-11">
+										in
+									</SelectItem>
 								</SelectContent>
 							</Select>
 						</Field>
@@ -273,21 +284,25 @@ function ProfileContent({
 							value={wUnit}
 							onValueChange={(v) => setWUnit(v as "kg" | "lb")}
 						>
-							<SelectTrigger className="h-11">
+							<SelectTrigger className="h-11!">
 								<SelectValue />
 							</SelectTrigger>
 							<SelectContent>
-								<SelectItem value="kg">kg</SelectItem>
-								<SelectItem value="lb">lb</SelectItem>
+								<SelectItem value="kg" className="h-11">
+									kg
+								</SelectItem>
+								<SelectItem value="lb" className="h-11">
+									lb
+								</SelectItem>
 							</SelectContent>
 						</Select>
 					</Field>
 					<Field>
 						<Label>Zona horaria</Label>
 						<Input
+							className="h-11"
 							value={tz}
 							onChange={(e) => setTz(e.target.value)}
-							className="h-11"
 						/>
 					</Field>
 					<Button
@@ -313,18 +328,18 @@ function ProfileContent({
 								{ id: "system", l: "Sistema" },
 							] as const
 						).map((t) => (
-							<button
+							<Button
 								key={t.id}
 								type="button"
 								onClick={() => setTheme(t.id)}
-								className={`flex-1 py-2 rounded-xl text-xs transition-colors ${
+								className={`flex-1 py-2 text-xs transition-colors font-display ${
 									theme === t.id
 										? "bg-primary text-primary-foreground"
 										: "bg-muted text-muted-foreground"
 								}`}
 							>
 								{t.l}
-							</button>
+							</Button>
 						))}
 					</div>
 				</div>
@@ -339,7 +354,7 @@ function ProfileContent({
 						variant="outline"
 						onClick={handleDeleteAll}
 						disabled={deleteAllMutation.isPending}
-						className="w-full h-10 text-destructive"
+						className="w-full h-10 text-destructive font-display text-xs"
 					>
 						{deleteAllMutation.isPending && <Bars className="w-3 h-3 mr-1.5" />}
 						Eliminar todos mis datos

@@ -10,6 +10,7 @@ import toast from "react-hot-toast";
 import { PremiumGate } from "#/components/premium-gate";
 import { TrendChart } from "#/components/trend-chart";
 import { Button } from "#/components/ui/button";
+import { DatePicker } from "#/components/ui/date-picker";
 import { Input } from "#/components/ui/input";
 import { Label } from "#/components/ui/label";
 import { bodyMeasurementsQuery } from "#/lib/body-measurements";
@@ -159,7 +160,7 @@ function MeasurementsPage() {
 							inputMode="decimal"
 							value={val}
 							onChange={(e) => setVal(e.target.value)}
-							className="h-10"
+							className="h-11"
 							placeholder="0"
 						/>
 					</div>
@@ -167,11 +168,10 @@ function MeasurementsPage() {
 						<Label className="text-[10px] uppercase tracking-wider text-muted-foreground">
 							Fecha
 						</Label>
-						<Input
-							type="date"
+						<DatePicker
+							id="measurement-date"
 							value={date}
-							onChange={(e) => setDate(e.target.value)}
-							className="h-10"
+							onChange={(v) => setDate(v ?? "")}
 						/>
 					</div>
 				</div>

@@ -248,7 +248,7 @@ function FastingPage() {
 						type="datetime-local"
 						value={mStart}
 						onChange={(e) => setMStart(e.target.value)}
-						className="h-10"
+						className="h-11"
 					/>
 				</div>
 				<div className="space-y-1.5">
@@ -259,7 +259,7 @@ function FastingPage() {
 						type="datetime-local"
 						value={mEnd}
 						onChange={(e) => setMEnd(e.target.value)}
-						className="h-10"
+						className="h-11"
 					/>
 				</div>
 				{mDuration != null && (

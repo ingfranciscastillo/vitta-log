@@ -11,7 +11,7 @@ import { GoalCard } from "#/components/goal-card";
 import { GoalStepper } from "#/components/goal-stepper";
 import { PremiumGate } from "#/components/premium-gate";
 import { Button } from "#/components/ui/button";
-import { Input } from "#/components/ui/input";
+import { DatePicker } from "#/components/ui/date-picker";
 import { Label } from "#/components/ui/label";
 import {
 	Select,
@@ -308,23 +308,28 @@ function GoalsPage() {
 					/>
 					<div className="space-y-1.5">
 						<Label>Fecha objetivo (opcional)</Label>
-						<Input
-							type="date"
+						<DatePicker
+							id="target-date"
 							value={date}
-							onChange={(e) => setDate(e.target.value)}
-							className="h-11"
+							onChange={(v) => setDate(v ?? "")}
 						/>
 					</div>
 					<div className="space-y-1.5">
 						<Label>Ritmo deseado</Label>
 						<Select value={pace} onValueChange={(v) => setPace(v as Pace)}>
-							<SelectTrigger className="h-11">
+							<SelectTrigger className="h-11! w-full">
 								<SelectValue />
 							</SelectTrigger>
 							<SelectContent>
-								<SelectItem value="slow">Lento (0.25 kg/sem)</SelectItem>
-								<SelectItem value="moderate">Moderado (0.5 kg/sem)</SelectItem>
-								<SelectItem value="fast">Rápido (0.75 kg/sem)</SelectItem>
+								<SelectItem value="slow" className="h-11">
+									Lento (0.25 kg/sem)
+								</SelectItem>
+								<SelectItem value="moderate" className="h-11">
+									Moderado (0.5 kg/sem)
+								</SelectItem>
+								<SelectItem value="fast" className="h-11">
+									Rápido (0.75 kg/sem)
+								</SelectItem>
 							</SelectContent>
 						</Select>
 					</div>
@@ -334,7 +339,7 @@ function GoalsPage() {
 								type="button"
 								variant="outline"
 								onClick={handleCancel}
-								className="flex-1 h-11"
+								className="flex-1 h-11 font-display"
 							>
 								Cancelar
 							</Button>

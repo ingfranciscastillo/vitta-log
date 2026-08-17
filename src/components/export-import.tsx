@@ -73,17 +73,25 @@ export function ExportImport({ entries, onImport }: ExportImportProps) {
 	};
 
 	return (
-		<div className="flex flex-wrap gap-2">
-			<Button variant="outline" onClick={exportCSV} className="h-10">
+		<div className="grid grid-cols-3 gap-2">
+			<Button
+				variant="outline"
+				onClick={exportCSV}
+				className="font-display w-full text-xs"
+			>
 				<ExportIcon className="w-4 h-4 mr-1.5" /> CSV
 			</Button>
-			<Button variant="outline" onClick={exportJSON} className="h-10">
+			<Button
+				variant="outline"
+				onClick={exportJSON}
+				className="font-display w-full text-xs"
+			>
 				<ExportIcon className="w-4 h-4 mr-1.5" /> JSON
 			</Button>
 			<Button
 				variant="outline"
 				onClick={() => fileRef.current?.click()}
-				className="h-10"
+				className="font-display w-full text-xs"
 			>
 				<ImportIcon className="w-4 h-4 mr-1.5" /> Importar
 			</Button>

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Button } from "#/components/ui/button";
+import { DatePicker } from "#/components/ui/date-picker";
 import { Input } from "#/components/ui/input";
 import { Label } from "#/components/ui/label";
 import {
@@ -81,11 +82,10 @@ export function WeightEntryForm({
 			<div className="grid grid-cols-2 gap-3">
 				<div className="space-y-1.5">
 					<Label>Fecha</Label>
-					<Input
-						type="date"
+					<DatePicker
+						id="weight-entry-date"
 						value={date}
-						onChange={(e) => setDate(e.target.value)}
-						className="h-11"
+						onChange={(v) => setDate(v ?? "")}
 					/>
 				</div>
 				<div className="space-y-1.5">

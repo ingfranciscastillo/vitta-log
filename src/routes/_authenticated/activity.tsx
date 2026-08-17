@@ -10,6 +10,7 @@ import toast from "react-hot-toast";
 import { PremiumGate } from "#/components/premium-gate";
 import { StatCard } from "#/components/stat-card";
 import { Button } from "#/components/ui/button";
+import { DatePicker } from "#/components/ui/date-picker";
 import { Input } from "#/components/ui/input";
 import { Label } from "#/components/ui/label";
 import {
@@ -149,7 +150,7 @@ function ActivityPage() {
 					value={type}
 					onChange={(e) => setType(e.target.value)}
 					placeholder="Tipo (correr, pesas, yoga...)"
-					className="h-10"
+					className="h-11"
 				/>
 				<div className="grid grid-cols-2 gap-3">
 					<div className="space-y-1.5">
@@ -161,18 +162,17 @@ function ActivityPage() {
 							inputMode="numeric"
 							value={duration}
 							onChange={(e) => setDuration(e.target.value)}
-							className="h-10"
+							className="h-11"
 						/>
 					</div>
 					<div className="space-y-1.5">
 						<Label className="text-[10px] uppercase tracking-wider text-muted-foreground">
 							Fecha
 						</Label>
-						<Input
-							type="date"
+						<DatePicker
+							id="activity-date"
 							value={date}
-							onChange={(e) => setDate(e.target.value)}
-							className="h-10"
+							onChange={(v) => setDate(v ?? "")}
 						/>
 					</div>
 				</div>
@@ -184,12 +184,12 @@ function ActivityPage() {
 						value={intensity}
 						onValueChange={(v) => setIntensity(v as ActivityIntensity)}
 					>
-						<SelectTrigger className="h-10">
+						<SelectTrigger className="h-11! w-full">
 							<SelectValue />
 						</SelectTrigger>
 						<SelectContent>
 							{INTENSITY.map((i) => (
-								<SelectItem key={i.id} value={i.id}>
+								<SelectItem key={i.id} value={i.id} className="h-11">
 									{i.label}
 								</SelectItem>
 							))}

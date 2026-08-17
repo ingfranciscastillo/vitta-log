@@ -2,7 +2,7 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { PremiumGate } from "#/components/premium-gate";
-import { Input } from "#/components/ui/input";
+import { DatePicker } from "#/components/ui/date-picker";
 import { Switch } from "#/components/ui/switch";
 import { WeightChart } from "#/components/weight-chart";
 import { currentGoalQuery } from "#/lib/goals";
@@ -112,17 +112,17 @@ function ChartsPage() {
 
 			{range === "custom" && (
 				<div className="flex gap-2">
-					<Input
-						type="date"
+					<DatePicker
+						id="charts-from"
 						value={from}
-						onChange={(e) => setFrom(e.target.value)}
-						className="h-9"
+						onChange={(v) => setFrom(v ?? "")}
+						className="h-9 text-sm"
 					/>
-					<Input
-						type="date"
+					<DatePicker
+						id="charts-to"
 						value={to}
-						onChange={(e) => setTo(e.target.value)}
-						className="h-9"
+						onChange={(v) => setTo(v ?? "")}
+						className="h-9 text-sm"
 					/>
 				</div>
 			)}

@@ -280,9 +280,9 @@ function NutritionPage() {
 							type="number"
 							value={goalCal}
 							onChange={(e) => setGoalCal(e.target.value)}
-							className="h-10"
+							className="h-11"
 						/>
-						<Button onClick={saveGoal} className="h-10">
+						<Button onClick={saveGoal} className="h-11 font-display">
 							Guardar
 						</Button>
 					</div>
@@ -299,7 +299,7 @@ function NutritionPage() {
 					value={name}
 					onChange={(e) => setName(e.target.value)}
 					placeholder="Nombre del alimento"
-					className="h-10"
+					className="h-11"
 				/>
 				<div className="grid grid-cols-2 gap-3">
 					<div className="space-y-1.5">
@@ -311,7 +311,7 @@ function NutritionPage() {
 							inputMode="decimal"
 							value={cal}
 							onChange={(e) => setCal(e.target.value)}
-							className="h-10"
+							className="h-11"
 						/>
 					</div>
 					<div className="space-y-1.5">
@@ -322,12 +322,12 @@ function NutritionPage() {
 							value={mealType}
 							onValueChange={(v) => setMealType(v as MealTypeId)}
 						>
-							<SelectTrigger className="h-10">
+							<SelectTrigger className="h-11! w-full">
 								<SelectValue />
 							</SelectTrigger>
 							<SelectContent>
 								{MEAL_TYPES.map((m) => (
-									<SelectItem key={m.id} value={m.id}>
+									<SelectItem key={m.id} value={m.id} className="h-11">
 										{m.label}
 									</SelectItem>
 								))}
@@ -345,7 +345,7 @@ function NutritionPage() {
 							inputMode="decimal"
 							value={protein}
 							onChange={(e) => setProtein(e.target.value)}
-							className="h-10"
+							className="h-11"
 						/>
 					</div>
 					<div className="space-y-1.5">
@@ -357,7 +357,7 @@ function NutritionPage() {
 							inputMode="decimal"
 							value={carbs}
 							onChange={(e) => setCarbs(e.target.value)}
-							className="h-10"
+							className="h-11"
 						/>
 					</div>
 					<div className="space-y-1.5">
@@ -369,7 +369,7 @@ function NutritionPage() {
 							inputMode="decimal"
 							value={fat}
 							onChange={(e) => setFat(e.target.value)}
-							className="h-10"
+							className="h-11"
 						/>
 					</div>
 				</div>

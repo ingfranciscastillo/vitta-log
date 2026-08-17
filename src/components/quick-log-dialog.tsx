@@ -5,6 +5,7 @@ import {
 import { NotebookIcon } from "@solar-icons/react/outline";
 import { useEffect, useState } from "react";
 import { Button } from "#/components/ui/button";
+import { DatePicker } from "#/components/ui/date-picker";
 import {
 	Drawer,
 	DrawerContent,
@@ -153,12 +154,10 @@ export function QuickLogDialog({
 								>
 									Fecha
 								</FieldLabel>
-								<Input
+								<DatePicker
 									id="weight-date"
-									type="date"
 									value={date}
-									onChange={(e) => setDate(e.target.value)}
-									className="h-10"
+									onChange={(v) => setDate(v ?? "")}
 								/>
 							</Field>
 							<Field>
@@ -173,7 +172,7 @@ export function QuickLogDialog({
 									type="time"
 									value={time}
 									onChange={(e) => setTime(e.target.value)}
-									className="h-10"
+									className="h-11"
 								/>
 							</Field>
 						</FieldGroup>
@@ -184,7 +183,7 @@ export function QuickLogDialog({
 							value={note}
 							onChange={(e) => setNote(e.target.value)}
 							placeholder="Nota (opcional)"
-							className="h-10"
+							className="h-11"
 						/>
 					) : (
 						<button

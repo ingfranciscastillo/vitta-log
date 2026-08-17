@@ -206,7 +206,7 @@ function DashboardPage() {
 			{goal ? (
 				<div>
 					<div className="flex items-center justify-between mb-2">
-						<span className="font-display text-sm">Objetivo</span>
+						<span className="font-display text-sm">Objetivos</span>
 						<Link to="/goals" className="text-xs text-primary">
 							Gestionar
 						</Link>

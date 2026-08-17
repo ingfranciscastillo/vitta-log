@@ -1,4 +1,3 @@
-import { QuestionCircleIcon } from "@solar-icons/react/outline";
 import { useForm } from "@tanstack/react-form";
 import { useMutation } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
@@ -68,7 +67,6 @@ function SupportPage() {
 	return (
 		<div className="space-y-6">
 			<div className="flex items-center gap-2">
-				<QuestionCircleIcon className="w-5 h-5 text-primary" />
 				<h1 className="font-display text-xl">Soporte</h1>
 			</div>
 

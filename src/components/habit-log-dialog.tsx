@@ -2,7 +2,7 @@ import {
 	AddCircleIcon,
 	MinusCircleIcon,
 } from "@solar-icons/react/line-duotone";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button } from "#/components/ui/button";
 import {
 	Drawer,
@@ -46,10 +46,6 @@ export function HabitLogDialog({
 	const { label, unit, step } = cfg;
 	const [val, setVal] = useState<string>(String(step));
 
-	useEffect(() => {
-		if (open) setVal(String(step));
-	}, [open, step]);
-
 	const stepVal = (delta: number) => {
 		const n = parseFloat(val || "0") || 0;
 		const next = Math.max(0, n + delta);
@@ -68,7 +64,10 @@ export function HabitLogDialog({
 
 	return (
 		<Drawer open={open} onOpenChange={onOpenChange}>
-			<DrawerContent className="rounded-t-3xl max-w-md mx-auto">
+			<DrawerContent
+				key={`${open ? "open" : "closed"}-${type}`}
+				className="rounded-t-3xl max-w-md mx-auto"
+			>
 				<DrawerHeader className="text-center pb-0">
 					<DrawerTitle className="font-display text-lg">
 						Añadir {label.toLowerCase()}

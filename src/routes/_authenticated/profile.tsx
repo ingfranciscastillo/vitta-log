@@ -372,7 +372,7 @@ function ProfileContent({
 							key={l.to}
 							to={l.to}
 							style={{ animationDelay: `${i * 30}ms` }}
-							className="group relative rounded-2xl border border-border bg-card p-4 flex flex-col items-center gap-2 transition-all duration-200 hover:bg-muted/50 hover:scale-[1.02] active:scale-[0.98] animate-in fade-in slide-in-from-bottom-2 fill-mode-backwards"
+							className="group relative rounded-2xl border border-border bg-card p-4 flex flex-col items-center gap-2 transition-[transform,background-color] duration-200 hover:bg-muted/50 hover:scale-[1.02] active:scale-[0.98] motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-2 motion-safe:fill-mode-backwards"
 						>
 							<l.icon className="size-6 text-primary transition-transform group-hover:scale-110 group-hover:rotate-3" />
 							<span className="text-xs text-center font-display">
@@ -387,7 +387,7 @@ function ProfileContent({
 				type="button"
 				variant="outline"
 				onClick={handleLogout}
-				className="w-full h-11 mt-2 font-display text-base uppercase border-2 border-destructive/40 text-destructive bg-destructive/5 hover:bg-destructive hover:text-destructive-foreground hover:border-destructive active:scale-[0.98] transition-all duration-150 shadow-sm hover:shadow-md"
+				className="w-full h-11 mt-2 font-display text-base uppercase border-2 border-destructive/40 text-destructive bg-destructive/5 hover:bg-destructive hover:text-destructive-foreground hover:border-destructive active:scale-[0.98] transition-[transform,background-color,color,border-color] duration-150"
 			>
 				<Logout2Icon className="w-5 h-5 mr-2" />
 				Cerrar sesión

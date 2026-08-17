@@ -3,7 +3,7 @@ import {
 	MinusCircleIcon,
 } from "@solar-icons/react/line-duotone";
 import { NotebookIcon } from "@solar-icons/react/outline";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button } from "#/components/ui/button";
 import { DatePicker } from "#/components/ui/date-picker";
 import {
@@ -55,16 +55,6 @@ export function QuickLogDialog({
 	const [note, setNote] = useState<string>("");
 	const [showNote, setShowNote] = useState<boolean>(false);
 
-	useEffect(() => {
-		if (open) {
-			setVal(lastDisp);
-			setDate(todayStr());
-			setTime(nowTimeStr());
-			setNote("");
-			setShowNote(false);
-		}
-	}, [open, lastDisp]);
-
 	const step = (d: number): void => {
 		const n = parseFloat(val || "0") || 0;
 		setVal(Math.max(0, n + d).toFixed(1));
@@ -89,7 +79,10 @@ export function QuickLogDialog({
 
 	return (
 		<Drawer open={open} onOpenChange={onOpenChange}>
-			<DrawerContent className="rounded-t-3xl max-w-md mx-auto">
+			<DrawerContent
+				key={open ? "open" : "closed"}
+				className="rounded-t-3xl max-w-md mx-auto"
+			>
 				<DrawerHeader className="text-center pb-0">
 					<DrawerTitle className="font-display text-lg">
 						Registrar peso

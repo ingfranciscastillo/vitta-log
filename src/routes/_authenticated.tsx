@@ -127,7 +127,7 @@ function AuthenticatedLayout() {
 	return (
 		<QuickLogContext.Provider value={{ open: () => setQuickOpen(true) }}>
 			<div className="min-h-dvh bg-background max-w-md mx-auto relative">
-				<header className="sticky top-0 z-30 bg-background/80 backdrop-blur-lg border-b border-border pt-[env(safe-area-inset-top)]">
+				<header className="sticky top-0 z-30 bg-background/90 backdrop-blur border-b border-border pt-[env(safe-area-inset-top)]">
 					<div className="flex items-center justify-between px-4 h-14">
 						<div className="flex items-center gap-2">
 							<span className="w-2.5 h-2.5 rounded-full bg-primary" />

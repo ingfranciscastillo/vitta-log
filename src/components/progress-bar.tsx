@@ -9,8 +9,8 @@ export function ProgressBar({ value, goal, className = "" }: ProgressBarProps) {
 	return (
 		<div className={`h-2 rounded-full bg-muted overflow-hidden ${className}`}>
 			<div
-				className="h-full rounded-full bg-primary transition-all"
-				style={{ width: `${pct}%` }}
+				className="h-full w-full origin-left rounded-full bg-primary transition-transform"
+				style={{ transform: `scaleX(${pct / 100})` }}
 			/>
 		</div>
 	);

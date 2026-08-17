@@ -4,7 +4,7 @@ import {
 	useSuspenseQuery,
 } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import toast from "react-hot-toast";
 import { Bars } from "#/components/bars";
 import { GoalCard } from "#/components/goal-card";
@@ -71,24 +71,6 @@ function GoalsPage() {
 	const [protein, setProtein] = useState<string>(String(proteinGoal));
 	const [carbs, setCarbs] = useState<string>(String(carbsGoal));
 	const [fat, setFat] = useState<string>(String(fatGoal));
-
-	useEffect(() => {
-		setWater(String(waterGoal));
-		setSteps(String(stepsGoal));
-		setSleep(String(sleepGoal));
-		setCal(String(calorieGoal));
-		setProtein(String(proteinGoal));
-		setCarbs(String(carbsGoal));
-		setFat(String(fatGoal));
-	}, [
-		waterGoal,
-		stepsGoal,
-		sleepGoal,
-		calorieGoal,
-		proteinGoal,
-		carbsGoal,
-		fatGoal,
-	]);
 
 	const saveWeightMut = useMutation({
 		mutationFn: (vars: {

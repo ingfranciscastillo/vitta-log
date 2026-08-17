@@ -29,7 +29,7 @@ const items: NavItem[] = [
 
 export function BottomNav() {
 	return (
-		<nav className="fixed bottom-0 inset-x-0 z-40 border-t border-border bg-background/80 backdrop-blur-lg pb-[env(safe-area-inset-bottom)]">
+		<nav className="fixed bottom-0 inset-x-0 z-40 border-t border-border bg-background/90 backdrop-blur pb-[env(safe-area-inset-bottom)]">
 			<div className="max-w-md mx-auto grid grid-cols-5">
 				{items.map(({ to, label, icon: Icon, end }) => (
 					<Link

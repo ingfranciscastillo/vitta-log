@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button } from "#/components/ui/button";
 import { DatePicker } from "#/components/ui/date-picker";
 import { Input } from "#/components/ui/input";
@@ -41,15 +41,6 @@ export function WeightEntryForm({
 	const [date, setDate] = useState<string>(initial?.date ?? todayStr());
 	const [time, setTime] = useState<string>(initial?.time ?? nowTimeStr());
 	const [note, setNote] = useState<string>(initial?.note ?? "");
-
-	useEffect(() => {
-		if (initial) {
-			setVal(toDisplay(initial.weight, unit).toFixed(1));
-			setDate(initial.date ?? todayStr());
-			setTime(initial.time ?? nowTimeStr());
-			setNote(initial.note ?? "");
-		}
-	}, [initial, unit]);
 
 	const submit = (e: React.FormEvent) => {
 		e.preventDefault();

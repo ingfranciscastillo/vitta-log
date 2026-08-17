@@ -111,8 +111,8 @@ function MorePage() {
 									style={{ animationDelay: `${delay}ms` }}
 									className={
 										item.featured
-											? "group relative rounded-2xl border border-accent/40 bg-accent/15 p-4 flex flex-col items-center gap-2 transition-all duration-200 hover:bg-accent/25 hover:scale-[1.02] active:scale-[0.98] animate-in fade-in slide-in-from-bottom-2 fill-mode-backwards"
-											: "group relative rounded-2xl border border-border bg-card p-4 flex flex-col items-center gap-2 transition-all duration-200 hover:bg-muted/50 hover:scale-[1.02] active:scale-[0.98] animate-in fade-in slide-in-from-bottom-2 fill-mode-backwards"
+											? "group relative rounded-2xl border border-accent/40 bg-accent/15 p-4 flex flex-col items-center gap-2 transition-[transform,background-color] duration-200 hover:bg-muted/50 hover:scale-[1.02] active:scale-[0.98] motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-2 motion-safe:fill-mode-backwards"
+											: "group relative rounded-2xl border border-border bg-card p-4 flex flex-col items-center gap-2 transition-[transform,background-color] duration-200 hover:bg-muted/50 hover:scale-[1.02] active:scale-[0.98] motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-2 motion-safe:fill-mode-backwards"
 									}
 								>
 									<Icon

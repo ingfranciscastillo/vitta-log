@@ -2,7 +2,7 @@ import {
 	AddCircleIcon,
 	MinusCircleIcon,
 } from "@solar-icons/react/line-duotone";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button } from "#/components/ui/button";
 import {
 	Drawer,
@@ -34,10 +34,6 @@ export function QuickAddDialog({
 }: QuickAddDialogProps) {
 	const [val, setVal] = useState<string>(String(initial));
 
-	useEffect(() => {
-		if (open) setVal(String(initial));
-	}, [open, initial]);
-
 	const stepVal = (delta: number) => {
 		const n = parseFloat(val || "0") || 0;
 		setVal(Math.max(0, n + delta).toString());
@@ -52,7 +48,10 @@ export function QuickAddDialog({
 
 	return (
 		<Drawer open={open} onOpenChange={onOpenChange}>
-			<DrawerContent className="rounded-t-3xl max-w-md mx-auto">
+			<DrawerContent
+				key={`${open ? "open" : "closed"}-${initial}`}
+				className="rounded-t-3xl max-w-md mx-auto"
+			>
 				<DrawerHeader className="text-center pb-0">
 					<DrawerTitle className="font-display text-lg">{title}</DrawerTitle>
 				</DrawerHeader>

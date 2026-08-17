@@ -36,6 +36,7 @@ export function EntryDialog({
 					</DialogTitle>
 				</DialogHeader>
 				<WeightEntryForm
+					key={`${initial?.id ?? "new"}-${unit}-${open}`}
 					initial={initial ?? null}
 					unit={unit}
 					submitLabel={initial?.id ? "Guardar cambios" : "Añadir"}

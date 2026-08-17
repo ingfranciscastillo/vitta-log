@@ -45,8 +45,8 @@ export function BottomNav() {
 								"flex flex-col items-center gap-0.5 py-3 text-[10px] transition-colors text-muted-foreground",
 						}}
 					>
-						<Icon className="w-5 h-5" />
-						<span className="font-medium">{label}</span>
+						<Icon className="w-5 h-5 mb-1" />
+						<span className="font-medium font-display">{label}</span>
 					</Link>
 				))}
 			</div>

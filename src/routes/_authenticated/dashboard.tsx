@@ -9,6 +9,7 @@ import {
 	FireIcon,
 	GraphDownIcon,
 	GraphUpIcon,
+	HealthIcon,
 	LockIcon,
 	MoonIcon,
 	PulseIcon,
@@ -189,7 +190,7 @@ function DashboardPage() {
 					label="IMC"
 					value={imc.toFixed(1)}
 					sub={imcCat?.label}
-					icon={PulseIcon}
+					icon={HealthIcon}
 					accent={
 						imcCat?.tone === "green"
 							? "text-emerald-600"

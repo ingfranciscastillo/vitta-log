@@ -11,7 +11,7 @@ import {
 	MedalRibbonIcon,
 	PlateIcon,
 	RulerIcon,
-	SettingsIcon,
+	SettingsMinimalisticIcon,
 	StopwatchIcon,
 	TargetIcon,
 } from "@solar-icons/react/outline";
@@ -55,7 +55,7 @@ const LINKS: Array<{
 	{ to: "/calendar", label: "Calendario", icon: CalendarIcon },
 	{ to: "/statistics", label: "Estadísticas", icon: ChartSquareIcon },
 	{ to: "/achievements", label: "Logros", icon: MedalRibbonIcon },
-	{ to: "/profile", label: "Ajustes", icon: SettingsIcon },
+	{ to: "/profile", label: "Ajustes", icon: SettingsMinimalisticIcon },
 	{ to: "/export", label: "Exportar", icon: DownloadIcon },
 	{ to: "/pricing", label: "Premium", icon: CrownIcon },
 ];
@@ -74,7 +74,9 @@ function MorePage() {
 							className="rounded-2xl bg-card border border-border p-4 flex flex-col items-center gap-2 hover:bg-muted transition-colors"
 						>
 							<Icon className="w-5 h-5 text-primary" />
-							<span className="text-xs text-center">{l.label}</span>
+							<span className="text-xs text-center font-display">
+								{l.label}
+							</span>
 						</Link>
 					);
 				})}

@@ -193,3 +193,43 @@
 		animation: none;
 	}
 }
+
+/* Skeleton pulse: defined globally so the keyframe is not re-injected
+   per render. Duration 1800ms follows the loading-states guideline
+   (1500-2000ms shimmer cycle). The global reduced-motion override
+   already shortens animation-duration to 0.01ms, so this effectively
+   becomes a static muted block under prefers-reduced-motion. */
+@keyframes loading-ui-skeleton-pulse {
+	50% {
+		opacity: 0.5;
+	}
+}
+
+/* Bars (loading wave): defined globally for the same reason. */
+@keyframes loading-ui-wave-bars {
+	0%,
+	60%,
+	100% {
+		transform: scaleY(0.4);
+	}
+	30% {
+		transform: scaleY(1);
+	}
+}
+
+/* Motion tokens (reference): 100ms hover-in/tap, 175ms toggle,
+   200ms progress, 250ms hover-out/page, 1800ms loading cycle.
+   These are conventions documented for the project; components
+   inline explicit durations rather than referencing these vars
+   so Tailwind utilities stay readable. */
+
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+		scroll-behavior: auto !important;
+	}
+}

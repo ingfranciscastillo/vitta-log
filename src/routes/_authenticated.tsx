@@ -14,7 +14,6 @@ import {
 	createFileRoute,
 	Outlet,
 	redirect,
-	useLocation,
 	useRouterState,
 } from "@tanstack/react-router";
 import { Suspense, useState } from "react";
@@ -70,7 +69,6 @@ export const Route = createFileRoute("/_authenticated")({
 });
 
 function AuthenticatedLayout() {
-	const location = useLocation();
 	const [quickOpen, setQuickOpen] = useState<boolean>(false);
 	const [habitOpen, setHabitOpen] = useState<boolean>(false);
 	const [habitType, setHabitType] = useState<HabitType>("water");
@@ -153,7 +151,7 @@ function AuthenticatedLayout() {
 							<DropdownMenuTrigger asChild>
 								<button
 									type="button"
-									className="size-11 rounded-full bg-primary text-primary-foreground flex items-center justify-center shadow-sm active:scale-[0.92] transition-transform"
+									className="size-11 rounded-full bg-primary text-primary-foreground flex items-center justify-center shadow-sm active:scale-[0.92] motion-reduce:active:scale-100 transition-transform duration-100 ease-out"
 									aria-label="Registrar"
 								>
 									<AddCircleIcon

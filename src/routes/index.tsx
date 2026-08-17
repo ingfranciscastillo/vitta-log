@@ -1,7 +1,6 @@
 import {
 	createFileRoute,
 	redirect,
-	useLocation,
 	useRouterState,
 } from "@tanstack/react-router";
 import Features from "#/components/landing/features";

@@ -258,7 +258,7 @@ function DashboardPage() {
 								onClick={() =>
 									logHabitMut.mutate({ type: h.type, step: h.step })
 								}
-								className="group size-10 rounded-full bg-primary/10 text-primary flex items-center justify-center active:scale-[0.92] transition-transform hover:bg-primary/20 ring-1 ring-primary/5 hover:ring-primary/15"
+								className="group size-10 rounded-full bg-primary/10 text-primary flex items-center justify-center active:scale-[0.92] motion-reduce:active:scale-100 transition-transform duration-100 ease-out hover:bg-primary/20 ring-1 ring-primary/5 hover:ring-primary/15"
 								aria-label={`Añadir ${h.label}`}
 							>
 								<AddCircleIcon

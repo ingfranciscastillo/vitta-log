@@ -19,14 +19,14 @@ export function LandingNavbar() {
 				<nav className="hidden sm:flex items-center gap-6 text-sm text-muted-foreground">
 					<a
 						href="#features"
-						className="hover:text-foreground transition-colors"
+						className="hover:text-foreground transition-colors duration-100 ease-out"
 					>
 						Características
 					</a>
 					{!signedIn && (
 						<Link
 							to={"/pricing" as string}
-							className="hover:text-foreground transition-colors"
+							className="hover:text-foreground transition-colors duration-100 ease-out"
 						>
 							Premium
 						</Link>
@@ -34,7 +34,7 @@ export function LandingNavbar() {
 					{!signedIn && (
 						<Link
 							to={"/login" as string}
-							className="hover:text-foreground transition-colors"
+							className="hover:text-foreground transition-colors duration-100 ease-out"
 						>
 							Iniciar sesión
 						</Link>

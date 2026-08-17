@@ -1,8 +1,7 @@
 import {
-	AddSquareIcon,
-	DisketteIcon,
+	AddCircleIcon,
 	MinusSquareIcon,
-} from "@solar-icons/react/outline";
+} from "@solar-icons/react/line-duotone";
 import { useEffect, useState } from "react";
 import { Button } from "#/components/ui/button";
 import {
@@ -66,7 +65,11 @@ export function QuickAddDialog({
 						className="rounded-full h-12 w-12 shrink-0"
 						onClick={() => stepVal(-step)}
 					>
-						<MinusSquareIcon className="w-5 h-5" />
+						<MinusSquareIcon
+							secondaryOpacity={0}
+							size={30}
+							className="w-5 h-5"
+						/>
 					</Button>
 					<div className="flex items-baseline">
 						<Input
@@ -95,14 +98,14 @@ export function QuickAddDialog({
 						className="rounded-full h-12 w-12 shrink-0"
 						onClick={() => stepVal(step)}
 					>
-						<AddSquareIcon className="w-5 h-5" />
+						<AddCircleIcon secondaryOpacity={0} size={30} className="w-5 h-5" />
 					</Button>
 				</div>
 				<Button
 					onClick={handleSave}
 					className="w-full h-12 rounded-xl font-display text-sm mt-2"
 				>
-					<DisketteIcon className="w-4 h-4 mr-2" /> Guardar
+					Guardar
 				</Button>
 			</DialogContent>
 		</Dialog>

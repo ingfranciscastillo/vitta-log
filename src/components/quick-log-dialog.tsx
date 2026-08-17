@@ -1,9 +1,8 @@
 import {
 	AddCircleIcon,
 	MinusCircleIcon,
-	NotebookIcon,
-	RestartIcon,
-} from "@solar-icons/react/outline";
+} from "@solar-icons/react/line-duotone";
+import { NotebookIcon, RestartIcon } from "@solar-icons/react/outline";
 import { useEffect, useState } from "react";
 import { Button } from "#/components/ui/button";
 import {
@@ -106,7 +105,11 @@ export function QuickLogDialog({
 							onClick={() => step(-0.1)}
 							aria-label="Restar 0.1"
 						>
-							<MinusCircleIcon className="w-11 h-11" />
+							<MinusCircleIcon
+								size={30}
+								secondaryOpacity={0}
+								className="w-11 h-11"
+							/>
 						</Button>
 						<div className="flex items-baseline">
 							<Input
@@ -133,7 +136,11 @@ export function QuickLogDialog({
 							onClick={() => step(0.1)}
 							aria-label="Sumar 0.1"
 						>
-							<AddCircleIcon className="w-7 h-7" />
+							<AddCircleIcon
+								size={30}
+								secondaryOpacity={0}
+								className="w-7 h-7"
+							/>
 						</Button>
 					</div>
 

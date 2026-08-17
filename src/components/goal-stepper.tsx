@@ -1,5 +1,7 @@
-import { AddCircleIcon } from "@solar-icons/react/outline/add-circle";
-import { MinusCircleIcon } from "@solar-icons/react/outline/minus-circle";
+import {
+	AddCircleIcon,
+	MinusCircleIcon,
+} from "@solar-icons/react/line-duotone";
 import { Button } from "#/components/ui/button";
 import { Input } from "#/components/ui/input";
 
@@ -40,7 +42,7 @@ export function GoalStepper({
 					className="rounded-full h-7 w-7 shrink-0 hover:bg-primary/10 hover:text-primary transition-colors"
 					onClick={() => stepVal(-step)}
 				>
-					<MinusCircleIcon className="w-4 h-4" />
+					<MinusCircleIcon secondaryOpacity={0} size={30} className="w-4 h-4" />
 				</Button>
 				<div className="flex items-baseline justify-center w-20">
 					<Input
@@ -62,7 +64,7 @@ export function GoalStepper({
 					className="rounded-full h-7 w-7 shrink-0 hover:bg-primary/10 hover:text-primary transition-colors"
 					onClick={() => stepVal(step)}
 				>
-					<AddCircleIcon className="w-4 h-4" />
+					<AddCircleIcon secondaryOpacity={0} size={30} className="w-4 h-4" />
 				</Button>
 			</div>
 		</div>

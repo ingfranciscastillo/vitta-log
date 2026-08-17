@@ -1,5 +1,8 @@
 import {
 	AddCircleIcon,
+	MinusCircleIcon,
+} from "@solar-icons/react/line-duotone";
+import {
 	BellIcon,
 	CalendarIcon,
 	ChartSquareIcon,
@@ -7,7 +10,6 @@ import {
 	GraphDownIcon,
 	GraphUpIcon,
 	LockIcon,
-	MinusCircleIcon,
 	MoonIcon,
 	PulseIcon,
 	TargetIcon,
@@ -258,10 +260,14 @@ function DashboardPage() {
 								onClick={() =>
 									logHabitMut.mutate({ type: h.type, step: h.step })
 								}
-								className="group w-11 h-11 rounded-full bg-primary/10 text-primary flex items-center justify-center active:scale-95 transition-transform hover:bg-primary/20 ring-1 ring-primary/5 hover:ring-primary/15"
+								className="group w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center active:scale-95 transition-transform hover:bg-primary/20 ring-1 ring-primary/5 hover:ring-primary/15"
 								aria-label={`Añadir ${h.label}`}
 							>
-								<AddCircleIcon className="w-5 h-5 transition-transform group-hover:rotate-90" />
+								<AddCircleIcon
+									size={30}
+									secondaryOpacity={0}
+									className="w-5 h-5 transition-transform group-hover:rotate-90"
+								/>
 							</button>
 						</div>
 					);
@@ -317,9 +323,9 @@ function DashboardPage() {
 
 			{rems.length > 0 && (
 				<div className="space-y-2">
-					{rems.map((r, i) => (
+					{rems.map((r) => (
 						<div
-							key={i}
+							key={crypto.randomUUID()}
 							className="flex items-start gap-2.5 rounded-xl bg-muted/50 p-3"
 						>
 							<BellIcon className="w-4 h-4 mt-0.5 text-primary shrink-0" />

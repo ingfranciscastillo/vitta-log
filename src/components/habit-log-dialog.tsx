@@ -1,8 +1,7 @@
 import {
-	AddSquareIcon,
-	DisketteIcon,
-	MinusSquareIcon,
-} from "@solar-icons/react/outline";
+	AddCircleIcon,
+	MinusCircleIcon,
+} from "@solar-icons/react/line-duotone";
 import { useEffect, useState } from "react";
 import { Button } from "#/components/ui/button";
 import {
@@ -89,7 +88,11 @@ export function HabitLogDialog({
 							className="rounded-full h-12 w-12 shrink-0"
 							onClick={() => stepVal(-step)}
 						>
-							<MinusSquareIcon className="w-5 h-5" />
+							<MinusCircleIcon
+								size={30}
+								secondaryOpacity={0}
+								className="w-5 h-5"
+							/>
 						</Button>
 						<div className="flex items-baseline">
 							<Input
@@ -117,7 +120,11 @@ export function HabitLogDialog({
 							className="rounded-full h-12 w-12 shrink-0"
 							onClick={() => stepVal(step)}
 						>
-							<AddSquareIcon className="w-5 h-5" />
+							<AddCircleIcon
+								size={30}
+								className="w-5 h-5"
+								secondaryOpacity={0}
+							/>
 						</Button>
 					</div>
 				</div>
@@ -128,7 +135,7 @@ export function HabitLogDialog({
 						onClick={handleSave}
 						className="w-full h-12 rounded-xl font-display text-sm"
 					>
-						<DisketteIcon className="w-4 h-4 mr-2" /> Guardar
+						Guardar
 					</Button>
 				</DrawerFooter>
 			</DrawerContent>

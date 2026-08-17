@@ -1,4 +1,5 @@
-import { AddCircleIcon, WaterdropIcon } from "@solar-icons/react/outline";
+import { AddCircleIcon } from "@solar-icons/react/line-duotone";
+import { WaterdropIcon } from "@solar-icons/react/outline";
 import {
 	useMutation,
 	useQueryClient,
@@ -70,10 +71,14 @@ export function WaterCounter() {
 					type="button"
 					onClick={add}
 					disabled={addMut.isPending}
-					className="group relative w-14 h-14 rounded-full bg-primary text-primary-foreground flex items-center justify-center shadow-sm active:scale-95 transition-transform shrink-0 ring-2 ring-primary/15 hover:ring-primary/25"
+					className="group relative w-10 h-10 rounded-full bg-primary text-primary-foreground flex items-center justify-center shadow-sm active:scale-95 transition-transform shrink-0 ring-2 ring-primary/15 hover:ring-primary/25"
 					aria-label="Añadir un vaso de agua"
 				>
-					<AddCircleIcon className="w-7 h-7 transition-transform group-hover:rotate-90" />
+					<AddCircleIcon
+						secondaryOpacity={0}
+						size={30}
+						className="w-7 h-7 transition-transform group-hover:rotate-90"
+					/>
 				</button>
 			</div>
 			<div className="mt-3">

@@ -1,8 +1,4 @@
-import {
-	GraphUpIcon,
-	InfoCircleIcon,
-	PulseIcon,
-} from "@solar-icons/react/outline";
+import { InfoCircleIcon, RulerIcon } from "@solar-icons/react/outline";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo } from "react";
@@ -59,7 +55,7 @@ function IMCPage() {
 
 			{!heightCm ? (
 				<div className="rounded-2xl border border-dashed border-border p-6 text-center">
-					<PulseIcon className="w-8 h-8 mx-auto mb-2 text-primary" />
+					<RulerIcon className="w-8 h-8 mx-auto mb-2 text-primary" />
 					<p className="text-sm text-muted-foreground mb-3">
 						Guarda tu altura en tu perfil para calcular el IMC.
 					</p>
@@ -137,7 +133,6 @@ function IMCPage() {
 						series.length >= 2 ? (
 							<div className="rounded-2xl bg-card border border-border p-4">
 								<div className="flex items-center gap-2 mb-2">
-									<GraphUpIcon className="w-4 h-4 text-primary" />
 									<span className="font-display text-sm">
 										Evolución del IMC
 									</span>

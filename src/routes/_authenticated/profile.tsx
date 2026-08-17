@@ -364,42 +364,20 @@ function ProfileContent({
 
 			<section className="space-y-3">
 				<div className="font-display text-sm">Más</div>
-				<div className="rounded-2xl bg-card border border-border p-2 space-y-1">
-					<Link
-						to="/goals"
-						className="flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-muted transition-colors"
-					>
-						<TargetIcon className="w-5 h-5 text-primary" />
-						<span className="text-sm">Objetivos</span>
-					</Link>
-					<Link
-						to={"/settings" as string}
-						className="flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-muted transition-colors"
-					>
-						<SettingsIcon className="w-5 h-5 text-primary" />
-						<span className="text-sm">Configuración</span>
-					</Link>
-					<Link
-						to={"/support" as string}
-						className="flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-muted transition-colors"
-					>
-						<QuestionCircleIcon className="w-5 h-5 text-primary" />
-						<span className="text-sm">Soporte</span>
-					</Link>
-					<Link
-						to={"/export" as string}
-						className="flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-muted transition-colors"
-					>
-						<DownloadIcon className="w-5 h-5 text-primary" />
-						<span className="text-sm">Exportar datos</span>
-					</Link>
-					<Link
-						to={"/privacy" as string}
-						className="flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-muted transition-colors"
-					>
-						<ShieldIcon className="w-5 h-5 text-primary" />
-						<span className="text-sm">Privacidad</span>
-					</Link>
+				<div className="grid grid-cols-3 gap-3">
+					{MORE_LINKS.map((l, i) => (
+						<Link
+							key={l.to}
+							to={l.to}
+							style={{ animationDelay: `${i * 30}ms` }}
+							className="group relative rounded-2xl border border-border bg-card p-4 flex flex-col items-center gap-2 transition-all duration-200 hover:bg-muted/50 hover:scale-[1.02] active:scale-[0.98] animate-in fade-in slide-in-from-bottom-2 fill-mode-backwards"
+						>
+							<l.icon className="size-6 text-primary transition-transform group-hover:scale-110 group-hover:rotate-3" />
+							<span className="text-xs text-center font-display">
+								{l.label}
+							</span>
+						</Link>
+					))}
 				</div>
 			</section>
 
@@ -407,7 +385,7 @@ function ProfileContent({
 				type="button"
 				variant="outline"
 				onClick={handleLogout}
-				className="w-full h-14 mt-2 font-display text-base tracking-wider uppercase border-2 border-destructive/40 text-destructive bg-destructive/5 hover:bg-destructive hover:text-destructive-foreground hover:border-destructive active:scale-[0.98] transition-all duration-150 shadow-sm hover:shadow-md"
+				className="w-full h-11 mt-2 font-display text-base tracking-wider uppercase border-2 border-destructive/40 text-destructive bg-destructive/5 hover:bg-destructive hover:text-destructive-foreground hover:border-destructive active:scale-[0.98] transition-all duration-150 shadow-sm hover:shadow-md"
 			>
 				<Logout2Icon className="w-5 h-5 mr-2" />
 				Cerrar sesión
@@ -415,3 +393,11 @@ function ProfileContent({
 		</div>
 	);
 }
+
+const MORE_LINKS = [
+	{ to: "/goals" as const, label: "Objetivos", icon: TargetIcon },
+	{ to: "/settings" as string, label: "Configuración", icon: SettingsIcon },
+	{ to: "/support" as string, label: "Soporte", icon: QuestionCircleIcon },
+	{ to: "/export" as string, label: "Exportar datos", icon: DownloadIcon },
+	{ to: "/privacy" as string, label: "Privacidad", icon: ShieldIcon },
+];

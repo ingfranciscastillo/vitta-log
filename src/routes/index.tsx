@@ -1,4 +1,9 @@
-import { createFileRoute, redirect } from "@tanstack/react-router";
+import {
+	createFileRoute,
+	redirect,
+	useLocation,
+	useRouterState,
+} from "@tanstack/react-router";
 import Features from "#/components/landing/features";
 import Hero from "#/components/landing/hero";
 import LandingFooter from "#/components/landing/landing-footer";
@@ -15,10 +20,13 @@ export const Route = createFileRoute("/")({
 });
 
 function Landing() {
+	const pathname = useRouterState({
+		select: (s) => s.resolvedLocation?.pathname ?? s.location.pathname,
+	});
 	return (
 		<div className="min-h-dvh bg-background">
 			<LandingNavbar />
-			<main>
+			<main key={pathname} className="page-enter">
 				<Hero />
 				<Features />
 				<PremiumCTA />

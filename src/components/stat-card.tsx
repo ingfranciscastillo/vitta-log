@@ -18,7 +18,7 @@ export function StatCard({
 	accent,
 }: StatCardProps) {
 	return (
-		<div className="rounded-2xl bg-card border border-border p-4 transition-shadow hover:shadow-sm">
+		<div className="rounded-2xl bg-card border border-border p-4">
 			<div className="flex items-center justify-between">
 				<span className="text-[10px] font-medium uppercase text-muted-foreground">
 					{label}

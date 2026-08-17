@@ -105,26 +105,26 @@ export function WaterCounter() {
 					type="button"
 					onClick={subtract}
 					disabled={value <= 0 || subtractMut.isPending}
-					className="group size-10 rounded-full bg-primary/10 text-primary flex items-center justify-center active:scale-95 transition-transform disabled:opacity-40 shrink-0 ring-2 ring-primary/5 hover:ring-primary/15"
+					className="group size-10 rounded-full bg-primary/10 text-primary flex items-center justify-center active:scale-[0.92] transition-transform disabled:opacity-40 shrink-0 ring-2 ring-primary/5 hover:ring-primary/15"
 					aria-label="Quitar un vaso de agua"
 				>
 					<MinusCircleIcon
 						secondaryOpacity={0}
 						size={30}
-						className="w-7 h-7 transition-transform group-hover:-rotate-90"
+						className="w-7 h-7 transition-transform"
 					/>
 				</button>
 				<button
 					type="button"
 					onClick={add}
 					disabled={addMut.isPending}
-					className="group relative size-10 rounded-full bg-primary text-primary-foreground flex items-center justify-center shadow-sm active:scale-95 transition-transform shrink-0 ring-2 ring-primary/15 hover:ring-primary/25"
+					className="group relative size-10 rounded-full bg-primary text-primary-foreground flex items-center justify-center shadow-sm active:scale-[0.92] transition-transform shrink-0 ring-2 ring-primary/15 hover:ring-primary/25"
 					aria-label="Añadir un vaso de agua"
 				>
 					<AddCircleIcon
 						secondaryOpacity={0}
 						size={30}
-						className="w-7 h-7 transition-transform group-hover:rotate-90"
+						className="w-7 h-7 transition-transform"
 					/>
 				</button>
 			</div>

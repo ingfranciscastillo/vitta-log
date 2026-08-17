@@ -367,14 +367,13 @@ function ProfileContent({
 			<section className="space-y-3">
 				<div className="font-display text-sm">Más</div>
 				<div className="grid grid-cols-3 gap-3">
-					{MORE_LINKS.map((l, i) => (
+					{MORE_LINKS.map((l) => (
 						<Link
 							key={l.to}
 							to={l.to}
-							style={{ animationDelay: `${i * 30}ms` }}
-							className="group relative rounded-2xl border border-border bg-card p-4 flex flex-col items-center gap-2 transition-[transform,background-color] duration-200 hover:bg-muted/50 hover:scale-[1.02] active:scale-[0.98] motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-2 motion-safe:fill-mode-backwards"
+							className="group relative rounded-2xl border border-border bg-card p-4 flex flex-col items-center gap-2 transition-[transform,background-color] duration-150 hover:bg-muted/50 hover:scale-[1.015] active:scale-[0.98]"
 						>
-							<l.icon className="size-6 text-primary transition-transform group-hover:scale-110 group-hover:rotate-3" />
+							<l.icon className="size-6 text-primary transition-transform group-hover:scale-110" />
 							<span className="text-xs text-center font-display">
 								{l.label}
 							</span>

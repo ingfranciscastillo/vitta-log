@@ -97,29 +97,27 @@ function MorePage() {
 		<div className="space-y-6">
 			<h1 className="font-display text-xl text-balance">Más</h1>
 
-			{SECTIONS.map((section, sectionIdx) => (
+			{SECTIONS.map((section) => (
 				<section key={section.title} className="space-y-3">
 					<h2 className="font-display text-sm text-balance">{section.title}</h2>
 					<div className="grid grid-cols-3 gap-3">
-						{section.items.map((item, itemIdx) => {
+						{section.items.map((item) => {
 							const Icon = item.icon;
-							const delay = (sectionIdx * 6 + itemIdx) * 30;
 							return (
 								<Link
 									key={item.to}
 									to={item.to}
-									style={{ animationDelay: `${delay}ms` }}
 									className={
 										item.featured
-											? "group relative rounded-2xl border border-accent/40 bg-accent/15 p-4 flex flex-col items-center gap-2 transition-[transform,background-color] duration-200 hover:bg-muted/50 hover:scale-[1.02] active:scale-[0.98] motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-2 motion-safe:fill-mode-backwards"
-											: "group relative rounded-2xl border border-border bg-card p-4 flex flex-col items-center gap-2 transition-[transform,background-color] duration-200 hover:bg-muted/50 hover:scale-[1.02] active:scale-[0.98] motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-2 motion-safe:fill-mode-backwards"
+											? "group relative rounded-2xl border border-accent/40 bg-accent/15 p-4 flex flex-col items-center gap-2 transition-[transform,background-color] duration-150 hover:bg-muted/50 hover:scale-[1.015] active:scale-[0.98]"
+											: "group relative rounded-2xl border border-border bg-card p-4 flex flex-col items-center gap-2 transition-[transform,background-color] duration-150 hover:bg-muted/50 hover:scale-[1.015] active:scale-[0.98]"
 									}
 								>
 									<Icon
 										className={
 											item.featured
-												? "size-6 text-accent-foreground transition-transform group-hover:scale-110 group-hover:rotate-3"
-												: "size-6 text-primary transition-transform group-hover:scale-110 group-hover:rotate-3"
+												? "size-6 text-accent-foreground transition-transform group-hover:scale-110"
+												: "size-6 text-primary transition-transform group-hover:scale-110"
 										}
 									/>
 									<span className="text-xs text-center font-display wrap-break-word hyphens-auto">

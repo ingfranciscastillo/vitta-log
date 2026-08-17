@@ -10,7 +10,13 @@ import {
 	useQueryClient,
 	useSuspenseQuery,
 } from "@tanstack/react-query";
-import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
+import {
+	createFileRoute,
+	Outlet,
+	redirect,
+	useLocation,
+	useRouterState,
+} from "@tanstack/react-router";
 import { Suspense, useState } from "react";
 import toast from "react-hot-toast";
 import { BottomNav } from "#/components/bottom-nav";
@@ -64,6 +70,7 @@ export const Route = createFileRoute("/_authenticated")({
 });
 
 function AuthenticatedLayout() {
+	const location = useLocation();
 	const [quickOpen, setQuickOpen] = useState<boolean>(false);
 	const [habitOpen, setHabitOpen] = useState<boolean>(false);
 	const [habitType, setHabitType] = useState<HabitType>("water");
@@ -71,6 +78,10 @@ function AuthenticatedLayout() {
 	const { unit } = useSuspenseQuery(weightStatsQuery()).data!;
 	const habits = useSuspenseQuery(habitLogsQuery()).data!;
 	const qc = useQueryClient();
+
+	const pathname = useRouterState({
+		select: (s) => s.resolvedLocation?.pathname ?? s.location.pathname,
+	});
 
 	const today = todayStr();
 	const currentToday = habitToday(habits, habitType);
@@ -142,7 +153,7 @@ function AuthenticatedLayout() {
 							<DropdownMenuTrigger asChild>
 								<button
 									type="button"
-									className="size-11 rounded-full bg-primary text-primary-foreground flex items-center justify-center shadow-sm active:scale-95 transition-transform"
+									className="size-11 rounded-full bg-primary text-primary-foreground flex items-center justify-center shadow-sm active:scale-[0.92] transition-transform"
 									aria-label="Registrar"
 								>
 									<AddCircleIcon
@@ -188,7 +199,7 @@ function AuthenticatedLayout() {
 						</DropdownMenu>
 					</div>
 				</header>
-				<main className="px-4 pt-4 pb-28">
+				<main key={pathname} className="page-enter px-4 pt-4 pb-28">
 					<Suspense fallback={<DashboardSkeleton />}>
 						<Outlet />
 					</Suspense>

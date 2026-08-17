@@ -1,7 +1,7 @@
 import {
-	CalendarDateIcon,
+	CalendarIcon,
 	HomeIcon,
-	PulseIcon,
+	StarIcon,
 	UserIcon,
 	WidgetIcon,
 } from "@solar-icons/react/outline";
@@ -21,8 +21,8 @@ type NavItem = {
 
 const items: NavItem[] = [
 	{ to: "/dashboard", label: "Inicio", icon: HomeIcon, end: true },
-	{ to: "/habits", label: "Hábitos", icon: PulseIcon },
-	{ to: "/weekly-summary", label: "Resumen", icon: CalendarDateIcon },
+	{ to: "/habits", label: "Hábitos", icon: StarIcon },
+	{ to: "/weekly-summary", label: "Resumen", icon: CalendarIcon },
 	{ to: "/more", label: "Más", icon: WidgetIcon },
 	{ to: "/profile", label: "Perfil", icon: UserIcon },
 ];
@@ -38,11 +38,11 @@ export function BottomNav() {
 						activeOptions={end ? { exact: true } : undefined}
 						activeProps={{
 							className:
-								"flex flex-col items-center gap-0.5 py-2.5 text-[10px] transition-colors text-primary",
+								"flex flex-col items-center gap-0.5 py-3 text-[10px] transition-colors text-primary",
 						}}
 						inactiveProps={{
 							className:
-								"flex flex-col items-center gap-0.5 py-2.5 text-[10px] transition-colors text-muted-foreground",
+								"flex flex-col items-center gap-0.5 py-3 text-[10px] transition-colors text-muted-foreground",
 						}}
 					>
 						<Icon className="w-5 h-5" />

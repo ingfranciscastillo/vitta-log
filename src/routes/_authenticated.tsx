@@ -145,14 +145,14 @@ function AuthenticatedLayout() {
 							>
 								<AddCircleIcon
 									secondaryOpacity={0}
-									size={30}
+									size={50}
 									className="w-5 h-5"
 								/>
 							</button>
 						</DropdownMenuTrigger>
 						<DropdownMenuContent
 							align="end"
-							className="rounded-2xl min-w-[10rem] p-1.5"
+							className="rounded-2xl min-w-40 p-1.5"
 						>
 							<DropdownMenuItem
 								onSelect={() => setQuickOpen(true)}

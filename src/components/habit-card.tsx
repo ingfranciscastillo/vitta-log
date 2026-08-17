@@ -21,7 +21,6 @@ export function HabitCard({
 	goal,
 	unit,
 	step = 1,
-	onAdd,
 	onSet,
 }: HabitCardProps) {
 	const [open, setOpen] = useState(false);
@@ -55,7 +54,7 @@ export function HabitCard({
 				</span>
 				<button
 					type="button"
-					onClick={() => onAdd(step)}
+					onClick={() => setOpen(true)}
 					className="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center active:scale-95 transition-transform"
 					aria-label={`Añadir ${label}`}
 				>

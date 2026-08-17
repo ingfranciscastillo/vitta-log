@@ -3,11 +3,7 @@ import {
 	CalendarIcon,
 	CourseDownIcon,
 	CourseUpIcon,
-	DiagramDownIcon,
-	DiagramUpIcon,
-	GraphDownIcon,
 	GraphUpIcon,
-	RestartIcon,
 	ScaleIcon,
 } from "@solar-icons/react/outline";
 import { useSuspenseQuery } from "@tanstack/react-query";
@@ -79,13 +75,13 @@ function StatisticsPage() {
 				<StatCard
 					label="Mayor pérdida/día"
 					value={s.count ? formatDelta(s.biggestLoss, unit) : "—"}
-					icon={DiagramDownIcon}
+					icon={CourseDownIcon}
 					accent="text-emerald-600"
 				/>
 				<StatCard
 					label="Mayor ganancia/día"
 					value={s.count ? formatDelta(s.biggestGain, unit) : "—"}
-					icon={DiagramUpIcon}
+					icon={CourseUpIcon}
 					accent="text-rose-600"
 				/>
 				<StatCard
@@ -109,7 +105,7 @@ function StatisticsPage() {
 							? `${formatWeightValue(s.totalLost, unit)} ${unit}`
 							: "—"
 					}
-					icon={GraphDownIcon}
+					icon={CourseDownIcon}
 					accent="text-emerald-600"
 				/>
 				<StatCard
@@ -119,7 +115,7 @@ function StatisticsPage() {
 							? `${formatWeightValue(s.totalGained, unit)} ${unit}`
 							: "—"
 					}
-					icon={GraphUpIcon}
+					icon={CourseUpIcon}
 					accent="text-rose-600"
 				/>
 				<StatCard
@@ -131,7 +127,7 @@ function StatisticsPage() {
 								? "Ascendente"
 								: "Estable"
 					}
-					icon={RestartIcon}
+					icon={GraphUpIcon}
 					accent={
 						s.trend < -0.001
 							? "text-emerald-600"

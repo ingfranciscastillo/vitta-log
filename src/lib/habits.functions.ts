@@ -30,7 +30,7 @@ export const listHabitLogs = createServerFn({ method: "GET" }).handler(
 const addSchema = z.object({
 	type: z.enum(["water", "steps", "sleep"]),
 	date: z.string().min(1),
-	step: z.number().positive(),
+	step: z.number(),
 });
 
 export const addHabitLog = createServerFn({ method: "POST" })
@@ -38,6 +38,10 @@ export const addHabitLog = createServerFn({ method: "POST" })
 	.handler(async ({ data }) => {
 		const session = await getSession();
 		if (!session) throw new Error("Unauthorized");
+
+		if (data.step === 0) {
+			throw new Error("El paso no puede ser cero");
+		}
 
 		const [existing] = await db
 			.select()
@@ -52,12 +56,16 @@ export const addHabitLog = createServerFn({ method: "POST" })
 			.limit(1);
 
 		if (existing) {
-			const next = Number(existing.value) + data.step;
+			const next = Math.max(0, Number(existing.value) + data.step);
 			await db
 				.update(habitLog)
 				.set({ value: next.toString() })
 				.where(eq(habitLog.id, existing.id));
 			return { id: existing.id, value: next };
+		}
+
+		if (data.step < 0) {
+			throw new Error("No hay hábito para restar");
 		}
 
 		const [row] = await db

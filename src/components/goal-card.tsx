@@ -1,4 +1,4 @@
-import { PenIcon, TargetIcon } from "@solar-icons/react/outline";
+import { PenIcon } from "@solar-icons/react/outline";
 import { Progress } from "#/components/ui/progress";
 import {
 	estimateGoalDate,
@@ -31,7 +31,6 @@ export function GoalCard({ goal, current, unit, onEdit }: GoalCardProps) {
 		<div className="rounded-2xl bg-card border border-border p-5">
 			<div className="flex items-center justify-between mb-3">
 				<div className="flex items-center gap-2">
-					<TargetIcon className="w-4 h-4 text-primary" />
 					<span className="font-display text-sm">Objetivo</span>
 				</div>
 				<button

@@ -95,7 +95,7 @@ export function QuickLogDialog({
 							type="button"
 							variant="outline"
 							size="icon"
-							className="rounded-full h-12 w-12 shrink-0"
+							className="rounded-full size-12 shrink-0"
 							onClick={() => step(-0.1)}
 							aria-label="Restar 0.1"
 						>

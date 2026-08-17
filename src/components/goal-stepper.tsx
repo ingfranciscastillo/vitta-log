@@ -40,7 +40,7 @@ export function GoalStepper({
 					variant="outline"
 					size="icon"
 					aria-label="Restar"
-					className="rounded-full h-7 w-7 shrink-0 hover:bg-primary/10 hover:text-primary transition-colors"
+					className="rounded-full size-7 shrink-0 hover:bg-primary/10 hover:text-primary transition-colors"
 					onClick={() => stepVal(-step)}
 				>
 					<MinusCircleIcon secondaryOpacity={0} size={30} className="w-4 h-4" />

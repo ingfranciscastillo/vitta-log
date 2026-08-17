@@ -186,9 +186,9 @@ export function HistoryTable({
 									<span
 										className={
 											r.diff < 0
-												? "text-emerald-600"
+												? "text-positive"
 												: r.diff > 0
-													? "text-rose-600"
+													? "text-negative"
 													: "text-muted-foreground"
 										}
 									>

@@ -38,7 +38,7 @@ function PrivacyPage() {
 		<div className="min-h-dvh bg-background">
 			<header className="sticky top-0 z-30 bg-background/90 backdrop-blur border-b border-border pt-[env(safe-area-inset-top)]">
 				<div className="max-w-2xl mx-auto px-4 h-14 flex items-center gap-3">
-					<Button asChild variant="ghost" size="icon" className="h-9 w-9">
+					<Button asChild variant="ghost" size="icon" className="size-9">
 						<Link to="/">
 							<ArrowLeftIcon className="w-5 h-5" />
 						</Link>

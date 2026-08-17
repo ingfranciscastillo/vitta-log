@@ -55,7 +55,7 @@ export function HabitCard({
 				<button
 					type="button"
 					onClick={() => setOpen(true)}
-					className="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center active:scale-95 transition-transform"
+					className="size-8 rounded-full bg-primary/10 text-primary flex items-center justify-center active:scale-95 transition-transform"
 					aria-label={`Añadir ${label}`}
 				>
 					<AddCircleIcon secondaryOpacity={0} size={30} className="w-4 h-4" />

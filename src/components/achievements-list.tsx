@@ -47,7 +47,7 @@ export function AchievementsList({ achievements }: AchievementsListProps) {
 						}`}
 					>
 						<div
-							className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 ${
+							className={`size-10 rounded-full flex items-center justify-center shrink-0 ${
 								a.unlocked
 									? "bg-primary/15 text-primary"
 									: "bg-muted text-muted-foreground"

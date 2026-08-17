@@ -92,9 +92,9 @@ function WeeklySummaryPage() {
 						w.weightChange == null
 							? ""
 							: w.weightChange < 0
-								? "text-emerald-600"
+								? "text-positive"
 								: w.weightChange > 0
-									? "text-rose-600"
+									? "text-negative"
 									: ""
 					}
 				/>

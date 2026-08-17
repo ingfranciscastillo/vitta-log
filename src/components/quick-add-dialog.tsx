@@ -63,7 +63,7 @@ export function QuickAddDialog({
 							variant="outline"
 							size="icon"
 							aria-label="Restar"
-							className="rounded-full h-12 w-12 shrink-0"
+							className="rounded-full size-12 shrink-0"
 							onClick={() => stepVal(-step)}
 						>
 							<MinusCircleIcon

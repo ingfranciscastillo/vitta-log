@@ -69,7 +69,7 @@ export function Features() {
 							key={f.title}
 							className="rounded-2xl bg-card border border-border p-5 hover:shadow-sm transition-shadow"
 						>
-							<div className="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center mb-3">
+							<div className="size-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center mb-3">
 								<Icon className="w-5 h-5" />
 							</div>
 							<h3 className="font-display text-base mb-1">{f.title}</h3>

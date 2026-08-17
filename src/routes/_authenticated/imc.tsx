@@ -92,13 +92,13 @@ function IMCPage() {
 							value={cat?.label ?? "—"}
 							accent={
 								cat?.tone === "green"
-									? "text-emerald-600"
+									? "text-positive"
 									: cat?.tone === "amber"
-										? "text-amber-600"
+										? "text-warning"
 										: cat?.tone === "red"
-											? "text-rose-600"
+											? "text-negative"
 											: cat?.tone === "blue"
-												? "text-sky-600"
+												? "text-primary"
 												: "text-primary"
 							}
 						/>

@@ -55,7 +55,7 @@ function StatisticsPage() {
 						s.count ? `${formatWeightValue(s.max ?? 0, unit)} ${unit}` : "—"
 					}
 					icon={CourseUpIcon}
-					accent="text-rose-600"
+					accent="text-negative"
 				/>
 				<StatCard
 					label="Peso mínimo"
@@ -63,7 +63,7 @@ function StatisticsPage() {
 						s.count ? `${formatWeightValue(s.min ?? 0, unit)} ${unit}` : "—"
 					}
 					icon={CourseDownIcon}
-					accent="text-emerald-600"
+					accent="text-positive"
 				/>
 				<StatCard
 					label="Promedio"
@@ -76,13 +76,13 @@ function StatisticsPage() {
 					label="Mayor pérdida/día"
 					value={s.count ? formatDelta(s.biggestLoss, unit) : "—"}
 					icon={CourseDownIcon}
-					accent="text-emerald-600"
+					accent="text-positive"
 				/>
 				<StatCard
 					label="Mayor ganancia/día"
 					value={s.count ? formatDelta(s.biggestGain, unit) : "—"}
 					icon={CourseUpIcon}
-					accent="text-rose-600"
+					accent="text-negative"
 				/>
 				<StatCard
 					label="Cambio semanal"
@@ -106,7 +106,7 @@ function StatisticsPage() {
 							: "—"
 					}
 					icon={CourseDownIcon}
-					accent="text-emerald-600"
+					accent="text-positive"
 				/>
 				<StatCard
 					label="Total ganado"
@@ -116,7 +116,7 @@ function StatisticsPage() {
 							: "—"
 					}
 					icon={CourseUpIcon}
-					accent="text-rose-600"
+					accent="text-negative"
 				/>
 				<StatCard
 					label="Tendencia"
@@ -130,9 +130,9 @@ function StatisticsPage() {
 					icon={GraphUpIcon}
 					accent={
 						s.trend < -0.001
-							? "text-emerald-600"
+							? "text-positive"
 							: s.trend > 0.001
-								? "text-rose-600"
+								? "text-negative"
 								: ""
 					}
 				/>

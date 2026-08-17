@@ -139,15 +139,15 @@ function CalendarPage() {
 			</div>
 			<div className="flex gap-4 text-xs text-muted-foreground">
 				<span className="flex items-center gap-1.5">
-					<span className="w-3 h-3 rounded bg-emerald-500/30" />
+					<span className="size-3 rounded bg-positive/30" />
 					Bajó
 				</span>
 				<span className="flex items-center gap-1.5">
-					<span className="w-3 h-3 rounded bg-rose-500/30" />
+					<span className="size-3 rounded bg-negative/30" />
 					Subió
 				</span>
 				<span className="flex items-center gap-1.5">
-					<span className="w-3 h-3 rounded bg-primary/20" />
+					<span className="size-3 rounded bg-primary/20" />
 					Igual
 				</span>
 			</div>

@@ -168,9 +168,9 @@ function DashboardPage() {
 					icon={PulseIcon}
 					accent={
 						stats.changeSinceStart < 0
-							? "text-emerald-600"
+							? "text-positive"
 							: stats.changeSinceStart > 0
-								? "text-rose-600"
+								? "text-negative"
 								: ""
 					}
 				/>
@@ -190,11 +190,11 @@ function DashboardPage() {
 					icon={HealthIcon}
 					accent={
 						imcCat?.tone === "green"
-							? "text-emerald-600"
+							? "text-positive"
 							: imcCat?.tone === "amber"
-								? "text-amber-600"
+								? "text-warning"
 								: imcCat?.tone === "red"
-									? "text-rose-600"
+									? "text-negative"
 									: "text-primary"
 					}
 				/>
@@ -258,7 +258,7 @@ function DashboardPage() {
 								onClick={() =>
 									logHabitMut.mutate({ type: h.type, step: h.step })
 								}
-								className="group w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center active:scale-95 transition-transform hover:bg-primary/20 ring-1 ring-primary/5 hover:ring-primary/15"
+								className="group size-10 rounded-full bg-primary/10 text-primary flex items-center justify-center active:scale-95 transition-transform hover:bg-primary/20 ring-1 ring-primary/5 hover:ring-primary/15"
 								aria-label={`Añadir ${h.label}`}
 							>
 								<AddCircleIcon
@@ -312,7 +312,7 @@ function DashboardPage() {
 
 			<div className="rounded-2xl bg-accent/15 border border-accent/40 p-4">
 				<div className="flex items-center gap-2 mb-1">
-					<StarsMinimalisticIcon className="w-4 h-4 text-accent-foreground" />
+					<StarsMinimalisticIcon className="w-4 h-4 text-primary" />
 					<span className="font-display text-sm">Sugerencia del día</span>
 				</div>
 				<p className="text-sm text-pretty">{suggestion}</p>
@@ -356,7 +356,7 @@ function DashboardPage() {
 					className="block rounded-2xl bg-accent/20 border border-accent/40 p-4 hover:bg-accent/30 transition-colors"
 				>
 					<div className="flex items-center gap-2 mb-1">
-						<StarsMinimalisticIcon className="w-4 h-4 text-accent-foreground" />
+						<StarsMinimalisticIcon className="w-4 h-4 text-primary" />
 						<span className="font-display text-sm">Desbloquea Premium</span>
 					</div>
 					<p className="text-xs text-muted-foreground text-pretty">

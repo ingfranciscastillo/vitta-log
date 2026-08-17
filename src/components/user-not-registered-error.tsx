@@ -5,7 +5,7 @@ function UserNotRegisteredError() {
 		<div className="flex flex-col items-center justify-center min-h-dvh bg-background">
 			<div className="max-w-md w-full p-8 bg-card rounded-2xl shadow-sm border border-border">
 				<div className="text-center">
-					<div className="inline-flex items-center justify-center w-16 h-16 mb-6 rounded-full bg-destructive/10">
+					<div className="inline-flex items-center justify-center size-16 mb-6 rounded-full bg-destructive/10">
 						<ShieldKeyholeIcon className="w-8 h-8 text-destructive" />
 					</div>
 					<h1 className="text-3xl font-bold text-foreground mb-4 font-display text-balance">

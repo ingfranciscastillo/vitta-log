@@ -15,7 +15,7 @@ export function PremiumGate({
 	const [open, setOpen] = useState(false);
 	return (
 		<div className="rounded-2xl border border-dashed border-border p-8 text-center">
-			<div className="w-12 h-12 rounded-2xl bg-primary/10 text-primary flex items-center justify-center mx-auto mb-4">
+			<div className="size-12 rounded-2xl bg-primary/10 text-primary flex items-center justify-center mx-auto mb-4">
 				<StarsMinimalisticIcon className="w-6 h-6" />
 			</div>
 			<h2 className="font-display text-lg text-balance">{title}</h2>

@@ -91,9 +91,9 @@ export function CalendarView({ entries, unit, onDayClick }: CalendarViewProps) {
 					const inMonth = isSameMonth(day, cursor);
 					const tone = entry
 						? entry.diff < 0
-							? "bg-emerald-500/15 text-emerald-700 dark:text-emerald-300"
+							? "bg-positive/15 text-positive"
 							: entry.diff > 0
-								? "bg-rose-500/15 text-rose-700 dark:text-rose-300"
+								? "bg-negative/15 text-negative"
 								: "bg-primary/10 text-primary"
 						: "";
 					return (

@@ -5,7 +5,7 @@ import { Button } from "#/components/ui/button";
 export function Hero() {
 	return (
 		<section className="relative overflow-hidden">
-			<div className="absolute -top-24 -right-24 w-72 h-72 rounded-full bg-accent/20 blur-3xl pointer-events-none" />
+			<div className="absolute -top-24 -right-24 size-72 rounded-full bg-accent/20 blur-3xl pointer-events-none" />
 			<div className="max-w-5xl mx-auto px-4 pt-16 pb-20 text-center relative">
 				<div className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 text-primary px-3 py-1 text-xs font-medium mb-6">
 					<BoltIcon className="w-3.5 h-3.5" /> Registro en 5 segundos

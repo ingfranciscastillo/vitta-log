@@ -40,7 +40,7 @@ export function GoalStepper({
 					variant="outline"
 					size="icon"
 					aria-label="Restar"
-					className="rounded-full size-7 shrink-0 hover:bg-primary/10 hover:text-primary transition-colors duration-100 ease-out"
+					className="rounded-full size-7 shrink-0 pointer-fine-hover:bg-primary/10 pointer-fine-hover:text-primary transition-colors duration-100 ease-out"
 					onClick={() => stepVal(-step)}
 				>
 					<MinusCircleIcon secondaryOpacity={0} size={30} className="w-4 h-4" />
@@ -63,7 +63,7 @@ export function GoalStepper({
 					variant="outline"
 					size="icon"
 					aria-label="Sumar"
-					className="rounded-full h-7 w-7 shrink-0 hover:bg-primary/10 hover:text-primary transition-colors duration-100 ease-out"
+					className="rounded-full h-7 w-7 shrink-0 pointer-fine-hover:bg-primary/10 pointer-fine-hover:text-primary transition-colors duration-100 ease-out"
 					onClick={() => stepVal(step)}
 				>
 					<AddCircleIcon secondaryOpacity={0} size={30} className="w-4 h-4" />

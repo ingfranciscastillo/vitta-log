@@ -371,9 +371,9 @@ function ProfileContent({
 						<Link
 							key={l.to}
 							to={l.to}
-							className="group relative rounded-2xl border border-border bg-card p-4 flex flex-col items-center gap-2 transition-[transform,background-color] duration-100 ease-out hover:bg-muted/50 hover:scale-[1.015] active:scale-[0.98] motion-reduce:active:scale-100"
+							className="motion-card group relative rounded-2xl border border-border bg-card p-4 flex flex-col items-center gap-2 transition-[transform,background-color] duration-100 ease-out pointer-fine-pointer-fine-hover:bg-muted/50 pointer-fine-hover:scale-[1.015] active:scale-[0.98] motion-reduce:active:scale-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
 						>
-							<l.icon className="size-6 text-primary transition-transform group-hover:scale-110" />
+							<l.icon className="size-6 text-primary transition-transform group-hover:scale-105" />
 							<span className="text-xs text-center font-display">
 								{l.label}
 							</span>
@@ -386,7 +386,7 @@ function ProfileContent({
 				type="button"
 				variant="outline"
 				onClick={handleLogout}
-				className="w-full h-11 mt-2 font-display text-base uppercase border-2 border-destructive/40 text-destructive bg-destructive/5 hover:bg-destructive hover:text-destructive-foreground hover:border-destructive active:scale-[0.98] motion-reduce:active:scale-100 transition-[background-color,color,border-color] duration-100 ease-out"
+				className="w-full h-11 mt-2 font-display text-base uppercase border-2 border-destructive/40 text-destructive bg-destructive/5 pointer-fine-hover:bg-destructive pointer-fine-hover:text-destructive-foreground pointer-fine-hover:border-destructive active:scale-[0.98] motion-reduce:active:scale-100 transition-[background-color,color,border-color] duration-100 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
 			>
 				<Logout2Icon className="w-5 h-5 mr-2" />
 				Cerrar sesión

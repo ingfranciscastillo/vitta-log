@@ -57,7 +57,7 @@ export function CalendarView({ entries, unit, onDayClick }: CalendarViewProps) {
 				<button
 					type="button"
 					onClick={() => setCursor((c) => subMonths(c, 1))}
-					className="p-2 rounded-lg hover:bg-muted"
+					className="p-2 rounded-lg pointer-fine-hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
 					aria-label="Mes anterior"
 				>
 					<AltArrowLeftIcon className="w-4 h-4" />
@@ -68,7 +68,7 @@ export function CalendarView({ entries, unit, onDayClick }: CalendarViewProps) {
 				<button
 					type="button"
 					onClick={() => setCursor((c) => addMonths(c, 1))}
-					className="p-2 rounded-lg hover:bg-muted"
+					className="p-2 rounded-lg pointer-fine-hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
 					aria-label="Mes siguiente"
 				>
 					<AltArrowRightIcon className="w-4 h-4" />
@@ -106,7 +106,7 @@ export function CalendarView({ entries, unit, onDayClick }: CalendarViewProps) {
 							}`}
 							className={`aspect-square rounded-xl flex flex-col items-center justify-center text-xs transition-colors ${
 								inMonth ? "" : "opacity-30"
-							} ${entry ? tone : inMonth ? "hover:bg-muted text-muted-foreground" : ""}`}
+							} ${entry ? tone : inMonth ? "pointer-fine-hover:bg-muted text-muted-foreground" : ""}`}
 						>
 							<span className="text-[11px]">{format(day, "d")}</span>
 							{entry && (

@@ -109,15 +109,15 @@ function MorePage() {
 									to={item.to}
 									className={
 										item.featured
-											? "group relative rounded-2xl border border-accent/40 bg-accent/15 p-4 flex flex-col items-center gap-2 transition-[transform,background-color] duration-100 ease-out hover:bg-muted/50 hover:scale-[1.015] active:scale-[0.98] motion-reduce:active:scale-100"
-											: "group relative rounded-2xl border border-border bg-card p-4 flex flex-col items-center gap-2 transition-[transform,background-color] duration-100 ease-out hover:bg-muted/50 hover:scale-[1.015] active:scale-[0.98] motion-reduce:active:scale-100"
+											? "group relative rounded-2xl border border-accent/40 bg-accent/15 p-4 flex flex-col items-center gap-2 transition-[transform,background-color] duration-100 ease-out pointer-fine-pointer-fine-hover:bg-muted/50 pointer-fine-hover:scale-[1.015] active:scale-[0.98] motion-reduce:active:scale-100"
+											: "group relative rounded-2xl border border-border bg-card p-4 flex flex-col items-center gap-2 transition-[transform,background-color] duration-100 ease-out pointer-fine-pointer-fine-hover:bg-muted/50 pointer-fine-hover:scale-[1.015] active:scale-[0.98] motion-reduce:active:scale-100"
 									}
 								>
 									<Icon
 										className={
 											item.featured
-												? "size-6 text-accent-foreground transition-transform group-hover:scale-110"
-												: "size-6 text-primary transition-transform group-hover:scale-110"
+												? "size-6 text-accent-foreground transition-transform group-hover:scale-105"
+												: "size-6 text-primary transition-transform group-hover:scale-105"
 										}
 									/>
 									<span className="text-xs text-center font-display wrap-break-word hyphens-auto">

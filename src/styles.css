@@ -11,6 +11,14 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+@custom-variant pointer-fine-hover {
+	@media (hover: hover) and (pointer: fine) {
+		&:hover {
+			@slot;
+		}
+	}
+}
+
 @theme inline {
 	--font-heading: var(--font-heading);
 	--font-body: var(--font-body);
@@ -221,7 +229,26 @@
    200ms progress, 250ms hover-out/page, 1800ms loading cycle.
    These are conventions documented for the project; components
    inline explicit durations rather than referencing these vars
-   so Tailwind utilities stay readable. */
+   so Tailwind utilities stay readable.
+
+   .motion-card extends the transition to 250ms when the element
+   is NOT being hovered, so the hover-out (releasing the mouse)
+   settles slower than the hover-in. */
+.motion-card {
+	transition-duration: 250ms;
+}
+.motion-card:hover,
+.pointer-fine-hover\:scale-\[1\.015\]:hover,
+.pointer-fine-hover\:bg-muted\/50:hover {
+	transition-duration: 150ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.motion-card,
+	.motion-card:hover {
+		transition-duration: 0.01ms !important;
+	}
+}
 
 @media (prefers-reduced-motion: reduce) {
 	*,

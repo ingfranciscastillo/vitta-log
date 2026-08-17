@@ -220,7 +220,7 @@ function DashboardPage() {
 			) : (
 				<Link
 					to="/goals"
-					className="block rounded-2xl border border-dashed border-border p-4 text-center text-sm text-muted-foreground hover:bg-muted transition-colors"
+					className="block rounded-2xl border border-dashed border-border p-4 text-center text-sm text-muted-foreground pointer-fine-hover:bg-muted transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
 				>
 					<TargetIcon className="w-5 h-5 mx-auto mb-1 text-primary" />
 					Define tu objetivo
@@ -258,7 +258,7 @@ function DashboardPage() {
 								onClick={() =>
 									logHabitMut.mutate({ type: h.type, step: h.step })
 								}
-								className="group size-10 rounded-full bg-primary/10 text-primary flex items-center justify-center active:scale-[0.92] motion-reduce:active:scale-100 transition-transform duration-100 ease-out hover:bg-primary/20 ring-1 ring-primary/5 hover:ring-primary/15"
+								className="group size-10 rounded-full bg-primary/10 text-primary flex items-center justify-center active:scale-[0.92] motion-reduce:active:scale-100 transition-transform duration-100 ease-out pointer-fine-hover:bg-primary/20 ring-1 ring-primary/5 pointer-fine-hover:ring-primary/15"
 								aria-label={`Añadir ${h.label}`}
 							>
 								<AddCircleIcon
@@ -274,7 +274,7 @@ function DashboardPage() {
 
 			<Link
 				to="/nutrition"
-				className="block rounded-2xl bg-card border border-border p-4 hover:bg-muted transition-colors"
+				className="block rounded-2xl bg-card border border-border p-4 pointer-fine-hover:bg-muted transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
 			>
 				<div className="flex items-center justify-between">
 					<div className="flex items-center gap-2">

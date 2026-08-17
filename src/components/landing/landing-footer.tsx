@@ -11,19 +11,19 @@ export function LandingFooter() {
 				<nav className="flex items-center gap-5 text-sm text-muted-foreground">
 					<a
 						href="#features"
-						className="hover:text-foreground transition-colors duration-100 ease-out"
+						className="pointer-fine-hover:text-foreground transition-colors duration-100 ease-out"
 					>
 						Características
 					</a>
 					<Link
 						to={"/login" as string}
-						className="hover:text-foreground transition-colors duration-100 ease-out"
+						className="pointer-fine-hover:text-foreground transition-colors duration-100 ease-out"
 					>
 						Iniciar sesión
 					</Link>
 					<Link
 						to={"/register" as string}
-						className="hover:text-foreground transition-colors duration-100 ease-out"
+						className="pointer-fine-hover:text-foreground transition-colors duration-100 ease-out"
 					>
 						Registrarse
 					</Link>

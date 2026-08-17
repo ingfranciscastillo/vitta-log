@@ -303,7 +303,7 @@ function ProfileContent({
 					<Button
 						type="button"
 						onClick={save}
-						disabled={saveMutation.isPending}
+						disabled={saveMutation.isPending} aria-busy={saveMutation.isPending}
 						className="w-full h-11 font-display"
 					>
 						{saveMutation.isPending && <Bars className="w-3 h-3 mr-1.5" />}
@@ -348,7 +348,7 @@ function ProfileContent({
 						type="button"
 						variant="outline"
 						onClick={() => setConfirmDeleteAll(true)}
-						disabled={deleteAllMutation.isPending}
+						disabled={deleteAllMutation.isPending} aria-busy={deleteAllMutation.isPending}
 						className="w-full h-10 text-destructive font-display text-xs"
 					>
 						{deleteAllMutation.isPending && <Bars className="w-3 h-3 mr-1.5" />}

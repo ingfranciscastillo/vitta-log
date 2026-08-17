@@ -206,7 +206,7 @@ function GoalsPage() {
 				<Button
 					type="button"
 					onClick={saveHabits}
-					disabled={saveHabitsMut.isPending}
+					disabled={saveHabitsMut.isPending} aria-busy={saveHabitsMut.isPending}
 					className="w-full h-11 font-display"
 				>
 					{saveHabitsMut.isPending && <Bars className="w-3 h-3 mr-1.5" />}
@@ -253,7 +253,7 @@ function GoalsPage() {
 					<Button
 						type="button"
 						onClick={saveNutrition}
-						disabled={saveNutritionMut.isPending}
+						disabled={saveNutritionMut.isPending} aria-busy={saveNutritionMut.isPending}
 						className="w-full h-11 font-display"
 					>
 						{saveNutritionMut.isPending && <Bars className="w-3 h-3 mr-1.5" />}
@@ -329,7 +329,7 @@ function GoalsPage() {
 						<Button
 							type="button"
 							onClick={saveWeight}
-							disabled={saveWeightMut.isPending}
+							disabled={saveWeightMut.isPending} aria-busy={saveWeightMut.isPending}
 							className="flex-1 h-11 font-display"
 						>
 							{saveWeightMut.isPending && <Bars className="w-3 h-3 mr-1.5" />}

@@ -93,7 +93,7 @@ export function WaterCounter() {
 						<span className="font-display text-sm">Agua hoy</span>
 					</div>
 					<div className="flex items-baseline gap-2">
-						<span className="font-display text-3xl leading-none">
+						<span className="font-display text-3xl leading-none tabular-nums">
 							{glasses}
 						</span>
 						<span className="text-sm text-muted-foreground">

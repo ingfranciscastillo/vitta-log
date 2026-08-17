@@ -55,7 +55,7 @@ export function GoalStepper({
 								e.target.value.replace(/[^0-9.,]/g, "").replace(",", "."),
 							)
 						}
-						className="font-display text-lg text-center border-0 bg-transparent focus-visible:ring-0 px-0 h-9 w-16"
+						className="font-display text-lg text-center tabular-nums border-0 bg-transparent focus-visible:ring-0 px-0 h-9 w-16"
 					/>
 				</div>
 				<Button

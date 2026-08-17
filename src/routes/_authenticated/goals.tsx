@@ -194,7 +194,7 @@ function GoalsPage() {
 
 	return (
 		<div className="space-y-4">
-			<h1 className="font-display text-xl">Objetivos</h1>
+			<h1 className="font-display text-xl text-balance">Objetivos</h1>
 
 			<div className="rounded-2xl bg-card border border-border p-4 space-y-3">
 				<div className="font-display text-sm">Hábitos diarios</div>

@@ -193,7 +193,7 @@ function ProfileContent({
 
 	return (
 		<div className="space-y-6">
-			<h1 className="font-display text-xl">Perfil</h1>
+			<h1 className="font-display text-xl text-balance">Perfil</h1>
 
 			<section className="space-y-3">
 				<div className="font-display text-sm">Datos personales</div>
@@ -387,7 +387,7 @@ function ProfileContent({
 				type="button"
 				variant="outline"
 				onClick={handleLogout}
-				className="w-full h-11 mt-2 font-display text-base tracking-wider uppercase border-2 border-destructive/40 text-destructive bg-destructive/5 hover:bg-destructive hover:text-destructive-foreground hover:border-destructive active:scale-[0.98] transition-all duration-150 shadow-sm hover:shadow-md"
+				className="w-full h-11 mt-2 font-display text-base uppercase border-2 border-destructive/40 text-destructive bg-destructive/5 hover:bg-destructive hover:text-destructive-foreground hover:border-destructive active:scale-[0.98] transition-all duration-150 shadow-sm hover:shadow-md"
 			>
 				<Logout2Icon className="w-5 h-5 mr-2" />
 				Cerrar sesión

@@ -83,7 +83,7 @@ export function QuickAddDialog({
 										e.target.value.replace(/[^0-9.,]/g, "").replace(",", "."),
 									)
 								}
-								className="font-display text-4xl text-center border-0 bg-transparent focus-visible:ring-0 w-32 px-0 h-14"
+								className="font-display text-4xl text-center tabular-nums border-0 bg-transparent focus-visible:ring-0 w-32 px-0 h-14"
 								placeholder="0"
 							/>
 							{unit && (

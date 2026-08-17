@@ -66,7 +66,7 @@ function PricingSuccessPage() {
 		return (
 			<div className="min-h-[60vh] flex flex-col items-center justify-center gap-3 text-center">
 				<Bars className="w-8 h-4 text-primary" />
-				<p className="text-muted-foreground text-sm">Verificando tu pago...</p>
+				<p className="text-muted-foreground text-sm text-pretty">Verificando tu pago...</p>
 			</div>
 		);
 	}
@@ -74,7 +74,7 @@ function PricingSuccessPage() {
 	if (status === "error") {
 		return (
 			<div className="min-h-[60vh] flex flex-col items-center justify-center gap-3 text-center">
-				<p className="text-muted-foreground text-sm max-w-xs">
+				<p className="text-muted-foreground text-sm max-w-xs text-pretty">
 					No pudimos confirmar tu pago todavía. Si ya pagaste, podés revisarlo
 					en unos minutos desde tu perfil.
 				</p>
@@ -91,8 +91,8 @@ function PricingSuccessPage() {
 				<CheckCircleIcon className="w-8 h-8" />
 			</div>
 			<div>
-				<h1 className="font-display text-2xl">¡Premium activado!</h1>
-				<p className="text-muted-foreground text-sm mt-1">
+				<h1 className="font-display text-2xl text-balance">¡Premium activado!</h1>
+				<p className="text-muted-foreground text-sm mt-1 text-pretty">
 					Gracias por tu compra. Todas las funciones están desbloqueadas.
 				</p>
 			</div>

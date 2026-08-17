@@ -129,7 +129,7 @@ function CalendarPage() {
 
 	return (
 		<div className="space-y-4">
-			<h1 className="font-display text-xl">Calendario</h1>
+			<h1 className="font-display text-xl text-balance">Calendario</h1>
 			<div className="rounded-2xl bg-card border border-border p-4">
 				<CalendarView
 					entries={entries}

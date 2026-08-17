@@ -80,7 +80,7 @@ function ChartsPage() {
 	if (!isPremium) {
 		return (
 			<div className="space-y-4">
-				<h1 className="font-display text-xl">Gráficos</h1>
+				<h1 className="font-display text-xl text-balance">Gráficos</h1>
 				<PremiumGate
 					title="Gráficos avanzados"
 					description="Tendencias, media móvil y línea de meta con Premium."
@@ -91,7 +91,7 @@ function ChartsPage() {
 
 	return (
 		<div className="space-y-4">
-			<h1 className="font-display text-xl">Gráficos</h1>
+			<h1 className="font-display text-xl text-balance">Gráficos</h1>
 
 			<div className="flex gap-1.5 overflow-x-auto pb-1">
 				{RANGES.map((r) => (

@@ -50,7 +50,7 @@ function ExportPage() {
 	if (!isPremium) {
 		return (
 			<div className="space-y-6">
-				<h1 className="font-display text-xl">Exportar datos</h1>
+				<h1 className="font-display text-xl text-balance">Exportar datos</h1>
 				<PremiumGate
 					title="Exportación de datos"
 					description="Descarga tu historial completo en CSV o JSON con Premium."
@@ -107,7 +107,7 @@ function ExportPage() {
 
 	return (
 		<div className="space-y-6">
-			<h1 className="font-display text-xl">Exportar datos</h1>
+			<h1 className="font-display text-xl text-balance">Exportar datos</h1>
 
 			<section className="rounded-2xl bg-card border border-border p-4 space-y-1.5">
 				<div className="flex justify-between text-sm">
@@ -156,7 +156,7 @@ function ExportPage() {
 					</Button>
 				</div>
 				{!stats.count && (
-					<p className="text-sm text-muted-foreground">
+					<p className="text-sm text-muted-foreground text-pretty">
 						Aún no tienes registros para exportar.
 					</p>
 				)}

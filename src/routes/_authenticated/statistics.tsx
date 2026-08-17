@@ -36,7 +36,7 @@ function StatisticsPage() {
 	if (!isPremium) {
 		return (
 			<div className="space-y-4">
-				<h1 className="font-display text-xl">Estadísticas</h1>
+				<h1 className="font-display text-xl text-balance">Estadísticas</h1>
 				<PremiumGate
 					title="Estadísticas avanzadas"
 					description="Análisis completo de tu progreso, tendencias y métricas con Premium."
@@ -47,7 +47,7 @@ function StatisticsPage() {
 
 	return (
 		<div className="space-y-4">
-			<h1 className="font-display text-xl">Estadísticas</h1>
+			<h1 className="font-display text-xl text-balance">Estadísticas</h1>
 			<div className="grid grid-cols-2 gap-3">
 				<StatCard
 					label="Peso máximo"

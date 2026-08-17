@@ -56,7 +56,7 @@ export function Features() {
 			className="max-w-5xl mx-auto px-4 py-16 scroll-mt-16"
 		>
 			<div className="text-center mb-10">
-				<h2 className="font-display text-3xl">Todo lo que necesitas</h2>
+				<h2 className="font-display text-3xl text-balance">Todo lo que necesitas</h2>
 				<p className="text-muted-foreground mt-2">
 					Simple de usar, potente en análisis.
 				</p>
@@ -73,7 +73,7 @@ export function Features() {
 								<Icon className="w-5 h-5" />
 							</div>
 							<h3 className="font-display text-base mb-1">{f.title}</h3>
-							<p className="text-sm text-muted-foreground">{f.desc}</p>
+							<p className="text-sm text-muted-foreground text-pretty">{f.desc}</p>
 						</div>
 					);
 				})}

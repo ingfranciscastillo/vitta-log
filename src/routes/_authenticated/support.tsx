@@ -67,7 +67,7 @@ function SupportPage() {
 	return (
 		<div className="space-y-6">
 			<div className="flex items-center gap-2">
-				<h1 className="font-display text-xl">Soporte</h1>
+				<h1 className="font-display text-xl text-balance">Soporte</h1>
 			</div>
 
 			<section className="space-y-3">

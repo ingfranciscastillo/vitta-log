@@ -44,7 +44,7 @@ export function GoalCard({ goal, current, unit, onEdit }: GoalCardProps) {
 			</div>
 			<div className="flex items-end justify-between mb-2">
 				<div>
-					<div className="text-[10px] uppercase tracking-wider text-muted-foreground">
+					<div className="text-[10px] uppercase text-muted-foreground">
 						Actual
 					</div>
 					<div className="font-display text-xl">
@@ -52,7 +52,7 @@ export function GoalCard({ goal, current, unit, onEdit }: GoalCardProps) {
 					</div>
 				</div>
 				<div className="text-right">
-					<div className="text-[10px] uppercase tracking-wider text-muted-foreground">
+					<div className="text-[10px] uppercase text-muted-foreground">
 						Meta
 					</div>
 					<div className="font-display text-xl text-primary">

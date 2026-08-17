@@ -106,14 +106,14 @@ function InsightsPage() {
 
 	return (
 		<div className="space-y-4">
-			<h1 className="font-display text-xl">Recomendaciones</h1>
+			<h1 className="font-display text-xl text-balance">Recomendaciones</h1>
 
 			<div className="rounded-2xl bg-accent/15 border border-accent/40 p-4">
 				<div className="flex items-center gap-2 mb-1">
 					<StarsMinimalisticIcon className="w-4 h-4 text-accent-foreground" />
 					<span className="font-display text-sm">Sugerencia del día</span>
 				</div>
-				<p className="text-sm">{suggestion}</p>
+				<p className="text-sm text-pretty">{suggestion}</p>
 			</div>
 
 			{rems.length > 0 && (
@@ -142,7 +142,7 @@ function InsightsPage() {
 							<InfoCircleIcon className="w-3.5 h-3.5 text-primary" />
 							<span className="text-sm font-medium">{e.q}</span>
 						</div>
-						<p className="text-xs text-muted-foreground">
+						<p className="text-xs text-muted-foreground text-pretty">
 							{metricExplanations[e.key]}
 						</p>
 					</div>

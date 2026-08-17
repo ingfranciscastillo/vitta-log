@@ -13,8 +13,8 @@ export function PremiumCTA() {
 	return (
 		<section className="max-w-5xl mx-auto px-4 py-16">
 			<div className="rounded-3xl bg-primary text-primary-foreground p-8 text-center">
-				<h2 className="font-display text-3xl">Desbloquea todo por $12.99</h2>
-				<p className="opacity-80 text-sm mt-3 max-w-md mx-auto">
+				<h2 className="font-display text-3xl text-balance">Desbloquea todo por $12.99</h2>
+				<p className="opacity-80 text-sm mt-3 max-w-md mx-auto text-pretty">
 					Un solo pago, tuyo para siempre. Sin suscripciones.
 				</p>
 				<ul className="grid grid-cols-2 gap-2 max-w-sm mx-auto my-6 text-left text-sm">

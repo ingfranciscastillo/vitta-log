@@ -101,7 +101,7 @@ function MeasurementsPage() {
 	if (!isPremium) {
 		return (
 			<div className="space-y-4">
-				<h1 className="font-display text-xl">Medidas</h1>
+				<h1 className="font-display text-xl text-balance">Medidas</h1>
 				<PremiumGate
 					title="Medidas corporales"
 					description="Registra cintura, cadera, pecho, brazos, muslos y más, y visualiza su evolución con Premium."
@@ -118,7 +118,7 @@ function MeasurementsPage() {
 
 	return (
 		<div className="space-y-4">
-			<h1 className="font-display text-xl">Medidas</h1>
+			<h1 className="font-display text-xl text-balance">Medidas</h1>
 
 			<div className="flex gap-1.5 overflow-x-auto pb-1">
 				{MEASUREMENT_TYPES.map((m) => (
@@ -138,11 +138,11 @@ function MeasurementsPage() {
 			</div>
 
 			<div className="rounded-2xl bg-primary text-primary-foreground p-5">
-				<div className="text-[11px] uppercase tracking-wider opacity-70">
+				<div className="text-[11px] uppercase opacity-70">
 					{meta.label} actual
 				</div>
 				<div className="flex items-baseline gap-2 mt-1">
-					<span className="font-display text-4xl leading-none">
+					<span className="font-display text-4xl leading-none tabular-nums">
 						{latest ? latest.value.toFixed(1) : "—"}
 					</span>
 					<span className="font-display text-lg opacity-70">{meta.unit}</span>
@@ -158,7 +158,7 @@ function MeasurementsPage() {
 				<div className="font-display text-sm">Nuevo registro</div>
 				<div className="grid grid-cols-2 gap-3">
 					<div className="space-y-1.5">
-						<Label className="text-[10px] uppercase tracking-wider text-muted-foreground">
+						<Label className="text-[10px] uppercase text-muted-foreground">
 							Valor ({meta.unit})
 						</Label>
 						<Input
@@ -172,7 +172,7 @@ function MeasurementsPage() {
 						/>
 					</div>
 					<div className="space-y-1.5">
-						<Label className="text-[10px] uppercase tracking-wider text-muted-foreground">
+						<Label className="text-[10px] uppercase text-muted-foreground">
 							Fecha
 						</Label>
 						<DatePicker

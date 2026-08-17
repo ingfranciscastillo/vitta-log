@@ -50,9 +50,9 @@ function PrivacyPage() {
 			<main className="max-w-2xl mx-auto px-4 py-8 space-y-6">
 				<div className="flex items-center gap-2">
 					<ShieldIcon className="w-5 h-5 text-primary" />
-					<h1 className="font-display text-2xl">Cómo protegemos tus datos</h1>
+					<h1 className="font-display text-2xl text-balance">Cómo protegemos tus datos</h1>
 				</div>
-				<p className="text-muted-foreground text-sm">
+				<p className="text-muted-foreground text-sm text-pretty">
 					Tu privacidad es prioritaria. Esta página explica de forma sencilla
 					cómo se almacenan y protegen tus datos de peso.
 				</p>
@@ -61,13 +61,13 @@ function PrivacyPage() {
 						key={s.title}
 						className="rounded-2xl bg-card border border-border p-5"
 					>
-						<h2 className="font-display text-base mb-1.5">{s.title}</h2>
-						<p className="text-sm text-muted-foreground leading-relaxed">
+						<h2 className="font-display text-base mb-1.5 text-balance">{s.title}</h2>
+						<p className="text-sm text-muted-foreground leading-relaxed text-pretty">
 							{s.body}
 						</p>
 					</section>
 				))}
-				<p className="text-xs text-muted-foreground pt-2">
+				<p className="text-xs text-muted-foreground pt-2 text-pretty">
 					Última actualización: agosto 2026
 				</p>
 			</main>

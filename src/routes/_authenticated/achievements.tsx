@@ -27,7 +27,7 @@ function AchievementsPage() {
 
 	return (
 		<div className="space-y-4">
-			<h1 className="font-display text-xl">Logros y rachas</h1>
+			<h1 className="font-display text-xl text-balance">Logros y rachas</h1>
 			<StreakCard current={streaks.current} best={streaks.best} />
 			<div>
 				<div className="font-display text-sm mb-2">Logros</div>

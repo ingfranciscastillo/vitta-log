@@ -59,13 +59,13 @@ export function PaywallContent({ isPro = false }: PaywallContentProps = {}) {
 
 	return (
 		<div className="text-center">
-			<h2 className="font-display text-2xl">Desbloquea todo</h2>
-			<p className="text-muted-foreground text-sm mt-1">
+			<h2 className="font-display text-2xl text-balance">Desbloquea todo</h2>
+			<p className="text-muted-foreground text-sm mt-1 text-pretty">
 				Un solo pago. Tuyo para siempre.
 			</p>
 
 			<div className="my-5">
-				<span className="font-display text-4xl">$12.99</span>
+				<span className="font-display text-4xl tabular-nums">$12.99</span>
 				<span className="text-muted-foreground text-sm"> USD</span>
 			</div>
 

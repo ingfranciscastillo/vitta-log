@@ -105,7 +105,7 @@ function HabitsPage() {
 						<Icon className="w-4 h-4 text-primary" />
 						<span className="font-display text-sm">{title}</span>
 					</div>
-					<p className="text-xs text-muted-foreground">{desc}</p>
+					<p className="text-xs text-muted-foreground text-pretty">{desc}</p>
 				</Link>
 			);
 		}
@@ -119,14 +119,14 @@ function HabitsPage() {
 					<LockIcon className="w-4 h-4 text-muted-foreground" />
 					<span className="font-display text-sm">{title}</span>
 				</div>
-				<p className="text-xs text-muted-foreground">{desc}</p>
+				<p className="text-xs text-muted-foreground text-pretty">{desc}</p>
 			</button>
 		);
 	};
 
 	return (
 		<div className="space-y-4">
-			<h1 className="font-display text-xl">Hábitos</h1>
+			<h1 className="font-display text-xl text-balance">Hábitos</h1>
 
 			<div className="space-y-3">
 				<HabitCard

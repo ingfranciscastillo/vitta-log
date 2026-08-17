@@ -141,11 +141,9 @@ function DashboardPage() {
 	return (
 		<div className="space-y-4">
 			<div className="rounded-3xl bg-primary text-primary-foreground p-6">
-				<div className="text-[11px] uppercase tracking-wider opacity-70">
-					Peso actual
-				</div>
+				<div className="text-[11px] uppercase opacity-70">Peso actual</div>
 				<div className="flex items-baseline gap-2 mt-1">
-					<span className="font-display text-5xl leading-none">
+					<span className="font-display text-5xl leading-none tabular-nums">
 						{stats.current != null
 							? formatWeightValue(stats.current, unit)
 							: "—"}
@@ -286,7 +284,7 @@ function DashboardPage() {
 						<LockIcon className="w-3.5 h-3.5 text-muted-foreground" />
 					)}
 				</div>
-				<p className="text-xs text-muted-foreground mt-1">
+				<p className="text-xs text-muted-foreground mt-1 text-pretty">
 					{isPremium
 						? `${Math.round(calsToday)} / ${goals.calories} kcal hoy`
 						: "Desbloquea con Premium"}
@@ -317,7 +315,7 @@ function DashboardPage() {
 					<StarsMinimalisticIcon className="w-4 h-4 text-accent-foreground" />
 					<span className="font-display text-sm">Sugerencia del día</span>
 				</div>
-				<p className="text-sm">{suggestion}</p>
+				<p className="text-sm text-pretty">{suggestion}</p>
 			</div>
 
 			{rems.length > 0 && (
@@ -361,7 +359,7 @@ function DashboardPage() {
 						<StarsMinimalisticIcon className="w-4 h-4 text-accent-foreground" />
 						<span className="font-display text-sm">Desbloquea Premium</span>
 					</div>
-					<p className="text-xs text-muted-foreground">
+					<p className="text-xs text-muted-foreground text-pretty">
 						Medidas, nutrición, ayuno, actividad y resumen semanal por $12.99.
 					</p>
 				</Link>

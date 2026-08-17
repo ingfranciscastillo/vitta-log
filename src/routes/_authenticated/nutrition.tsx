@@ -185,7 +185,7 @@ function NutritionPage() {
 	if (!isPremium) {
 		return (
 			<div className="space-y-4">
-				<h1 className="font-display text-xl">Nutrición</h1>
+				<h1 className="font-display text-xl text-balance">Nutrición</h1>
 				<PremiumGate
 					title="Nutrición"
 					description="Registra comidas, calorías y macros, y sigue tu objetivo calórico diario con Premium."
@@ -220,14 +220,12 @@ function NutritionPage() {
 
 	return (
 		<div className="space-y-4">
-			<h1 className="font-display text-xl">Nutrición</h1>
+			<h1 className="font-display text-xl text-balance">Nutrición</h1>
 
 			<div className="rounded-3xl bg-primary text-primary-foreground p-5">
-				<div className="text-[11px] uppercase tracking-wider opacity-70">
-					Calorías hoy
-				</div>
+				<div className="text-[11px] uppercase opacity-70">Calorías hoy</div>
 				<div className="flex items-baseline gap-2 mt-1">
-					<span className="font-display text-4xl leading-none">
+					<span className="font-display text-4xl leading-none tabular-nums">
 						{Math.round(totals.calories)}
 					</span>
 					<span className="font-display text-lg opacity-70">
@@ -311,7 +309,7 @@ function NutritionPage() {
 				/>
 				<div className="grid grid-cols-2 gap-3">
 					<div className="space-y-1.5">
-						<Label className="text-[10px] uppercase tracking-wider text-muted-foreground">
+						<Label className="text-[10px] uppercase text-muted-foreground">
 							Calorías
 						</Label>
 						<Input
@@ -323,7 +321,7 @@ function NutritionPage() {
 						/>
 					</div>
 					<div className="space-y-1.5">
-						<Label className="text-[10px] uppercase tracking-wider text-muted-foreground">
+						<Label className="text-[10px] uppercase text-muted-foreground">
 							Tipo
 						</Label>
 						<Select
@@ -345,7 +343,7 @@ function NutritionPage() {
 				</div>
 				<div className="grid grid-cols-3 gap-3">
 					<div className="space-y-1.5">
-						<Label className="text-[10px] uppercase tracking-wider text-muted-foreground">
+						<Label className="text-[10px] uppercase text-muted-foreground">
 							Prot (g)
 						</Label>
 						<Input
@@ -357,7 +355,7 @@ function NutritionPage() {
 						/>
 					</div>
 					<div className="space-y-1.5">
-						<Label className="text-[10px] uppercase tracking-wider text-muted-foreground">
+						<Label className="text-[10px] uppercase text-muted-foreground">
 							Carb (g)
 						</Label>
 						<Input
@@ -369,7 +367,7 @@ function NutritionPage() {
 						/>
 					</div>
 					<div className="space-y-1.5">
-						<Label className="text-[10px] uppercase tracking-wider text-muted-foreground">
+						<Label className="text-[10px] uppercase text-muted-foreground">
 							Gras (g)
 						</Label>
 						<Input
@@ -448,7 +446,7 @@ function NutritionPage() {
 					<span className="font-display text-sm">Promedio semanal</span>
 				</div>
 				<div className="text-sm">
-					<span className="font-display text-2xl">
+					<span className="font-display text-2xl tabular-nums">
 						{Math.round(weekTotals.calories / 7)}
 					</span>{" "}
 					<span className="text-muted-foreground">kcal/día</span>

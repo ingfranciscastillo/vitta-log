@@ -158,7 +158,7 @@ function FastingPage() {
 	if (!isPremium) {
 		return (
 			<div className="space-y-4">
-				<h1 className="font-display text-xl">Ayuno</h1>
+				<h1 className="font-display text-xl text-balance">Ayuno</h1>
 				<PremiumGate
 					title="Ayuno intermitente"
 					description="Inicia ayunos con timer en vivo, registra tu historial y consulta información con Premium."
@@ -202,13 +202,13 @@ function FastingPage() {
 
 	return (
 		<div className="space-y-4">
-			<h1 className="font-display text-xl">Ayuno</h1>
+			<h1 className="font-display text-xl text-balance">Ayuno</h1>
 
 			<div className="rounded-3xl bg-primary text-primary-foreground p-6 text-center">
 				<StopwatchIcon className="w-6 h-6 mx-auto mb-2 opacity-80" />
 				{stats.active ? (
 					<>
-						<div className="font-display text-4xl tracking-wider">
+						<div className="font-display text-4xl tabular-nums">
 							{formatClock(elapsed)}
 						</div>
 						<div className="text-xs opacity-70 mt-2">Ayuno en curso</div>
@@ -243,7 +243,7 @@ function FastingPage() {
 			<div className="rounded-2xl bg-card border border-border p-4 space-y-3">
 				<div className="font-display text-sm">Registrar ayuno manual</div>
 				<div className="space-y-1.5">
-					<Label className="text-[10px] uppercase tracking-wider text-muted-foreground">
+					<Label className="text-[10px] uppercase text-muted-foreground">
 						Hora de inicio
 					</Label>
 					<Input
@@ -254,7 +254,7 @@ function FastingPage() {
 					/>
 				</div>
 				<div className="space-y-1.5">
-					<Label className="text-[10px] uppercase tracking-wider text-muted-foreground">
+					<Label className="text-[10px] uppercase text-muted-foreground">
 						Hora de fin
 					</Label>
 					<Input
@@ -333,7 +333,7 @@ function FastingPage() {
 
 			<div className="rounded-2xl bg-muted/50 border border-border p-4 flex gap-2.5">
 				<InfoCircleIcon className="w-4 h-4 mt-0.5 text-primary shrink-0" />
-				<p className="text-xs text-muted-foreground">
+				<p className="text-xs text-muted-foreground text-pretty">
 					{metricExplanations.fasting}
 				</p>
 			</div>

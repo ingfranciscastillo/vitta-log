@@ -54,12 +54,12 @@ function IMCPage() {
 
 	return (
 		<div className="space-y-4">
-			<h1 className="font-display text-xl">IMC</h1>
+			<h1 className="font-display text-xl text-balance">IMC</h1>
 
 			{!heightCm ? (
 				<div className="rounded-2xl border border-dashed border-border p-6 text-center">
 					<RulerIcon className="w-8 h-8 mx-auto mb-2 text-primary" />
-					<p className="text-sm text-muted-foreground mb-3">
+					<p className="text-sm text-muted-foreground mb-3 text-pretty">
 						Guarda tu altura en tu perfil para calcular el IMC.
 					</p>
 					<Link
@@ -79,10 +79,8 @@ function IMCPage() {
 			) : (
 				<>
 					<div className="rounded-3xl bg-primary text-primary-foreground p-6">
-						<div className="text-[11px] uppercase tracking-wider opacity-70">
-							IMC actual
-						</div>
-						<div className="font-display text-5xl leading-none mt-1">
+						<div className="text-[11px] uppercase opacity-70">IMC actual</div>
+						<div className="font-display text-5xl leading-none mt-1 tabular-nums">
 							{imc != null ? imc.toFixed(1) : "—"}
 						</div>
 						{cat && <div className="text-sm mt-2 opacity-90">{cat.label}</div>}
@@ -115,7 +113,7 @@ function IMCPage() {
 							<div className="font-display text-sm mb-1">
 								Rango saludable orientativo
 							</div>
-							<p className="text-sm text-muted-foreground">
+							<p className="text-sm text-muted-foreground text-pretty">
 								Para tu altura, un peso entre{" "}
 								<span className="font-medium text-foreground">
 									{formatWeightValue(range.min, unit)}–
@@ -128,7 +126,7 @@ function IMCPage() {
 
 					<div className="rounded-2xl bg-muted/50 border border-border p-4 flex gap-2.5">
 						<InfoCircleIcon className="w-4 h-4 mt-0.5 text-primary shrink-0" />
-						<p className="text-xs text-muted-foreground">
+						<p className="text-xs text-muted-foreground text-pretty">
 							{metricExplanations.imc}
 						</p>
 					</div>

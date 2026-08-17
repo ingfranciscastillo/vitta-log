@@ -116,7 +116,7 @@ function ActivityPage() {
 	if (!isPremium) {
 		return (
 			<div className="space-y-4">
-				<h1 className="font-display text-xl">Actividad</h1>
+				<h1 className="font-display text-xl text-balance">Actividad</h1>
 				<PremiumGate
 					title="Actividad física"
 					description="Registra entrenamientos, consulta tu historial y tus estadísticas semanales con Premium."
@@ -139,7 +139,7 @@ function ActivityPage() {
 
 	return (
 		<div className="space-y-4">
-			<h1 className="font-display text-xl">Actividad</h1>
+			<h1 className="font-display text-xl text-balance">Actividad</h1>
 
 			<div className="grid grid-cols-3 gap-3">
 				<StatCard
@@ -162,7 +162,7 @@ function ActivityPage() {
 				/>
 				<div className="grid grid-cols-2 gap-3">
 					<div className="space-y-1.5">
-						<Label className="text-[10px] uppercase tracking-wider text-muted-foreground">
+						<Label className="text-[10px] uppercase text-muted-foreground">
 							Duración (min)
 						</Label>
 						<Input
@@ -174,7 +174,7 @@ function ActivityPage() {
 						/>
 					</div>
 					<div className="space-y-1.5">
-						<Label className="text-[10px] uppercase tracking-wider text-muted-foreground">
+						<Label className="text-[10px] uppercase text-muted-foreground">
 							Fecha
 						</Label>
 						<DatePicker
@@ -185,7 +185,7 @@ function ActivityPage() {
 					</div>
 				</div>
 				<div className="space-y-1.5">
-					<Label className="text-[10px] uppercase tracking-wider text-muted-foreground">
+					<Label className="text-[10px] uppercase text-muted-foreground">
 						Intensidad
 					</Label>
 					<Select

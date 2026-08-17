@@ -10,12 +10,12 @@ export function Hero() {
 				<div className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 text-primary px-3 py-1 text-xs font-medium mb-6">
 					<BoltIcon className="w-3.5 h-3.5" /> Registro en 5 segundos
 				</div>
-				<h1 className="font-display text-4xl sm:text-6xl leading-tight tracking-tight">
+				<h1 className="font-display text-4xl sm:text-6xl leading-tight text-balance">
 					Tu peso,
 					<br />
 					<span className="text-primary">día a día</span>
 				</h1>
-				<p className="mt-5 text-muted-foreground text-lg max-w-md mx-auto">
+				<p className="mt-5 text-muted-foreground text-lg max-w-md mx-auto text-pretty">
 					La forma más simple y rápida de registrar tu peso, ver tu evolución y
 					alcanzar tus metas.
 				</p>
@@ -32,11 +32,11 @@ export function Hero() {
 
 				<div className="mt-14 mx-auto max-w-sm">
 					<div className="rounded-3xl bg-primary text-primary-foreground p-6 text-left shadow-xl">
-						<div className="text-[11px] uppercase tracking-wider opacity-70">
-							Peso actual
-						</div>
+						<div className="text-[11px] uppercase opacity-70">Peso actual</div>
 						<div className="flex items-baseline gap-2 mt-1">
-							<span className="font-display text-5xl leading-none">72.4</span>
+							<span className="font-display text-5xl leading-none tabular-nums">
+								72.4
+							</span>
 							<span className="font-display text-lg opacity-70">kg</span>
 						</div>
 						<div className="flex items-center gap-1.5 mt-3 text-sm opacity-90">

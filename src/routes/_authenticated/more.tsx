@@ -95,11 +95,11 @@ const SECTIONS: Section[] = [
 function MorePage() {
 	return (
 		<div className="space-y-6">
-			<h1 className="font-display text-xl">Más</h1>
+			<h1 className="font-display text-xl text-balance">Más</h1>
 
 			{SECTIONS.map((section, sectionIdx) => (
 				<section key={section.title} className="space-y-3">
-					<h2 className="font-display text-sm">{section.title}</h2>
+					<h2 className="font-display text-sm text-balance">{section.title}</h2>
 					<div className="grid grid-cols-3 gap-3">
 						{section.items.map((item, itemIdx) => {
 							const Icon = item.icon;

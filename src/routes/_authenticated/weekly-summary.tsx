@@ -64,7 +64,7 @@ function WeeklySummaryPage() {
 	if (!isPremium) {
 		return (
 			<div className="space-y-4">
-				<h1 className="font-display text-xl">Resumen semanal</h1>
+				<h1 className="font-display text-xl text-balance">Resumen semanal</h1>
 				<PremiumGate
 					title="Resumen semanal"
 					description="Un vistazo a tu semana: peso, hábitos, nutrición, actividad y cumplimiento con Premium."
@@ -75,7 +75,7 @@ function WeeklySummaryPage() {
 
 	return (
 		<div className="space-y-4">
-			<h1 className="font-display text-xl">Resumen semanal</h1>
+			<h1 className="font-display text-xl text-balance">Resumen semanal</h1>
 
 			<div className="grid grid-cols-2 gap-3">
 				<StatCard
@@ -141,7 +141,7 @@ function WeeklySummaryPage() {
 				<div className="font-display text-sm mb-1">
 					Macros (promedio diario)
 				</div>
-				<p className="text-xs text-muted-foreground">
+				<p className="text-xs text-muted-foreground text-pretty">
 					Proteínas {Math.round(w.mealTotals7.protein / 7)}g · Carbs{" "}
 					{Math.round(w.mealTotals7.carbs / 7)}g · Grasas{" "}
 					{Math.round(w.mealTotals7.fat / 7)}g

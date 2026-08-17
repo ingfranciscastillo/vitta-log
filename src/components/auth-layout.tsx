@@ -25,7 +25,7 @@ export function AuthLayout({
 							aria-hidden="true"
 						/>
 					</div>
-					<h1 className="text-3xl font-bold tracking-tight text-foreground">
+					<h1 className="text-3xl font-bold text-foreground text-balance">
 						{title}
 					</h1>
 					{subtitle && <p className="text-muted-foreground mt-2">{subtitle}</p>}
@@ -34,7 +34,7 @@ export function AuthLayout({
 					{children}
 				</div>
 				{footer && (
-					<p className="text-center text-sm text-muted-foreground mt-6">
+					<p className="text-center text-sm text-muted-foreground mt-6 text-pretty">
 						{footer}
 					</p>
 				)}

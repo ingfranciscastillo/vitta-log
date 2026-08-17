@@ -116,7 +116,7 @@ function HistoryPage() {
 
 	return (
 		<div className="space-y-4">
-			<h1 className="font-display text-xl">Historial</h1>
+			<h1 className="font-display text-xl text-balance">Historial</h1>
 			{limited && (
 				<button
 					type="button"

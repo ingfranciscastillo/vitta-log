@@ -20,13 +20,13 @@ export function StatCard({
 	return (
 		<div className="rounded-2xl bg-card border border-border p-4 transition-shadow hover:shadow-sm">
 			<div className="flex items-center justify-between">
-				<span className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground">
+				<span className="text-[10px] font-medium uppercase text-muted-foreground">
 					{label}
 				</span>
 				{Icon && <Icon className="w-4 h-4 text-muted-foreground" />}
 			</div>
 			<div
-				className={`mt-2 font-display text-2xl leading-none ${accent ?? ""}`}
+				className={`mt-2 font-display text-2xl leading-none tabular-nums ${accent ?? ""}`}
 			>
 				{value}
 			</div>

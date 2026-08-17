@@ -8,7 +8,7 @@ function UserNotRegisteredError() {
 					<div className="inline-flex items-center justify-center w-16 h-16 mb-6 rounded-full bg-destructive/10">
 						<ShieldKeyholeIcon className="w-8 h-8 text-destructive" />
 					</div>
-					<h1 className="text-3xl font-bold text-foreground mb-4 font-display">
+					<h1 className="text-3xl font-bold text-foreground mb-4 font-display text-balance">
 						Acceso restringido
 					</h1>
 					<p className="text-muted-foreground mb-8">

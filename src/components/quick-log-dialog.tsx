@@ -2,7 +2,7 @@ import {
 	AddCircleIcon,
 	MinusCircleIcon,
 } from "@solar-icons/react/line-duotone";
-import { NotebookIcon, RestartIcon } from "@solar-icons/react/outline";
+import { NotebookIcon } from "@solar-icons/react/outline";
 import { useEffect, useState } from "react";
 import { Button } from "#/components/ui/button";
 import {
@@ -210,10 +210,9 @@ export function QuickLogDialog({
 							type="button"
 							onClick={handleRepeat}
 							variant="secondary"
-							className="w-full h-11 rounded-xl text-sm"
+							className="w-full h-11 rounded-xl text-sm font-display"
 						>
-							<RestartIcon className="w-4 h-4 mr-2" /> Repetir último:{" "}
-							{lastDisp} {unit}
+							Repetir último: {lastDisp} {unit}
 						</Button>
 					)}
 				</DrawerFooter>

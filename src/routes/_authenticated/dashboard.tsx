@@ -6,7 +6,6 @@ import {
 	BellIcon,
 	CalendarIcon,
 	ChartSquareIcon,
-	FireIcon,
 	GraphDownIcon,
 	GraphUpIcon,
 	HealthIcon,
@@ -281,7 +280,6 @@ function DashboardPage() {
 			>
 				<div className="flex items-center justify-between">
 					<div className="flex items-center gap-2">
-						<FireIcon className="w-4 h-4 text-primary" />
 						<span className="font-display text-sm">Nutrición</span>
 					</div>
 					{!isPremium && (

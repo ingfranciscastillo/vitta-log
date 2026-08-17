@@ -1,7 +1,10 @@
 import {
-	ArrowDownIcon,
-	ArrowUpIcon,
+	CalendarDateIcon,
 	CalendarIcon,
+	CourseDownIcon,
+	CourseUpIcon,
+	DiagramDownIcon,
+	DiagramUpIcon,
 	GraphDownIcon,
 	GraphUpIcon,
 	RestartIcon,
@@ -55,7 +58,7 @@ function StatisticsPage() {
 					value={
 						s.count ? `${formatWeightValue(s.max ?? 0, unit)} ${unit}` : "—"
 					}
-					icon={ArrowUpIcon}
+					icon={CourseUpIcon}
 					accent="text-rose-600"
 				/>
 				<StatCard
@@ -63,7 +66,7 @@ function StatisticsPage() {
 					value={
 						s.count ? `${formatWeightValue(s.min ?? 0, unit)} ${unit}` : "—"
 					}
-					icon={ArrowDownIcon}
+					icon={CourseDownIcon}
 					accent="text-emerald-600"
 				/>
 				<StatCard
@@ -76,13 +79,13 @@ function StatisticsPage() {
 				<StatCard
 					label="Mayor pérdida/día"
 					value={s.count ? formatDelta(s.biggestLoss, unit) : "—"}
-					icon={GraphDownIcon}
+					icon={DiagramDownIcon}
 					accent="text-emerald-600"
 				/>
 				<StatCard
 					label="Mayor ganancia/día"
 					value={s.count ? formatDelta(s.biggestGain, unit) : "—"}
-					icon={GraphUpIcon}
+					icon={DiagramUpIcon}
 					accent="text-rose-600"
 				/>
 				<StatCard
@@ -90,7 +93,7 @@ function StatisticsPage() {
 					value={
 						s.weeklyChange != null ? formatDelta(s.weeklyChange, unit) : "—"
 					}
-					icon={CalendarIcon}
+					icon={CalendarDateIcon}
 				/>
 				<StatCard
 					label="Cambio mensual"

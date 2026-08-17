@@ -140,7 +140,7 @@ function AuthenticatedLayout() {
 						<DropdownMenuTrigger asChild>
 							<button
 								type="button"
-								className="w-9 h-9 rounded-full bg-primary text-primary-foreground flex items-center justify-center shadow-sm active:scale-95 transition-transform"
+								className="w-11 h-11 rounded-full bg-primary text-primary-foreground flex items-center justify-center shadow-sm active:scale-95 transition-transform"
 								aria-label="Registrar"
 							>
 								<AddCircleIcon className="w-5 h-5" />

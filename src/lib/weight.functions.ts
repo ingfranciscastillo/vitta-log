@@ -14,7 +14,11 @@ export const listWeightEntries = createServerFn({ method: "GET" }).handler(
 			.select()
 			.from(weightEntry)
 			.where(eq(weightEntry.createdById, session.user.id))
-			.orderBy(desc(weightEntry.date), desc(weightEntry.time));
+			.orderBy(
+				desc(weightEntry.date),
+				desc(weightEntry.time),
+				desc(weightEntry.createdAt),
+			);
 		return rows.map(
 			(r): WeightEntry => ({
 				id: r.id,
@@ -23,6 +27,7 @@ export const listWeightEntries = createServerFn({ method: "GET" }).handler(
 				weight: Number(r.weight),
 				time: r.time,
 				note: r.note,
+				createdAt: r.createdAt.toISOString(),
 			}),
 		);
 	},

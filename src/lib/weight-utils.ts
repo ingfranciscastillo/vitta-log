@@ -9,6 +9,7 @@ export type WeightEntry = {
 	weight: number;
 	time?: string | null;
 	note?: string | null;
+	createdAt?: string;
 };
 
 export type Goal = {
@@ -91,10 +92,24 @@ export const formatDate = (
 const average = (arr: number[]): number | null =>
 	!arr || arr.length === 0 ? null : arr.reduce((s, x) => s + x, 0) / arr.length;
 
-export const sortByDateAsc = <T extends { date: string }>(entries: T[]): T[] =>
-	[...entries].sort((a, b) => a.date.localeCompare(b.date));
-export const sortByDateDesc = <T extends { date: string }>(entries: T[]): T[] =>
-	[...entries].sort((a, b) => b.date.localeCompare(a.date));
+export const sortByDateAsc = <
+	T extends { date: string; time?: string | null; createdAt?: string },
+>(
+	entries: T[],
+): T[] =>
+	[...entries].sort((a, b) => {
+		const d = a.date.localeCompare(b.date);
+		if (d !== 0) return d;
+		const t = (a.time ?? "").localeCompare(b.time ?? "");
+		if (t !== 0) return t;
+		return (a.createdAt ?? "").localeCompare(b.createdAt ?? "");
+	});
+
+export const sortByDateDesc = <
+	T extends { date: string; time?: string | null; createdAt?: string },
+>(
+	entries: T[],
+): T[] => [...sortByDateAsc(entries)].reverse();
 
 const daysBetween = (d1: string, d2: string): number =>
 	Math.round(

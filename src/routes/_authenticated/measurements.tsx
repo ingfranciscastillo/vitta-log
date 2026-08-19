@@ -7,6 +7,7 @@ import {
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useRef, useState } from "react";
 import toast from "react-hot-toast";
+import { Bars } from "#/components/bars";
 import { ConfirmDeleteDialog } from "#/components/confirm-delete-dialog";
 import { EmptyState } from "#/components/empty-state";
 import { PremiumGate } from "#/components/premium-gate";
@@ -186,7 +187,9 @@ function MeasurementsPage() {
 					onClick={save}
 					className="w-full h-11 font-display"
 					disabled={createMut.isPending}
+					aria-busy={createMut.isPending}
 				>
+					{createMut.isPending && <Bars className="w-3 h-3 mr-1.5" />}
 					Añadir medida
 				</Button>
 			</div>
@@ -250,6 +253,7 @@ function MeasurementsPage() {
 				}}
 				title="Eliminar registro"
 				description={`Se eliminara el registro de ${meta.label.toLowerCase()}. Esta accion no se puede deshacer.`}
+				isPending={deleteMut.isPending}
 			/>
 		</div>
 	);

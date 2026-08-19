@@ -1,10 +1,15 @@
 import {
+	BicyclingIcon,
 	BoltIcon,
-	CalendarMarkIcon,
 	CloudIcon,
 	GraphNewIcon,
+	HistoryIcon,
+	MedalRibbonIcon,
+	MedalStarIcon,
+	RulerIcon,
 	StarIcon,
 	TargetIcon,
+	WalkingIcon,
 } from "@solar-icons/react/outline";
 import type { ComponentType, SVGProps } from "react";
 
@@ -23,29 +28,44 @@ const features: Feature[] = [
 		desc: "Abre, pesa, guarda. En menos de 5 segundos, sin fricción.",
 	},
 	{
-		icon: GraphNewIcon,
-		title: "Gráficos interactivos",
-		desc: "Visualiza tu evolución con tendencia, media móvil y línea de meta.",
+		icon: WalkingIcon,
+		title: "Hábitos diarios",
+		desc: "Agua, pasos, sueño y ayuno, todo en un tap.",
+	},
+	{
+		icon: BicyclingIcon,
+		title: "Nutrición y actividad física",
+		desc: "Registra comidas y ejercicio junto a tu peso.",
+	},
+	{
+		icon: RulerIcon,
+		title: "Medidas corporales e IMC",
+		desc: "Sigue tu composición completa, no solo la balanza.",
 	},
 	{
 		icon: TargetIcon,
-		title: "Metas y progreso",
-		desc: "Define tu objetivo y sigue tu avance con estimaciones de llegada.",
+		title: "Objetivos diarios",
+		desc: "Metas personalizadas para cada hábito, no solo el peso.",
 	},
 	{
-		icon: CalendarMarkIcon,
-		title: "Calendario visual",
-		desc: "Vista mensual con colores según si bajaste o subiste cada día.",
+		icon: MedalRibbonIcon,
+		title: "Logros y rachas",
+		desc: "Desbloquea hitos y mantente motivado con tu constancia.",
+	},
+	{
+		icon: GraphNewIcon,
+		title: "Gráficos y estadísticas",
+		desc: "Tendencia, media móvil y análisis de tu evolución.",
+	},
+	{
+		icon: HistoryIcon,
+		title: "Historial y resumen semanal",
+		desc: "Revisa tu semana y tu calendario completo.",
 	},
 	{
 		icon: StarIcon,
-		title: "Insights automáticos",
-		desc: "Análisis de tu tendencia, rachas y progreso generados para ti.",
-	},
-	{
-		icon: CloudIcon,
-		title: "Funciona offline",
-		desc: "Registra sin conexión; se sincroniza automáticamente al volver.",
+		title: "Y mucho más",
+		desc: "Seguimos sumando funciones nuevas para ayudarte a alcanzar tus metas.",
 	},
 ];
 

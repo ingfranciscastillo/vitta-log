@@ -137,6 +137,11 @@ export const auth = betterAuth({
 			});
 		},
 	},
+	trustedOrigins: [
+		"https://2435-2001-1308-29e8-1f00-b8bb-f6da-1270-71e0.ngrok-free.app",
+		"http://localhost:3000",
+	],
+
 	plugins: [
 		stripe({
 			stripeClient,

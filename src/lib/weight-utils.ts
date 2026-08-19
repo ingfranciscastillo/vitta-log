@@ -355,16 +355,12 @@ export const computeAchievements = (
 		goal &&
 		goal.start_weight != null &&
 		goal.target_weight != null &&
-		goal.start_weight !== goal.target_weight &&
 		stats.current != null
-			? Math.min(
-					1,
-					Math.max(
-						0,
-						(goal.start_weight - stats.current) /
-							(goal.start_weight - goal.target_weight),
-					),
-				)
+			? computeGoalProgress(
+					goal.start_weight,
+					stats.current,
+					goal.target_weight,
+				).pct / 100
 			: 0;
 	void unit;
 	return [
@@ -437,4 +433,39 @@ export const estimateGoalDate = (
 	const d = new Date();
 	d.setDate(d.getDate() + Math.round(weeks * 7));
 	return dateStr(d);
+};
+
+export type GoalStatus = "in-progress" | "completed" | "exceeded";
+
+export type GoalProgress = {
+	pct: number; // 0-100, clampeado
+	status: GoalStatus;
+	remaining: number; // target - current, con signo (positivo = falta, negativo = te pasaste)
+};
+
+export const computeGoalProgress = (
+	start: number,
+	current: number,
+	target: number,
+): GoalProgress => {
+	const totalSigned = start - target;
+	const remaining = target - current;
+
+	if (totalSigned === 0) {
+		return { pct: 100, status: "completed", remaining: 0 };
+	}
+
+	const doneSigned = start - current;
+	const rawPct = (doneSigned / totalSigned) * 100;
+	const pct = Math.min(100, Math.max(0, rawPct));
+
+	// "exceeded" = se movió más allá de la meta en la dirección correcta del objetivo
+	const goingDown = target < start;
+	const exceeded = goingDown ? current < target : current > target;
+
+	return {
+		pct,
+		status: exceeded ? "exceeded" : pct >= 100 ? "completed" : "in-progress",
+		remaining,
+	};
 };

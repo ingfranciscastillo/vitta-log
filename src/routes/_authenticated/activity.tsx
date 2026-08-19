@@ -266,6 +266,7 @@ function ActivityPage() {
 				}}
 				title="Eliminar actividad"
 				description={`Se eliminara "${deletingActivity?.type ?? ""}". Esta accion no se puede deshacer.`}
+				isPending={deleteMut.isPending}
 			/>
 		</div>
 	);

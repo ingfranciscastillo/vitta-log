@@ -7,6 +7,7 @@ import {
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import toast from "react-hot-toast";
+import { Bars } from "#/components/bars";
 import { EntryDialog } from "#/components/entry-dialog";
 import { HistoryTable } from "#/components/history-table";
 import { PaywallDialog } from "#/components/paywall-dialog";
@@ -162,6 +163,7 @@ function HistoryPage() {
 							onClick={confirmDelete}
 							className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
 						>
+							{deleteMut.isPending && <Bars className="w-3 h-3 mr-1.5" />}
 							Eliminar
 						</AlertDialogAction>
 					</AlertDialogFooter>

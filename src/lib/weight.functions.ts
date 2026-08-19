@@ -2,7 +2,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { desc, eq } from "drizzle-orm";
 import { z } from "zod";
 import { db } from "#/db";
-import { weightEntry } from "#/db/schema";
+import { goal, weightEntry } from "#/db/schema";
 import { getSession } from "#/lib/auth.functions";
 import type { WeightEntry } from "#/lib/weight-utils";
 
@@ -40,6 +40,17 @@ export const createWeightEntry = createServerFn({ method: "POST" })
 	.handler(async ({ data }) => {
 		const session = await getSession();
 		if (!session) throw new Error("Unauthorized");
+
+		// Necesitamos saber si este es el primer registro de peso del usuario
+		// ANTES de insertar, para no confundir "primer registro" con
+		// "cualquier registro que llegue mientras la tabla está vacía".
+		const existing = await db
+			.select({ id: weightEntry.id })
+			.from(weightEntry)
+			.where(eq(weightEntry.createdById, session.user.id))
+			.limit(1);
+		const isFirstEntry = existing.length === 0;
+
 		const [row] = await db
 			.insert(weightEntry)
 			.values({
@@ -50,6 +61,28 @@ export const createWeightEntry = createServerFn({ method: "POST" })
 				note: data.note ?? null,
 			})
 			.returning({ id: weightEntry.id });
+
+		// Backfill: si es el primer peso que el usuario registra y ya tiene
+		// un objetivo creado sin start_weight (porque el objetivo se creó
+		// antes de registrar ningún peso), este es el punto de partida real.
+		if (isFirstEntry) {
+			const [existingGoal] = await db
+				.select()
+				.from(goal)
+				.where(eq(goal.createdById, session.user.id))
+				.limit(1);
+
+			if (existingGoal && existingGoal.startWeight == null) {
+				await db
+					.update(goal)
+					.set({
+						startWeight: data.weight.toString(),
+						startDate: data.date,
+					})
+					.where(eq(goal.id, existingGoal.id));
+			}
+		}
+
 		return { id: row?.id ?? "" };
 	});
 

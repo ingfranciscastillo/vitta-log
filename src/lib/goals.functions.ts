@@ -65,10 +65,31 @@ export const upsertGoal = createServerFn({ method: "POST" })
 
 		const entries = await listWeightEntries();
 		const stats = computeStats(entries);
-		const startWeight = existing?.startWeight
-			? Number(existing.startWeight)
-			: (stats.current ?? data.targetWeight);
-		const startDate = existing?.startDate ?? todayStr();
+
+		// ¿El usuario está cambiando la meta (target_weight)? Si sí, tratamos
+		// esto como un objetivo nuevo y reseteamos el punto de partida.
+		const isNewTarget =
+			existing?.targetWeight != null
+				? Number(existing.targetWeight) !== data.targetWeight
+				: true;
+
+		// Si hay que resetear (objetivo nuevo o no existía antes), el punto de
+		// partida es el peso actual — pero SOLO si ya hay algún registro.
+		// Si todavía no hay entries, dejamos start_weight en null: se
+		// completará con el backfill cuando el usuario registre su primer peso.
+		const startWeight =
+			existing && !isNewTarget
+				? existing.startWeight != null
+					? Number(existing.startWeight)
+					: null
+				: stats.current;
+
+		const startDate =
+			existing && !isNewTarget
+				? existing.startDate
+				: stats.current != null
+					? todayStr()
+					: null;
 
 		if (existing) {
 			await db
@@ -77,7 +98,7 @@ export const upsertGoal = createServerFn({ method: "POST" })
 					targetWeight: data.targetWeight.toString(),
 					targetDate: data.targetDate ?? null,
 					pace: data.pace,
-					startWeight: startWeight.toString(),
+					startWeight: startWeight != null ? startWeight.toString() : null,
 					startDate: startDate,
 				})
 				.where(eq(goal.id, existing.id));
@@ -88,7 +109,7 @@ export const upsertGoal = createServerFn({ method: "POST" })
 					targetWeight: data.targetWeight.toString(),
 					targetDate: data.targetDate ?? null,
 					pace: data.pace,
-					startWeight: startWeight.toString(),
+					startWeight: startWeight != null ? startWeight.toString() : null,
 					startDate: startDate,
 				},
 			]);

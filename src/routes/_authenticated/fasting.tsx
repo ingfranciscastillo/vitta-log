@@ -14,6 +14,7 @@ import {
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
+import { Bars } from "#/components/bars";
 import { EmptyState } from "#/components/empty-state";
 import { PremiumGate } from "#/components/premium-gate";
 import { StatCard } from "#/components/stat-card";
@@ -278,7 +279,8 @@ function FastingPage() {
 					disabled={!mStart || !mEnd || manualMut.isPending}
 					className="w-full h-11 font-display"
 				>
-					Guardar ayuno
+					{manualMut.isPending && <Bars className="w-3 h-3 mr-1.5" />} Guardar
+					ayuno
 				</Button>
 			</div>
 

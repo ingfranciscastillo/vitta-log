@@ -7,6 +7,7 @@ import {
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useRef, useState } from "react";
 import toast from "react-hot-toast";
+import { Bars } from "#/components/bars";
 import { ConfirmDeleteDialog } from "#/components/confirm-delete-dialog";
 import { EmptyState } from "#/components/empty-state";
 import { PremiumGate } from "#/components/premium-gate";
@@ -383,7 +384,9 @@ function NutritionPage() {
 					onClick={addMeal}
 					className="w-full h-11 font-display"
 					disabled={createMut.isPending}
+					aria-busy={createMut.isPending}
 				>
+					{createMut.isPending && <Bars className="w-3 h-3 mr-1.5" />}
 					Añadir
 				</Button>
 			</div>
@@ -438,6 +441,7 @@ function NutritionPage() {
 				}}
 				title="Eliminar comida"
 				description={`Se eliminara "${deletingMeal?.name ?? ""}". Esta accion no se puede deshacer.`}
+				isPending={deleteMut.isPending}
 			/>
 
 			<div className="rounded-2xl bg-card border border-border p-4">

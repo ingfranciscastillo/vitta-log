@@ -1,10 +1,6 @@
-import { stripeClient } from "@better-auth/stripe/client";
+import { dodopaymentsClient } from "@dodopayments/better-auth/client";
 import { createAuthClient } from "better-auth/react";
 
 export const authClient = createAuthClient({
-	plugins: [
-		stripeClient({
-			subscription: false,
-		}),
-	],
+	plugins: [dodopaymentsClient()],
 });

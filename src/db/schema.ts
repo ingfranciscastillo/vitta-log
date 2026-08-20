@@ -67,7 +67,7 @@ export const user = pgTable("user", {
 	weightUnit: weightUnit("weight_unit").default("kg").notNull(),
 	heightUnit: heightUnit("height_unit").default("cm").notNull(),
 	timezone: text("timezone").default("UTC").notNull(),
-	stripeCustomerId: text("stripe_customer_id"),
+	dodoCustomerId: text("dodo_customer_id"),
 	isPro: boolean("is_pro").default(false).notNull(),
 	waterGoal: numeric("water_goal", { precision: 7, scale: 2 })
 		.default("2000")
@@ -159,10 +159,10 @@ export const verification = pgTable(
 );
 
 export const rateLimit = pgTable("rate_limit", {
-  id: text("id").primaryKey(),
-  key: text("key").notNull().unique(),
-  count: integer("count").notNull(),
-  lastRequest: bigint("last_request", { mode: "number" }).notNull(),
+	id: text("id").primaryKey(),
+	key: text("key").notNull().unique(),
+	count: integer("count").notNull(),
+	lastRequest: bigint("last_request", { mode: "number" }).notNull(),
 });
 
 export const goal = pgTable(

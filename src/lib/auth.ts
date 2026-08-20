@@ -1,21 +1,34 @@
 import { drizzleAdapter } from "@better-auth/drizzle-adapter";
-import { stripe } from "@better-auth/stripe";
+import {
+	checkout,
+	dodopayments,
+	portal,
+	webhooks,
+} from "@dodopayments/better-auth";
 import { betterAuth } from "better-auth";
 import { tanstackStartCookies } from "better-auth/tanstack-start";
+import DodoPayments from "dodopayments";
 import { eq } from "drizzle-orm";
-import Stripe from "stripe";
 import { db } from "#/db";
 import { user } from "#/db/schema";
 import { sendEmail } from "#/lib/email";
 
-const STRIPE_SECRET_KEY = process.env.STRIPE_SECRET_KEY;
-const STRIPE_WEBHOOK_SECRET = process.env.STRIPE_WEBHOOK_SECRET;
-if (!STRIPE_SECRET_KEY) throw new Error("STRIPE_SECRET_KEY is required");
-if (!STRIPE_WEBHOOK_SECRET)
-	throw new Error("STRIPE_WEBHOOK_SECRET is required");
+const DODO_PAYMENTS_API_KEY = process.env.DODO_PAYMENTS_API_KEY;
+const DODO_PAYMENTS_WEBHOOK_SECRET = process.env.DODO_PAYMENTS_WEBHOOK_SECRET;
+const DODO_PRODUCT_PRO_LIFETIME = process.env.DODO_PRODUCT_PRO_LIFETIME;
+const BETTER_AUTH_URL = process.env.BETTER_AUTH_URL ?? "http://localhost:3000";
 
-const stripeClient = new Stripe(STRIPE_SECRET_KEY, {
-	apiVersion: "2026-07-29.dahlia",
+if (!DODO_PAYMENTS_API_KEY)
+	throw new Error("DODO_PAYMENTS_API_KEY is required");
+if (!DODO_PAYMENTS_WEBHOOK_SECRET)
+	throw new Error("DODO_PAYMENTS_WEBHOOK_SECRET is required");
+if (!DODO_PRODUCT_PRO_LIFETIME)
+	throw new Error("DODO_PRODUCT_PRO_LIFETIME is required");
+
+const dodoPayments = new DodoPayments({
+	bearerToken: DODO_PAYMENTS_API_KEY,
+	environment:
+		process.env.NODE_ENV === "production" ? "live_mode" : "test_mode",
 });
 
 const trustedOrigins = (process.env.BETTER_AUTH_TRUSTED_ORIGINS ?? "")
@@ -124,12 +137,6 @@ export const auth = betterAuth({
 				input: true,
 				returned: true,
 			},
-			stripeCustomerId: {
-				type: "string",
-				required: false,
-				input: false,
-				returned: false,
-			},
 			isPro: {
 				type: "boolean",
 				defaultValue: false,
@@ -203,21 +210,37 @@ export const auth = betterAuth({
 	},
 
 	plugins: [
-		stripe({
-			stripeClient,
-			stripeWebhookSecret: STRIPE_WEBHOOK_SECRET,
+		dodopayments({
+			client: dodoPayments,
 			createCustomerOnSignUp: true,
-			onEvent: async (event) => {
-				if (event.type === "checkout.session.completed") {
-					const session = event.data.object as Stripe.Checkout.Session;
-					if (session.mode !== "payment") return;
-					const userId =
-						session.client_reference_id ??
-						(session.metadata?.userId as string | undefined);
-					if (!userId) return;
-					await db.update(user).set({ isPro: true }).where(eq(user.id, userId));
-				}
-			},
+			use: [
+				checkout({
+					products: [
+						{
+							productId: DODO_PRODUCT_PRO_LIFETIME,
+							slug: "pro-lifetime",
+						},
+					],
+					successUrl: `${BETTER_AUTH_URL}/pricing/success`,
+					authenticatedUsersOnly: true,
+				}),
+				portal(),
+				webhooks({
+					webhookKey: DODO_PAYMENTS_WEBHOOK_SECRET,
+					onPaymentSucceeded: async (payload) => {
+						const metadata = (
+							payload as { data?: { metadata?: Record<string, unknown> } }
+						).data?.metadata;
+						const userId =
+							(metadata?.userId as string | undefined) ?? undefined;
+						if (!userId) return;
+						await db
+							.update(user)
+							.set({ isPro: true })
+							.where(eq(user.id, userId));
+					},
+				}),
+			],
 		}),
 		tanstackStartCookies(),
 	],

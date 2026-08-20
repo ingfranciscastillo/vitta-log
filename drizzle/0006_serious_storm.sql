@@ -1,0 +1,1 @@
+ALTER TABLE "user" RENAME COLUMN "stripe_customer_id" TO "dodo_customer_id";

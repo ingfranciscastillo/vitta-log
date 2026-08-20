@@ -8,14 +8,78 @@ import { db } from "#/db";
 import { user } from "#/db/schema";
 import { sendEmail } from "#/lib/email";
 
-const stripeClient = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+const STRIPE_SECRET_KEY = process.env.STRIPE_SECRET_KEY;
+const STRIPE_WEBHOOK_SECRET = process.env.STRIPE_WEBHOOK_SECRET;
+if (!STRIPE_SECRET_KEY) throw new Error("STRIPE_SECRET_KEY is required");
+if (!STRIPE_WEBHOOK_SECRET)
+	throw new Error("STRIPE_WEBHOOK_SECRET is required");
+
+const stripeClient = new Stripe(STRIPE_SECRET_KEY, {
 	apiVersion: "2026-07-29.dahlia",
 });
+
+const trustedOrigins = (process.env.BETTER_AUTH_TRUSTED_ORIGINS ?? "")
+	.split(",")
+	.map((s) => s.trim())
+	.filter(Boolean);
 
 export const auth = betterAuth({
 	database: drizzleAdapter(db, {
 		provider: "pg",
 	}),
+	secret: process.env.BETTER_AUTH_SECRET,
+	baseURL: process.env.BETTER_AUTH_URL,
+	trustedOrigins,
+	rateLimit: {
+		enabled: true,
+		storage: "database",
+		customRules: {
+			"/api/auth/sign-in/email": { window: 60, max: 5 },
+			"/api/auth/sign-up/email": { window: 60 * 60, max: 5 },
+			"/api/auth/forget-password": { window: 60 * 60, max: 3 },
+			"/api/auth/reset-password": { window: 60 * 60, max: 5 },
+			"/api/auth/send-verification-email": { window: 60 * 60, max: 3 },
+		},
+	},
+	session: {
+		expiresIn: 60 * 60 * 24 * 7,
+		updateAge: 60 * 60 * 24,
+		cookieCache: {
+			enabled: true,
+			maxAge: 5 * 60,
+			strategy: "jwe",
+		},
+	},
+	account: {
+		encryptOAuthTokens: true,
+		storeStateStrategy: "cookie",
+	},
+	socialProviders: {
+		google: {
+			clientId: process.env.GOOGLE_CLIENT_ID ?? "",
+			clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? "",
+		},
+	},
+	advanced: {
+		ipAddress: {
+			ipAddressHeaders: ["x-forwarded-for", "x-real-ip"],
+		},
+	},
+	databaseHooks: {
+		user: {
+			update: {
+				after: async (hook) => {
+					const data = hook.data as { id: string; email?: string };
+					const oldData = hook.oldData as { email?: string } | null;
+					if (oldData?.email && oldData.email !== data.email) {
+						console.warn(
+							`[auth] email changed user=${data.id} from=${oldData.email} to=${data.email}`,
+						);
+					}
+				},
+			},
+		},
+	},
 	user: {
 		additionalFields: {
 			role: {
@@ -137,15 +201,11 @@ export const auth = betterAuth({
 			});
 		},
 	},
-	trustedOrigins: [
-		"https://2435-2001-1308-29e8-1f00-b8bb-f6da-1270-71e0.ngrok-free.app",
-		"http://localhost:3000",
-	],
 
 	plugins: [
 		stripe({
 			stripeClient,
-			stripeWebhookSecret: process.env.STRIPE_WEBHOOK_SECRET!,
+			stripeWebhookSecret: STRIPE_WEBHOOK_SECRET,
 			createCustomerOnSignUp: true,
 			onEvent: async (event) => {
 				if (event.type === "checkout.session.completed") {

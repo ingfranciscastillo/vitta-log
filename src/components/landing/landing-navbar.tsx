@@ -3,35 +3,35 @@ import { Button } from "#/components/ui/button";
 import { authClient } from "#/lib/auth-client";
 
 export function LandingNavbar() {
-	const { data: session, isPending } = authClient.useSession();
-	const signedIn = !isPending && !!session?.user;
+  const { data: session, isPending } = authClient.useSession();
+  const signedIn = !isPending && !!session?.user;
 
-	return (
-		<header className="sticky top-0 z-50 bg-background/90 backdrop-blur border-b border-border pt-[env(safe-area-inset-top)]">
-			<div className="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
-				<Link to="/" className="flex items-center gap-2">
-					<span className="size-2.5 rounded-full bg-primary" />
-					<span className="font-display text-lg">Vitta</span>
-				</Link>
-				<div className="flex items-center gap-2">
-					{signedIn ? (
-						<Button asChild className="h-9">
-							<Link to={"/dashboard" as string}>Dashboard</Link>
-						</Button>
-					) : (
-						<>
-							<Button asChild variant="ghost" className="h-9">
-								<Link to={"/login" as string}>Iniciar sesión</Link>
-							</Button>
-							<Button asChild className="h-9">
-								<Link to={"/register" as string}>Registrarse</Link>
-							</Button>
-						</>
-					)}
-				</div>
-			</div>
-		</header>
-	);
+  return (
+    <header className="sticky top-0 z-50 bg-background/90 backdrop-blur border-b border-border pt-[env(safe-area-inset-top)]">
+      <div className="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
+        <Link to="/" className="flex items-center gap-2">
+          <span className="size-2.5 rounded-full bg-primary" />
+          <span className="font-display text-lg">Vitta</span>
+        </Link>
+        <div className="flex items-center gap-2">
+          {signedIn ? (
+            <Button asChild className="h-9">
+              <Link to={"/dashboard" as string}>Dashboard</Link>
+            </Button>
+          ) : (
+            <>
+              <Button asChild variant="ghost" className="h-9">
+                <Link to={"/login" as string}>Iniciar sesión</Link>
+              </Button>
+              <Button asChild className="h-9">
+                <Link to={"/register" as string}>Registrarse</Link>
+              </Button>
+            </>
+          )}
+        </div>
+      </div>
+    </header>
+  );
 }
 
 export default LandingNavbar;

@@ -7,9 +7,17 @@ import viteReact from "@vitejs/plugin-react";
 import { nitro } from "nitro/vite";
 import { defineConfig } from "vite";
 
-const config = defineConfig({
+const config = defineConfig(({ command }) => ({
 	resolve: { tsconfigPaths: true },
-	plugins: [devtools(), nitro(), tailwindcss(), tanstackStart(), viteReact()],
-});
+	plugins: [
+		devtools(),
+		nitro({
+			inlineDynamicImports: command === "build",
+		}),
+		tailwindcss(),
+		tanstackStart(),
+		viteReact(),
+	],
+}));
 
 export default config;

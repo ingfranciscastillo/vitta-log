@@ -7,9 +7,9 @@ import {
 } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 import { Toaster } from "react-hot-toast";
+import { ThemeProvider } from "#/components/theme-provider";
 import TanStackQueryDevtools from "../integrations/tanstack-query/devtools";
 import appCss from "../styles.css?url";
-import { ThemeProvider } from "#/components/theme-provider";
 
 interface MyRouterContext {
   queryClient: QueryClient;
@@ -67,7 +67,11 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
     ],
     links: [
       { rel: "stylesheet", href: appCss },
-      { rel: "icon", href: "/favicon.svg", type: "image/svg+xml" },
+      { rel: "icon", href: "/logo.png", type: "image/png" },
+      {
+        rel: "apple-touch-icon",
+        href: "/logo.png",
+      },
       { rel: "canonical", href: "https://vitta.app/" },
       { rel: "alternate", hrefLang: "es", href: "https://vitta.app/" },
       { rel: "alternate", hrefLang: "x-default", href: "https://vitta.app/" },

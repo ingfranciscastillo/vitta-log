@@ -1,9 +1,9 @@
 import { TanStackDevtools } from "@tanstack/react-devtools";
 import type { QueryClient } from "@tanstack/react-query";
 import {
-	createRootRouteWithContext,
-	HeadContent,
-	Scripts,
+  createRootRouteWithContext,
+  HeadContent,
+  Scripts,
 } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 import { Toaster } from "react-hot-toast";
@@ -11,83 +11,142 @@ import TanStackQueryDevtools from "../integrations/tanstack-query/devtools";
 import appCss from "../styles.css?url";
 
 interface MyRouterContext {
-	queryClient: QueryClient;
+  queryClient: QueryClient;
 }
 
 export const Route = createRootRouteWithContext<MyRouterContext>()({
-	head: () => ({
-		meta: [
-			{
-				charSet: "utf-8",
-			},
-			{
-				name: "viewport",
-				content: "width=device-width, initial-scale=1",
-			},
-			{
-				title: "TanStack Start Starter",
-			},
-		],
-		links: [
-			{
-				rel: "stylesheet",
-				href: appCss,
-			},
-		],
-	}),
-	shellComponent: RootDocument,
+  head: () => ({
+    meta: [
+      { charSet: "utf-8" },
+      {
+        name: "viewport",
+        content: "width=device-width, initial-scale=1, viewport-fit=cover",
+      },
+      {
+        title: "Vitta — Registro de peso, hábitos y bienestar",
+      },
+      {
+        name: "description",
+        content:
+          "Registra tu peso, hábitos, ayuno, mediciones y nutrición en un solo lugar. Visualiza tendencias y alcanza tus objetivos con Vitta.",
+      },
+      {
+        name: "theme-color",
+        content: "#f7f0f3",
+        media: "(prefers-color-scheme: light)",
+      },
+      {
+        name: "theme-color",
+        content: "#1c1c20",
+        media: "(prefers-color-scheme: dark)",
+      },
+      { name: "robots", content: "index, follow, max-image-preview:large" },
+      { property: "og:type", content: "website" },
+      { property: "og:site_name", content: "Vitta" },
+      {
+        property: "og:title",
+        content: "Vitta — Registro de peso, hábitos y bienestar",
+      },
+      {
+        property: "og:description",
+        content:
+          "Registra tu peso, hábitos y ayuno. Visualiza tendencias y alcanza tus objetivos con Vitta.",
+      },
+      { property: "og:locale", content: "es_ES" },
+      { name: "twitter:card", content: "summary_large_image" },
+      {
+        name: "twitter:title",
+        content: "Vitta — Registro de peso, hábitos y bienestar",
+      },
+      {
+        name: "twitter:description",
+        content:
+          "Registra tu peso, hábitos y ayuno. Visualiza tendencias y alcanza tus objetivos con Vitta.",
+      },
+    ],
+    links: [
+      { rel: "stylesheet", href: appCss },
+      { rel: "icon", href: "/favicon.svg", type: "image/svg+xml" },
+      { rel: "canonical", href: "https://vitta.app/" },
+      { rel: "alternate", hrefLang: "es", href: "https://vitta.app/" },
+      { rel: "alternate", hrefLang: "x-default", href: "https://vitta.app/" },
+    ],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "WebApplication",
+          name: "Vitta",
+          url: "https://vitta.app",
+          applicationCategory: "HealthApplication",
+          operatingSystem: "Web",
+          inLanguage: "es",
+          description:
+            "Registro de peso, hábitos, ayuno, mediciones y nutrición con tendencias y objetivos.",
+          offers: {
+            "@type": "Offer",
+            price: "12.99",
+            priceCurrency: "USD",
+            category: "one-time payment",
+          },
+        }),
+      },
+    ],
+  }),
+  shellComponent: RootDocument,
 });
 
 function RootDocument({ children }: { children: React.ReactNode }) {
-	return (
-		<html lang="es">
-			<head>
-				<HeadContent />
-			</head>
-			<body>
-				<Toaster
-					position="top-center"
-					gutter={8}
-					toastOptions={{
-						duration: 4000,
-						className:
-							"rounded-xl border border-border bg-card text-card-foreground font-body shadow-sm",
-						style: {
-							padding: "12px 16px",
-							minWidth: "260px",
-							maxWidth: "420px",
-						},
-						success: {
-							iconTheme: {
-								primary: "hsl(var(--primary))",
-								secondary: "hsl(var(--card))",
-							},
-						},
-						error: {
-							className:
-								"rounded-xl border border-destructive bg-destructive/10 text-destructive font-body shadow-sm",
-							iconTheme: {
-								primary: "hsl(var(--destructive))",
-								secondary: "hsl(var(--card))",
-							},
-						},
-					}}
-				/>
-				{children}
-				<TanStackDevtools
-					config={{
-						position: "bottom-right",
-					}}
-					plugins={[
-						{
-							name: "Tanstack Router",
-							render: <TanStackRouterDevtoolsPanel />,
-						},
-						TanStackQueryDevtools,
-					]}
-				/>
-				<Scripts />
-			</body>
-		</html>
-	);
+  return (
+    <html lang="es-ES" suppressHydrationWarning>
+      <head>
+        <HeadContent />
+      </head>
+      <body>
+        <Toaster
+          position="top-center"
+          gutter={8}
+          toastOptions={{
+            duration: 4000,
+            className:
+              "rounded-xl border border-border bg-card text-card-foreground font-body shadow-sm",
+            style: {
+              padding: "12px 16px",
+              minWidth: "260px",
+              maxWidth: "420px",
+            },
+            success: {
+              iconTheme: {
+                primary: "hsl(var(--primary))",
+                secondary: "hsl(var(--card))",
+              },
+            },
+            error: {
+              className:
+                "rounded-xl border border-destructive bg-destructive/10 text-destructive font-body shadow-sm",
+              iconTheme: {
+                primary: "hsl(var(--destructive))",
+                secondary: "hsl(var(--card))",
+              },
+            },
+          }}
+        />
+        {children}
+        <TanStackDevtools
+          config={{
+            position: "bottom-right",
+          }}
+          plugins={[
+            {
+              name: "Tanstack Router",
+              render: <TanStackRouterDevtoolsPanel />,
+            },
+            TanStackQueryDevtools,
+          ]}
+        />
+        <Scripts />
+      </body>
+    </html>
+  );
 }

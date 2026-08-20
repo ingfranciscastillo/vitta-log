@@ -37,6 +37,7 @@ type LinkItem = {
 		| "/statistics"
 		| "/achievements"
 		| "/profile"
+		| "/settings"
 		| "/export"
 		| "/pricing";
 	label: string;
@@ -81,6 +82,11 @@ const SECTIONS: Section[] = [
 		items: [
 			{ to: "/achievements", label: "Logros", icon: MedalRibbonIcon },
 			{ to: "/profile", label: "Ajustes", icon: SettingsMinimalisticIcon },
+			{
+				to: "/settings",
+				label: "Configuración",
+				icon: SettingsMinimalisticIcon,
+			},
 			{ to: "/export", label: "Exportar", icon: DownloadIcon },
 			{
 				to: "/pricing",

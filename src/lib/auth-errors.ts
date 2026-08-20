@@ -13,6 +13,11 @@ export function mapAuthError(error: AuthError): string {
 			return "Verifica tu email antes de iniciar sesión";
 		case "USER_ALREADY_EXISTS":
 			return "Ya existe una cuenta con ese email";
+		case "PASSWORD_TOO_SHORT":
+		case "PASSWORD_TOO_LONG":
+			return "La contraseña no cumple los requisitos";
+		case "PASSWORD_TOO_SIMILAR":
+			return "La nueva contraseña es demasiado similar";
 		default:
 			return error.message ?? "Error al iniciar sesión";
 	}

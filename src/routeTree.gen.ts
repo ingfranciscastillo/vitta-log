@@ -32,6 +32,7 @@ import { Route as AuthenticatedMeasurementsRouteImport } from './routes/_authent
 import { Route as AuthenticatedMoreRouteImport } from './routes/_authenticated/more'
 import { Route as AuthenticatedNutritionRouteImport } from './routes/_authenticated/nutrition'
 import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
+import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated/settings'
 import { Route as AuthenticatedStatisticsRouteImport } from './routes/_authenticated/statistics'
 import { Route as AuthenticatedSupportRouteImport } from './routes/_authenticated/support'
 import { Route as AuthenticatedWeeklySummaryRouteImport } from './routes/_authenticated/weekly-summary'
@@ -157,6 +158,11 @@ const AuthenticatedProfileRoute = AuthenticatedProfileRouteImport.update({
   path: '/profile',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const AuthenticatedSettingsRoute = AuthenticatedSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
 const AuthenticatedStatisticsRoute = AuthenticatedStatisticsRouteImport.update({
   id: '/statistics',
   path: '/statistics',
@@ -214,6 +220,7 @@ export interface FileRoutesByFullPath {
   '/more': typeof AuthenticatedMoreRoute
   '/nutrition': typeof AuthenticatedNutritionRoute
   '/profile': typeof AuthenticatedProfileRoute
+  '/settings': typeof AuthenticatedSettingsRoute
   '/statistics': typeof AuthenticatedStatisticsRoute
   '/support': typeof AuthenticatedSupportRoute
   '/weekly-summary': typeof AuthenticatedWeeklySummaryRoute
@@ -244,6 +251,7 @@ export interface FileRoutesByTo {
   '/more': typeof AuthenticatedMoreRoute
   '/nutrition': typeof AuthenticatedNutritionRoute
   '/profile': typeof AuthenticatedProfileRoute
+  '/settings': typeof AuthenticatedSettingsRoute
   '/statistics': typeof AuthenticatedStatisticsRoute
   '/support': typeof AuthenticatedSupportRoute
   '/weekly-summary': typeof AuthenticatedWeeklySummaryRoute
@@ -276,6 +284,7 @@ export interface FileRoutesById {
   '/_authenticated/more': typeof AuthenticatedMoreRoute
   '/_authenticated/nutrition': typeof AuthenticatedNutritionRoute
   '/_authenticated/profile': typeof AuthenticatedProfileRoute
+  '/_authenticated/settings': typeof AuthenticatedSettingsRoute
   '/_authenticated/statistics': typeof AuthenticatedStatisticsRoute
   '/_authenticated/support': typeof AuthenticatedSupportRoute
   '/_authenticated/weekly-summary': typeof AuthenticatedWeeklySummaryRoute
@@ -308,6 +317,7 @@ export interface FileRouteTypes {
     | '/more'
     | '/nutrition'
     | '/profile'
+    | '/settings'
     | '/statistics'
     | '/support'
     | '/weekly-summary'
@@ -338,6 +348,7 @@ export interface FileRouteTypes {
     | '/more'
     | '/nutrition'
     | '/profile'
+    | '/settings'
     | '/statistics'
     | '/support'
     | '/weekly-summary'
@@ -369,6 +380,7 @@ export interface FileRouteTypes {
     | '/_authenticated/more'
     | '/_authenticated/nutrition'
     | '/_authenticated/profile'
+    | '/_authenticated/settings'
     | '/_authenticated/statistics'
     | '/_authenticated/support'
     | '/_authenticated/weekly-summary'
@@ -551,6 +563,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedProfileRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/settings': {
+      id: '/_authenticated/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof AuthenticatedSettingsRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/statistics': {
       id: '/_authenticated/statistics'
       path: '/statistics'
@@ -613,6 +632,7 @@ interface AuthenticatedRouteChildren {
   AuthenticatedMoreRoute: typeof AuthenticatedMoreRoute
   AuthenticatedNutritionRoute: typeof AuthenticatedNutritionRoute
   AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
+  AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRoute
   AuthenticatedStatisticsRoute: typeof AuthenticatedStatisticsRoute
   AuthenticatedSupportRoute: typeof AuthenticatedSupportRoute
   AuthenticatedWeeklySummaryRoute: typeof AuthenticatedWeeklySummaryRoute
@@ -637,6 +657,7 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedMoreRoute: AuthenticatedMoreRoute,
   AuthenticatedNutritionRoute: AuthenticatedNutritionRoute,
   AuthenticatedProfileRoute: AuthenticatedProfileRoute,
+  AuthenticatedSettingsRoute: AuthenticatedSettingsRoute,
   AuthenticatedStatisticsRoute: AuthenticatedStatisticsRoute,
   AuthenticatedSupportRoute: AuthenticatedSupportRoute,
   AuthenticatedWeeklySummaryRoute: AuthenticatedWeeklySummaryRoute,

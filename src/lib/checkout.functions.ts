@@ -11,8 +11,8 @@ const stripeClient = new Stripe(process.env.STRIPE_SECRET_KEY!, {
 });
 
 const checkoutSchema = z.object({
-	successUrl: z.string().url(),
-	cancelUrl: z.string().url(),
+	successUrl: z.url(),
+	cancelUrl: z.url(),
 });
 
 export const createProCheckout = createServerFn({ method: "POST" })

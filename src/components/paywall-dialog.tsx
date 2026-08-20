@@ -10,7 +10,7 @@ export function PaywallDialog({ open, onOpenChange }: PaywallDialogProps) {
 	return (
 		<Dialog open={open} onOpenChange={onOpenChange}>
 			<DialogContent className="max-w-sm">
-				<DialogTitle className="sr-only">MyWeight Premium</DialogTitle>
+				<DialogTitle className="sr-only">Vitta Premium</DialogTitle>
 				<PaywallContent />
 			</DialogContent>
 		</Dialog>

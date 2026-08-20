@@ -35,7 +35,7 @@ export function ExportImport({ entries, onImport }: ExportImportProps) {
 			]),
 		);
 		const csv = rows.map((r) => r.map((c) => `"${c}"`).join(",")).join("\n");
-		download("myweight.csv", csv, "text/csv");
+		download("vitta.csv", csv, "text/csv");
 	};
 
 	const exportJSON = (): void => {
@@ -45,11 +45,7 @@ export function ExportImport({ entries, onImport }: ExportImportProps) {
 			weight: e.weight,
 			note: e.note ?? null,
 		}));
-		download(
-			"myweight.json",
-			JSON.stringify(data, null, 2),
-			"application/json",
-		);
+		download("vitta.json", JSON.stringify(data, null, 2), "application/json");
 	};
 
 	const handleFile = (e: React.ChangeEvent<HTMLInputElement>): void => {

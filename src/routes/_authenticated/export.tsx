@@ -74,7 +74,7 @@ function ExportPage() {
 				]);
 			});
 			const csv = rows.map((r) => r.map((c) => `"${c}"`).join(",")).join("\n");
-			download("myweight.csv", csv, "text/csv");
+			download("vitta.csv", csv, "text/csv");
 			toast.success("CSV descargado");
 		} catch {
 			toast.error("No se pudo generar el CSV");
@@ -92,11 +92,7 @@ function ExportPage() {
 				weight: e.weight,
 				note: e.note ?? null,
 			}));
-			download(
-				"myweight.json",
-				JSON.stringify(data, null, 2),
-				"application/json",
-			);
+			download("vitta.json", JSON.stringify(data, null, 2), "application/json");
 			toast.success("JSON descargado");
 		} catch {
 			toast.error("No se pudo generar el JSON");

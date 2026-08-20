@@ -36,6 +36,13 @@
       "when": 1787193547589,
       "tag": "0004_majestic_puppet_master",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1787194066563,
+      "tag": "0005_smooth_scalphunter",
+      "breakpoints": true
     }
   ]
 }

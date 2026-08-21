@@ -6,6 +6,7 @@ import {
 	webhooks,
 } from "@dodopayments/better-auth";
 import { betterAuth } from "better-auth";
+import { twoFactor } from "better-auth/plugins/two-factor";
 import { tanstackStartCookies } from "better-auth/tanstack-start";
 import DodoPayments from "dodopayments";
 import { eq } from "drizzle-orm";
@@ -241,6 +242,17 @@ export const auth = betterAuth({
 					},
 				}),
 			],
+		}),
+		twoFactor({
+			issuer: "Vitta",
+			totpOptions: {
+				digits: 6,
+				period: 30,
+			},
+			backupCodeOptions: {
+				amount: 10,
+				length: 10,
+			},
 		}),
 		tanstackStartCookies(),
 	],

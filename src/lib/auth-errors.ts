@@ -18,6 +18,18 @@ export function mapAuthError(error: AuthError): string {
 			return "La contraseña no cumple los requisitos";
 		case "PASSWORD_TOO_SIMILAR":
 			return "La nueva contraseña es demasiado similar";
+		case "INVALID_CODE":
+			return "Código incorrecto";
+		case "TOO_MANY_ATTEMPTS_REQUEST_NEW_CODE":
+			return "Demasiados intentos. Espera un momento.";
+		case "TWO_FACTOR_NOT_ENABLED":
+			return "2FA no está activado";
+		case "INVALID_BACKUP_CODE":
+			return "Código de respaldo inválido";
+		case "ACCOUNT_TEMPORARILY_LOCKED":
+			return "Cuenta bloqueada temporalmente. Intenta más tarde.";
+		case "OTP_HAS_EXPIRED":
+			return "Código expirado. Solicita uno nuevo.";
 		default:
 			return error.message ?? "Error al iniciar sesión";
 	}

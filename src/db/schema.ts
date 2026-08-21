@@ -69,6 +69,7 @@ export const user = pgTable("user", {
 	timezone: text("timezone").default("UTC").notNull(),
 	dodoCustomerId: text("dodo_customer_id"),
 	isPro: boolean("is_pro").default(false).notNull(),
+	twoFactorEnabled: boolean("two_factor_enabled").default(false).notNull(),
 	waterGoal: numeric("water_goal", { precision: 7, scale: 2 })
 		.default("2000")
 		.notNull(),
@@ -164,6 +165,32 @@ export const rateLimit = pgTable("rate_limit", {
 	count: integer("count").notNull(),
 	lastRequest: bigint("last_request", { mode: "number" }).notNull(),
 });
+
+export const twoFactor = pgTable(
+	"two_factor",
+	{
+		id: text("id").primaryKey(),
+		secret: text("secret").notNull(),
+		backupCodes: text("backup_codes").notNull(),
+		userId: text("user_id")
+			.notNull()
+			.references(() => user.id, { onDelete: "cascade" }),
+		verified: boolean("verified").default(true).notNull(),
+		failedVerificationCount: integer("failed_verification_count")
+			.default(0)
+			.notNull(),
+		lockedUntil: timestamp("locked_until"),
+		createdAt: timestamp("created_at").defaultNow().notNull(),
+		updatedAt: timestamp("updated_at")
+			.defaultNow()
+			.$onUpdate(() => /* @__PURE__ */ new Date())
+			.notNull(),
+	},
+	(table) => [
+		index("two_factor_secret_idx").on(table.secret),
+		index("two_factor_userId_idx").on(table.userId),
+	],
+);
 
 export const goal = pgTable(
 	"goal",

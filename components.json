@@ -20,6 +20,7 @@
   },
   "registries": {
     "@svgl": "https://svgl.app/r/{name}.json",
-    "@loading-ui": "https://loading-ui.com/r/{name}.json"
+    "@loading-ui": "https://loading-ui.com/r/{name}.json",
+    "@diceui": "https://diceui.com/r/{style}/{name}.json"
   }
 }

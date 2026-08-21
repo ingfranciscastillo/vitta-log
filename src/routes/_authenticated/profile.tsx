@@ -2,9 +2,8 @@ import {
   DownloadIcon,
   Logout2Icon,
   QuestionCircleIcon,
-  SettingsIcon,
+  SettingsMinimalisticIcon,
   ShieldIcon,
-  TargetIcon,
 } from "@solar-icons/react/outline";
 import {
   useMutation,
@@ -295,12 +294,12 @@ function ProfileContent({
 
       <section className="space-y-3">
         <div className="font-display text-sm">Más</div>
-        <div className="grid grid-cols-3 gap-3">
+        <div className="grid grid-cols-3 gap-3 auto-rows-fr">
           {MORE_LINKS.map((l) => (
             <Link
               key={l.to}
               to={l.to}
-              className="motion-card group relative rounded-2xl border border-border bg-card p-4 flex flex-col items-center gap-2 transition-[transform,background-color] duration-100 ease-out pointer-fine-pointer-fine-hover:bg-muted/50 pointer-fine-hover:scale-[1.015] active:scale-[0.98] motion-reduce:active:scale-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+              className="motion-card group relative rounded-2xl border border-border bg-card p-4 flex flex-col items-center justify-center gap-2 h-full transition-[transform,background-color] duration-100 ease-out pointer-fine-pointer-fine-hover:bg-muted/50 pointer-fine-hover:scale-[1.015] active:scale-[0.98] motion-reduce:active:scale-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
             >
               <l.icon className="size-6 text-primary transition-transform group-hover:scale-105" />
               <span className="text-xs text-center font-display">
@@ -325,7 +324,11 @@ function ProfileContent({
 }
 
 const MORE_LINKS = [
-  { to: "/settings" as string, label: "Configuración", icon: SettingsIcon },
+  {
+    to: "/settings" as string,
+    label: "Configuración",
+    icon: SettingsMinimalisticIcon,
+  },
   { to: "/support" as string, label: "Soporte", icon: QuestionCircleIcon },
   { to: "/export" as string, label: "Exportar datos", icon: DownloadIcon },
   { to: "/privacy" as string, label: "Privacidad", icon: ShieldIcon },

@@ -107,7 +107,7 @@ function MorePage() {
       {SECTIONS.map((section) => (
         <section key={section.title} className="space-y-3">
           <h2 className="font-display text-sm text-balance">{section.title}</h2>
-          <div className="grid grid-cols-3 gap-3">
+          <div className="grid grid-cols-3 gap-3 auto-rows-fr">
             {section.items.map((item) => {
               const Icon = item.icon;
               return (
@@ -116,8 +116,8 @@ function MorePage() {
                   to={item.to}
                   className={
                     item.featured
-                      ? "group relative rounded-2xl border border-accent/40 bg-accent/15 p-4 flex flex-col items-center gap-2 transition-[transform,background-color] duration-100 ease-out pointer-fine-pointer-fine-hover:bg-muted/50 pointer-fine-hover:scale-[1.015] active:scale-[0.98] motion-reduce:active:scale-100"
-                      : "group relative rounded-2xl border border-border bg-card p-4 flex flex-col items-center gap-2 transition-[transform,background-color] duration-100 ease-out pointer-fine-pointer-fine-hover:bg-muted/50 pointer-fine-hover:scale-[1.015] active:scale-[0.98] motion-reduce:active:scale-100"
+                      ? "group relative rounded-2xl border border-accent/40 bg-accent/15 p-4 flex flex-col items-center justify-center gap-2 h-full transition-[transform,background-color] duration-100 ease-out pointer-fine-pointer-fine-hover:bg-muted/50 pointer-fine-hover:scale-[1.015] active:scale-[0.98] motion-reduce:active:scale-100"
+                      : "group relative rounded-2xl border border-border bg-card p-4 flex flex-col items-center justify-center gap-2 h-full transition-[transform,background-color] duration-100 ease-out pointer-fine-pointer-fine-hover:bg-muted/50 pointer-fine-hover:scale-[1.015] active:scale-[0.98] motion-reduce:active:scale-100"
                   }
                 >
                   <Icon

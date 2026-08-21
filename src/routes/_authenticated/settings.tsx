@@ -1,6 +1,4 @@
-import { CheckCircleIcon } from "@solar-icons/react/line-duotone/check-circle";
 import { CopyIcon } from "@solar-icons/react/outline/copy";
-import { DownloadIcon } from "@solar-icons/react/outline/download";
 import { useForm } from "@tanstack/react-form";
 import {
   useMutation,
@@ -446,15 +444,8 @@ function TwoFactorSection() {
         <Badge
           id="2fa-status"
           variant={enabled ? "default" : "secondary"}
-          className="gap-1.5 font-display"
+          className="gap-1.5 h-11 rounded-md font-display"
         >
-          {enabled && (
-            <CheckCircleIcon
-              size={30}
-              secondaryOpacity={0}
-              className="size-3.5"
-            />
-          )}
           {enabled ? "Activado" : "Desactivado"}
         </Badge>
       </Field>

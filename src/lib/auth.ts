@@ -67,6 +67,10 @@ export const auth = betterAuth({
 	account: {
 		encryptOAuthTokens: true,
 		storeStateStrategy: "cookie",
+		accountLinking: {
+			enabled: true,
+			trustedProviders: ["google"],
+		},
 	},
 	socialProviders: {
 		google: {
@@ -77,6 +81,28 @@ export const auth = betterAuth({
 	advanced: {
 		ipAddress: {
 			ipAddressHeaders: ["x-forwarded-for", "x-real-ip"],
+		},
+		useSecureCookies: process.env.NODE_ENV === "production",
+		crossSubDomainCookies: { enabled: false },
+		defaultCookieAttributes: {
+			sameSite: "lax",
+			secure: process.env.NODE_ENV === "production",
+		},
+		backgroundTasks: {
+			handler: (promise) => {
+				const c = (
+					globalThis as {
+						cloudflare?: {
+							context?: { waitUntil?: (p: Promise<unknown>) => void };
+						};
+					}
+				).cloudflare?.context;
+				if (c?.waitUntil) {
+					c.waitUntil(promise);
+				} else {
+					void promise;
+				}
+			},
 		},
 	},
 	databaseHooks: {
@@ -190,12 +216,18 @@ export const auth = betterAuth({
 	},
 	emailAndPassword: {
 		enabled: true,
+		minPasswordLength: 8,
+		maxPasswordLength: 256,
+		revokeSessionsOnPasswordReset: true,
 		sendResetPassword: async ({ user, url }) => {
 			await sendEmail({
 				to: user.email,
 				subject: "Restablece tu contraseña",
 				text: `Haz click en el siguiente enlace para restablecer tu contraseña: ${url}`,
 			});
+		},
+		onPasswordReset: async ({ user }) => {
+			console.log(`[auth] password reset user=${user.id} email=${user.email}`);
 		},
 	},
 	emailVerification: {
@@ -249,10 +281,26 @@ export const auth = betterAuth({
 				digits: 6,
 				period: 30,
 			},
+			otpOptions: {
+				sendOTP: async ({ user, otp }) => {
+					await sendEmail({
+						to: user.email,
+						subject: "Tu código de verificación",
+						text: `Tu código de acceso es: ${otp}. Válido por 5 minutos.`,
+					});
+				},
+				period: 5,
+				digits: 6,
+				allowedAttempts: 5,
+				storeOTP: "encrypted",
+			},
 			backupCodeOptions: {
 				amount: 10,
 				length: 10,
+				storeBackupCodes: "encrypted",
 			},
+			twoFactorCookieMaxAge: 600,
+			trustDeviceMaxAge: 30 * 24 * 60 * 60,
 		}),
 		tanstackStartCookies(),
 	],

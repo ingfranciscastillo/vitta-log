@@ -30,6 +30,8 @@ export function mapAuthError(error: AuthError): string {
 			return "Cuenta bloqueada temporalmente. Intenta más tarde.";
 		case "OTP_HAS_EXPIRED":
 			return "Código expirado. Solicita uno nuevo.";
+		case "TWO_FACTOR_REQUIRED":
+			return "Verificación en dos pasos requerida";
 		default:
 			return error.message ?? "Error al iniciar sesión";
 	}

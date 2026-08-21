@@ -46,3 +46,21 @@ export type RegisterInput = z.infer<typeof registerSchema>;
 export type ForgotPasswordInput = z.infer<typeof forgotPasswordSchema>;
 export type ResetPasswordInput = z.infer<typeof resetPasswordSchema>;
 export type ChangePasswordInput = z.infer<typeof changePasswordSchema>;
+
+export const verify2FASchema = z.object({
+	code: z
+		.string()
+		.min(6, "Introduce el código completo")
+		.max(6, "El código tiene 6 dígitos"),
+	trustDevice: z.boolean(),
+});
+
+export const verifyBackupSchema = z.object({
+	code: z
+		.string()
+		.min(8, "Código de respaldo inválido")
+		.max(12, "Código de respaldo inválido"),
+});
+
+export type Verify2FAInput = z.infer<typeof verify2FASchema>;
+export type VerifyBackupInput = z.infer<typeof verifyBackupSchema>;

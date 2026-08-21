@@ -12,15 +12,20 @@ import {
 	useSuspenseQuery,
 } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { Bars } from "#/components/bars";
 import { EmptyState } from "#/components/empty-state";
 import { PremiumGate } from "#/components/premium-gate";
 import { StatCard } from "#/components/stat-card";
 import { Button } from "#/components/ui/button";
-import { Input } from "#/components/ui/input";
+import { DatePicker } from "#/components/ui/date-picker";
 import { Label } from "#/components/ui/label";
+import {
+	TimePicker,
+	TimePickerInput,
+	TimePickerInputGroup,
+} from "#/components/ui/time-picker";
 import { fastsQuery } from "#/lib/fasts";
 import { createFast, updateFast } from "#/lib/fasts.functions";
 import {
@@ -30,7 +35,12 @@ import {
 	metricExplanations,
 } from "#/lib/health-utils";
 import { currentUserQuery } from "#/lib/profile";
-import { formatDate } from "#/lib/weight-utils";
+import {
+	combineDateTime,
+	formatDate,
+	formatDateInTimeZone,
+	parseLocalDateTime,
+} from "#/lib/weight-utils";
 
 export const Route = createFileRoute("/_authenticated/fasting")({
 	loader: ({ context }) => {
@@ -61,17 +71,23 @@ function FastingPage() {
 
 	const stats = fastStats(fasts);
 	const [, setTick] = useState<number>(0);
-	const [mStart, setMStart] = useState<string>("");
-	const [mEnd, setMEnd] = useState<string>("");
+	const [mStartDate, setMStartDate] = useState<string>("");
+	const [mStartTime, setMStartTime] = useState<string>("");
+	const [mEndDate, setMEndDate] = useState<string>("");
+	const [mEndTime, setMEndTime] = useState<string>("");
 	const startButtonRef = useRef<HTMLButtonElement | null>(null);
 
-	const mDuration =
-		mStart && mEnd
-			? Math.max(
-					0,
-					(new Date(mEnd).getTime() - new Date(mStart).getTime()) / 60000,
-				)
-			: null;
+	const mDuration = useMemo(() => {
+		const startStr = combineDateTime(mStartDate, mStartTime);
+		const endStr = combineDateTime(mEndDate, mEndTime);
+		if (!startStr || !endStr) return null;
+		const startD = new Date(startStr);
+		const endD = new Date(endStr);
+		if (Number.isNaN(startD.getTime()) || Number.isNaN(endD.getTime()))
+			return null;
+		if (endD <= startD) return null;
+		return Math.max(0, (endD.getTime() - startD.getTime()) / 60000);
+	}, [mStartDate, mStartTime, mEndDate, mEndTime]);
 
 	const completed = fasts
 		.filter((f) => f.status === "completed")
@@ -147,8 +163,10 @@ function FastingPage() {
 			toast.success(
 				`Ayuno registrado · ${formatDuration(vars.durationMinutes)}`,
 			);
-			setMStart("");
-			setMEnd("");
+			setMStartDate("");
+			setMStartTime("");
+			setMEndDate("");
+			setMEndTime("");
 			await invalidate();
 		},
 		onError: () => {
@@ -186,9 +204,15 @@ function FastingPage() {
 	};
 
 	const handleSaveManual = () => {
-		if (!mStart || !mEnd) return;
-		const startD = new Date(mStart);
-		const endD = new Date(mEnd);
+		const startStr = combineDateTime(mStartDate, mStartTime);
+		const endStr = combineDateTime(mEndDate, mEndTime);
+		if (!startStr || !endStr) return;
+		const startD = parseLocalDateTime(startStr);
+		const endD = parseLocalDateTime(endStr);
+		if (!startD || !endD) {
+			toast.error("Fecha u hora inválida");
+			return;
+		}
 		if (endD <= startD) {
 			toast.error("La hora de fin debe ser posterior a la de inicio");
 			return;
@@ -243,28 +267,61 @@ function FastingPage() {
 
 			<div className="rounded-2xl bg-card border border-border p-4 space-y-3">
 				<div className="font-display text-sm">Registrar ayuno manual</div>
+
 				<div className="space-y-1.5">
 					<Label className="text-[10px] uppercase text-muted-foreground">
 						Hora de inicio
 					</Label>
-					<Input
-						type="datetime-local"
-						value={mStart}
-						onChange={(e) => setMStart(e.target.value)}
-						className="h-11"
-					/>
+					<div className="grid grid-cols-[1fr_auto] gap-2">
+						<DatePicker
+							id="fast-manual-start-date"
+							value={mStartDate}
+							onChange={(v) => setMStartDate(v ?? "")}
+							className="h-11"
+						/>
+						<TimePicker
+							id="fast-manual-start-time"
+							value={mStartTime}
+							onValueChange={setMStartTime}
+							className="h-11 w-[110px]"
+						>
+							<TimePickerInputGroup>
+								<TimePickerInput segment="hour" />
+								<span className="text-muted-foreground">:</span>
+								<TimePickerInput segment="minute" />
+								<TimePickerInput segment="period" />
+							</TimePickerInputGroup>
+						</TimePicker>
+					</div>
 				</div>
+
 				<div className="space-y-1.5">
 					<Label className="text-[10px] uppercase text-muted-foreground">
 						Hora de fin
 					</Label>
-					<Input
-						type="datetime-local"
-						value={mEnd}
-						onChange={(e) => setMEnd(e.target.value)}
-						className="h-11"
-					/>
+					<div className="grid grid-cols-[1fr_auto] gap-2">
+						<DatePicker
+							id="fast-manual-end-date"
+							value={mEndDate}
+							onChange={(v) => setMEndDate(v ?? "")}
+							className="h-11"
+						/>
+						<TimePicker
+							id="fast-manual-end-time"
+							value={mEndTime}
+							onValueChange={setMEndTime}
+							className="h-11 w-[110px]"
+						>
+							<TimePickerInputGroup>
+								<TimePickerInput segment="hour" />
+								<span className="text-muted-foreground">:</span>
+								<TimePickerInput segment="minute" />
+								<TimePickerInput segment="period" />
+							</TimePickerInputGroup>
+						</TimePicker>
+					</div>
 				</div>
+
 				{mDuration != null && (
 					<div className="text-sm text-muted-foreground">
 						Duración:{" "}
@@ -273,10 +330,17 @@ function FastingPage() {
 						</span>
 					</div>
 				)}
+
 				<Button
 					type="button"
 					onClick={handleSaveManual}
-					disabled={!mStart || !mEnd || manualMut.isPending}
+					disabled={
+						!mStartDate ||
+						!mStartTime ||
+						!mEndDate ||
+						!mEndTime ||
+						manualMut.isPending
+					}
 					className="w-full h-11 font-display"
 				>
 					{manualMut.isPending && <Bars className="w-3 h-3 mr-1.5" />} Guardar
@@ -322,7 +386,14 @@ function FastingPage() {
 								className="flex items-center justify-between text-sm"
 							>
 								<span className="text-muted-foreground">
-									{f.endedAt ? formatDate(f.endedAt.slice(0, 10)) : "—"}
+									{f.endedAt
+										? formatDate(
+												formatDateInTimeZone(
+													f.endedAt,
+													me?.timezone ?? undefined,
+												),
+											)
+										: "—"}
 								</span>
 								<span className="font-medium">
 									{formatDuration(f.durationMinutes ?? 0)}

@@ -77,6 +77,41 @@ export const nowTimeStr = (): string => {
 	const d = new Date();
 	return `${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}`;
 };
+export const combineDateTime = (date: string, time: string): string => {
+	if (!date || !time) return "";
+	const t = time.length >= 5 ? time.slice(0, 5) : time;
+	return `${date}T${t}`;
+};
+
+export const parseLocalDateTime = (s: string): Date | null => {
+	const m = s.match(/^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})/);
+	if (!m) return null;
+	const [, y, mo, d, h, mi] = m;
+	return new Date(
+		Number(y),
+		Number(mo) - 1,
+		Number(d),
+		Number(h),
+		Number(mi),
+		0,
+		0,
+	);
+};
+
+export const formatDateInTimeZone = (iso: string, tz?: string): string => {
+	const date = new Date(iso);
+	if (Number.isNaN(date.getTime())) return "";
+	try {
+		return new Intl.DateTimeFormat("en-CA", {
+			timeZone: tz ?? "UTC",
+			year: "numeric",
+			month: "2-digit",
+			day: "2-digit",
+		}).format(date);
+	} catch {
+		return iso.slice(0, 10);
+	}
+};
 export const formatDate = (
 	dStr: string,
 	opts?: Intl.DateTimeFormatOptions,

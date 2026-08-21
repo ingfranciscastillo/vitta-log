@@ -3,6 +3,8 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { PremiumGate } from "#/components/premium-gate";
 import { DatePicker } from "#/components/ui/date-picker";
+import { Field } from "#/components/ui/field";
+import { Label } from "#/components/ui/label";
 import { Switch } from "#/components/ui/switch";
 import { WeightChart } from "#/components/weight-chart";
 import { currentGoalQuery } from "#/lib/goals";
@@ -111,19 +113,29 @@ function ChartsPage() {
 			</div>
 
 			{range === "custom" && (
-				<div className="flex gap-2">
-					<DatePicker
-						id="charts-from"
-						value={from}
-						onChange={(v) => setFrom(v ?? "")}
-						className="h-9 text-sm"
-					/>
-					<DatePicker
-						id="charts-to"
-						value={to}
-						onChange={(v) => setTo(v ?? "")}
-						className="h-9 text-sm"
-					/>
+				<div className="grid grid-cols-2 gap-2">
+					<Field className="gap-1">
+						<Label htmlFor="charts-from" className="text-xs">
+							Desde
+						</Label>
+						<DatePicker
+							id="charts-from"
+							value={from}
+							onChange={(v) => setFrom(v ?? "")}
+							className="h-9 text-sm"
+						/>
+					</Field>
+					<Field className="gap-1">
+						<Label htmlFor="charts-to" className="text-xs">
+							Hasta
+						</Label>
+						<DatePicker
+							id="charts-to"
+							value={to}
+							onChange={(v) => setTo(v ?? "")}
+							className="h-9 text-sm"
+						/>
+					</Field>
 				</div>
 			)}
 

@@ -1,3 +1,6 @@
+import { CheckCircleIcon } from "@solar-icons/react/line-duotone/check-circle";
+import { CopyIcon } from "@solar-icons/react/outline/copy";
+import { DownloadIcon } from "@solar-icons/react/outline/download";
 import { useForm } from "@tanstack/react-form";
 import {
 	useMutation,
@@ -440,13 +443,23 @@ function TwoFactorSection() {
 			</p>
 			<Field>
 				<Label htmlFor="2fa-status">Estado</Label>
-				<Input
-					id="2fa-status"
-					value={enabled ? "Activado" : "Desactivado"}
-					disabled
-					readOnly
-					className="h-11 opacity-60"
-				/>
+				{enabled ? (
+					<span
+						id="2fa-status"
+						className="inline-flex w-fit items-center gap-1.5 rounded-full bg-primary/10 px-2.5 py-1 text-xs font-display text-primary"
+					>
+						<CheckCircleIcon secondaryOpacity={0} className="size-4 shrink-0" />
+						Activado
+					</span>
+				) : (
+					<Input
+						id="2fa-status"
+						value="Desactivado"
+						disabled
+						readOnly
+						className="h-11 opacity-60"
+					/>
+				)}
 			</Field>
 			{enabled ? (
 				<div className="space-y-2">
@@ -812,9 +825,11 @@ function BackupCodesStep({
 					type="button"
 					variant="outline"
 					onClick={onCopy}
+					aria-label="Copiar todos los códigos"
+					title="Copiar todos"
 					className="flex-1 h-11"
 				>
-					Copiar todos
+					<CopyIcon className="size-4" />
 				</Button>
 				<Button
 					type="button"
@@ -822,7 +837,8 @@ function BackupCodesStep({
 					onClick={onDownload}
 					className="flex-1 h-11"
 				>
-					Descargar .txt
+					<DownloadIcon className="size-4 mr-2" />
+					Descargar códigos
 				</Button>
 			</div>
 			<label

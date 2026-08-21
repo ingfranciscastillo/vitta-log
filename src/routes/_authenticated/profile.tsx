@@ -254,17 +254,17 @@ function ProfileContent({
               </Select>
             </Field>
           </div>
+          <Button
+            type="button"
+            onClick={save}
+            disabled={saveMutation.isPending}
+            aria-busy={saveMutation.isPending}
+            className="w-full h-11 font-display"
+          >
+            {saveMutation.isPending && <Bars className="w-3 h-3 mr-1.5" />}
+            Guardar perfil
+          </Button>
         </div>
-        <Button
-          type="button"
-          onClick={save}
-          disabled={saveMutation.isPending}
-          aria-busy={saveMutation.isPending}
-          className="w-full h-11 font-display"
-        >
-          {saveMutation.isPending && <Bars className="w-3 h-3 mr-1.5" />}
-          Guardar perfil
-        </Button>
       </section>
 
       <section className="space-y-3">

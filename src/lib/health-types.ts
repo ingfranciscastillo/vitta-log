@@ -67,4 +67,5 @@ export type HealthGoals = {
 	steps: number;
 	sleep: number;
 	calories: number;
+	protein?: number;
 };

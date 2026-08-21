@@ -28,14 +28,16 @@ import { InsightsList } from "#/components/insights-list";
 import { ProgressBar } from "#/components/progress-bar";
 import { StatCard } from "#/components/stat-card";
 import { StreakCard } from "#/components/streak-card";
+import { SuggestionsCarousel } from "#/components/suggestions-carousel";
 import { WaterCounter } from "#/components/water-counter";
 import { WeightChart } from "#/components/weight-chart";
+import { fastsQuery } from "#/lib/fasts";
 import { currentGoalQuery } from "#/lib/goals";
 import { habitLogsQuery } from "#/lib/habits";
 import { addHabitLog } from "#/lib/habits.functions";
 import type { HealthGoals } from "#/lib/health-types";
 import {
-	dailySuggestion,
+	dailySuggestions,
 	habitToday,
 	mealTotals,
 	reminders,
@@ -76,6 +78,7 @@ function DashboardPage() {
 	const me = useSuspenseQuery(currentUserQuery()).data!;
 	const habits = useSuspenseQuery(habitLogsQuery()).data!;
 	const meals = useSuspenseQuery(mealsQuery()).data!;
+	const fasts = useSuspenseQuery(fastsQuery()).data!;
 	const qc = useQueryClient();
 
 	const isPremium = !!me?.isPro;
@@ -97,14 +100,24 @@ function DashboardPage() {
 			steps: me?.stepsGoal != null ? Number(me.stepsGoal) : 8000,
 			sleep: me?.sleepGoal != null ? Number(me.sleepGoal) : 8,
 			calories: me?.calorieGoal != null ? Number(me.calorieGoal) : 2000,
+			protein: me?.proteinGoal != null ? Number(me.proteinGoal) : 100,
 		}),
 		[me],
 	);
 
 	const today = todayStr();
-	const suggestion = useMemo(
-		() => dailySuggestion({ entries, habits, meals, goals }),
-		[entries, habits, meals, goals],
+	const suggestions = useMemo(
+		() =>
+			dailySuggestions({
+				entries,
+				habits,
+				meals,
+				fasts,
+				goals,
+				heightCm,
+				tz: me?.timezone ?? undefined,
+			}),
+		[entries, habits, meals, fasts, goals, heightCm, me?.timezone],
 	);
 	const rems = useMemo(
 		() => reminders({ entries, habits, meals }),
@@ -301,13 +314,7 @@ function DashboardPage() {
 				</div>
 			)}
 
-			<div className="rounded-2xl bg-accent/15 border border-accent/40 p-4">
-				<div className="flex items-center gap-2 mb-1">
-					<StarsMinimalisticIcon className="w-4 h-4 text-primary" />
-					<span className="font-display text-sm">Sugerencia del día</span>
-				</div>
-				<p className="text-sm text-pretty">{suggestion}</p>
-			</div>
+			<SuggestionsCarousel suggestions={suggestions} max={6} />
 
 			{rems.length > 0 && (
 				<div className="space-y-2">

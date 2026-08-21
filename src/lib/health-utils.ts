@@ -8,6 +8,7 @@ import type {
 } from "#/lib/health-types";
 import {
 	calcIMC,
+	computeStreaks,
 	dateStr,
 	sortByDateAsc,
 	todayStr,
@@ -282,36 +283,330 @@ export const weeklySummary = (args: {
 	};
 };
 
-export const dailySuggestion = (args: {
+export type SuggestionKind =
+	| "weight-down"
+	| "weight-up"
+	| "weight-trend"
+	| "water"
+	| "steps"
+	| "sleep"
+	| "calories"
+	| "protein"
+	| "imc-high"
+	| "imc-low"
+	| "fast-active"
+	| "fast-completed"
+	| "streak-30"
+	| "streak-7"
+	| "streak-broken"
+	| "empty";
+
+export type TimeOfDay = "night" | "morning" | "afternoon" | "evening";
+
+export const timeOfDay = (tz?: string): TimeOfDay => {
+	const fmt = tz
+		? new Intl.DateTimeFormat("en-US", {
+				timeZone: tz,
+				hour: "numeric",
+				hour12: false,
+			})
+		: null;
+	const hour = fmt ? Number(fmt.format(new Date())) : new Date().getHours();
+	if (hour < 6) return "night";
+	if (hour < 12) return "morning";
+	if (hour < 18) return "afternoon";
+	if (hour < 22) return "evening";
+	return "night";
+};
+
+export type Suggestion = {
+	id: string;
+	kind: SuggestionKind;
+	title: string;
+	message: string;
+	priority: number;
+};
+
+export type DailySuggestionsArgs = {
 	entries: WeightEntry[];
 	habits: HabitLog[];
 	meals: Meal[];
+	fasts?: Fast[];
 	goals: HealthGoals;
-}): string => {
-	const { entries, habits, meals, goals } = args;
-	const asc = sortByDateAsc(entries);
-	if (asc.length === 0)
-		return "Registra tu primer peso para empezar a ver tu progreso.";
-	const water = habitToday(habits, "water");
-	const steps = habitToday(habits, "steps");
-	const sleepAvg = habitAverage(habits, "sleep", 7);
-	const mealsToday = mealTotals(meals, todayStr());
-	if (water < (goals.water || 2000) * 0.5)
-		return "Llevas poca agua hoy. Un vaso más te ayudará a mantenerte hidratado.";
-	if (steps < (goals.steps || 8000) * 0.5)
-		return "Aún estás lejos de tu objetivo de pasos. Un paseo corto puede ayudarte a llegar.";
-	if (asc.length >= 2) {
-		const diff = asc[asc.length - 1].weight - asc[asc.length - 2].weight;
-		if (diff < -0.1)
-			return "Buen trabajo: tu peso bajó desde el último registro. Sigue con la consistencia.";
-		if (diff > 0.3)
-			return "Tu peso subió un poco. Las fluctuaciones diarias son normales; fíjate en la tendencia semanal.";
+	heightCm?: number | null;
+	tz?: string;
+};
+
+const priorityOf = (kind: SuggestionKind): number => {
+	switch (kind) {
+		case "imc-high":
+			return 90;
+		case "imc-low":
+			return 88;
+		case "fast-active":
+			return 86;
+		case "water":
+			return 85;
+		case "steps":
+			return 80;
+		case "weight-up":
+			return 70;
+		case "sleep":
+			return 65;
+		case "calories":
+			return 55;
+		case "protein":
+			return 52;
+		case "fast-completed":
+			return 48;
+		case "weight-trend":
+			return 45;
+		case "weight-down":
+			return 40;
+		case "streak-30":
+			return 35;
+		case "streak-7":
+			return 33;
+		case "streak-broken":
+			return 32;
+		case "empty":
+			return 10;
 	}
-	if (sleepAvg > 0 && sleepAvg < (goals.sleep || 8) - 1)
-		return "Tu sueño promedio está por debajo de tu objetivo. Intenta acostarte un poco antes.";
-	if (mealsToday.calories > (goals.calories || 2000) * 1.1)
-		return "Hoy has superado tu objetivo calórico. Mañana puedes ajustar el ritmo.";
-	return "Vas bien. Sigue registrando tus hábitos para mantener la constancia.";
+};
+
+const formatMl = (ml: number): string =>
+	ml >= 1000 ? `${(ml / 1000).toFixed(1)} L` : `${Math.round(ml)} ml`;
+
+const todayInTz = (tz?: string): string => {
+	if (!tz) return todayStr();
+	const fmt = new Intl.DateTimeFormat("en-CA", {
+		timeZone: tz,
+		year: "numeric",
+		month: "2-digit",
+		day: "2-digit",
+	});
+	const parts = fmt.formatToParts(new Date());
+	const y = parts.find((p) => p.type === "year")?.value ?? "";
+	const m = parts.find((p) => p.type === "month")?.value ?? "";
+	const d = parts.find((p) => p.type === "day")?.value ?? "";
+	return `${y}-${m}-${d}`;
+};
+
+export const dailySuggestions = (args: DailySuggestionsArgs): Suggestion[] => {
+	const { entries, habits, meals, fasts = [], goals, heightCm, tz } = args;
+	const out: Suggestion[] = [];
+	const asc = sortByDateAsc(entries);
+	const today = todayInTz(tz);
+	const waterGoal = goals.water || 2000;
+	const stepsGoal = goals.steps || 8000;
+	const caloriesGoal = goals.calories || 2000;
+	const sleepGoal = goals.sleep || 8;
+	const proteinGoal = goals.protein || 100;
+
+	if (asc.length === 0) {
+		out.push({
+			id: `empty-${today}`,
+			kind: "empty",
+			title: "Empieza aquí",
+			message: "Registra tu primer peso para comenzar a ver tu progreso.",
+			priority: priorityOf("empty"),
+		});
+		return out;
+	}
+
+	const last = asc[asc.length - 1];
+	const imc = heightCm && heightCm > 0 ? calcIMC(last.weight, heightCm) : null;
+	if (imc != null) {
+		if (imc >= 30) {
+			out.push({
+				id: `imc-high-${last.date}`,
+				kind: "imc-high",
+				title: "IMC alto",
+				message: `Tu IMC (${imc.toFixed(1)}) está en rango de obesidad. Considera revisar tu plan con un profesional.`,
+				priority: priorityOf("imc-high"),
+			});
+		} else if (imc >= 25) {
+			out.push({
+				id: `imc-high-${last.date}`,
+				kind: "imc-high",
+				title: "Sobrepeso",
+				message: `Tu IMC (${imc.toFixed(1)}) está por encima del rango normal. Pequeños cambios diarios suman.`,
+				priority: priorityOf("imc-high"),
+			});
+		} else if (imc < 18.5) {
+			out.push({
+				id: `imc-low-${last.date}`,
+				kind: "imc-low",
+				title: "IMC bajo",
+				message: `Tu IMC (${imc.toFixed(1)}) está por debajo del rango normal. Asegúrate de comer suficiente.`,
+				priority: priorityOf("imc-low"),
+			});
+		}
+	}
+
+	const activeFast = fasts.find((f) => f.status === "active");
+	if (activeFast?.startedAt) {
+		const elapsedH = Math.floor(
+			(Date.now() - new Date(activeFast.startedAt).getTime()) / 3600000,
+		);
+		if (elapsedH >= 16) {
+			out.push({
+				id: `fast-active-${activeFast.id ?? activeFast.startedAt}`,
+				kind: "fast-active",
+				title: "Ayuno prolongado",
+				message: `Llevas ${elapsedH} h en ayuno. Mantente hidratado y considera terminar si te sientes débil.`,
+				priority: priorityOf("fast-active"),
+			});
+		}
+	}
+
+	if (
+		!activeFast &&
+		fasts.some((f) => {
+			if (f.status !== "completed" || !f.endedAt) return false;
+			const end = new Date(f.endedAt);
+			const yesterday = new Date();
+			yesterday.setDate(yesterday.getDate() - 1);
+			return (
+				end.getFullYear() === yesterday.getFullYear() &&
+				end.getMonth() === yesterday.getMonth() &&
+				end.getDate() === yesterday.getDate()
+			);
+		})
+	) {
+		out.push({
+			id: `fast-completed-${today}`,
+			kind: "fast-completed",
+			title: "Buen ritmo",
+			message: "Ayer completaste un ayuno. Si te animas, hoy puedes repetir.",
+			priority: priorityOf("fast-completed"),
+		});
+	}
+
+	const water = habitToday(habits, "water");
+	if (water < waterGoal * 0.5) {
+		const remaining = Math.max(0, waterGoal - water);
+		out.push({
+			id: `water-${today}`,
+			kind: "water",
+			title: "Hidratación baja",
+			message: `Te faltan ${formatMl(remaining)} de agua hoy. Un vaso más ahora te ayuda.`,
+			priority: priorityOf("water"),
+		});
+	}
+
+	const tod = timeOfDay(tz);
+	const steps = habitToday(habits, "steps");
+	if (steps < stepsGoal * 0.5 && (tod === "evening" || tod === "afternoon")) {
+		const remaining = Math.max(0, stepsGoal - steps);
+		const formatted =
+			remaining >= 1000
+				? `${(remaining / 1000).toFixed(1)}k`
+				: `${Math.round(remaining)}`;
+		out.push({
+			id: `steps-${today}`,
+			kind: "steps",
+			title: "Pasos por debajo",
+			message: `Te faltan ${formatted} pasos para tu objetivo. Un paseo corto cuenta.`,
+			priority: priorityOf("steps"),
+		});
+	}
+
+	if (asc.length >= 2) {
+		const prev = asc[asc.length - 2];
+		const diff = last.weight - prev.weight;
+		if (diff < -0.1) {
+			out.push({
+				id: `weight-down-${last.date}`,
+				kind: "weight-down",
+				title: "Peso a la baja",
+				message:
+					"Tu peso bajó desde el último registro. Sigue con la constancia.",
+				priority: priorityOf("weight-down"),
+			});
+		} else if (diff > 0.3) {
+			out.push({
+				id: `weight-up-${last.date}`,
+				kind: "weight-up",
+				title: "Pequeño repunte",
+				message:
+					"Tu peso subió un poco. Las fluctuaciones diarias son normales; mira la tendencia semanal.",
+				priority: priorityOf("weight-up"),
+			});
+		}
+	}
+
+	const sleepAvg = habitAverage(habits, "sleep", 7);
+	if (sleepAvg > 0 && sleepAvg < sleepGoal - 1) {
+		const deficit = (sleepGoal - sleepAvg).toFixed(1);
+		out.push({
+			id: `sleep-${today}`,
+			kind: "sleep",
+			title: "Sueño bajo",
+			message: `Duermes ${deficit} h menos de tu objetivo. Acostarte un poco antes ayuda.`,
+			priority: priorityOf("sleep"),
+		});
+	}
+
+	const mealsToday = mealTotals(meals, today);
+	if (mealsToday.calories > caloriesGoal * 1.1) {
+		const over = Math.round(mealsToday.calories - caloriesGoal);
+		out.push({
+			id: `calories-${today}`,
+			kind: "calories",
+			title: "Calorías por encima",
+			message: `Hoy llevas ${over} kcal extra. Mañana puedes ajustar el ritmo.`,
+			priority: priorityOf("calories"),
+		});
+	}
+
+	if (mealsToday.protein > 0 && mealsToday.protein < proteinGoal * 0.6) {
+		const deficit = Math.round(proteinGoal - mealsToday.protein);
+		out.push({
+			id: `protein-${today}`,
+			kind: "protein",
+			title: "Proteína baja",
+			message: `Te faltan ${deficit} g de proteína hoy. Apunta a ${proteinGoal} g para recuperarte mejor.`,
+			priority: priorityOf("protein"),
+		});
+	}
+
+	const { current: streakCurrent, best: streakBest } = computeStreaks(entries);
+	if (streakCurrent >= 30) {
+		out.push({
+			id: `streak-30-${today}`,
+			kind: "streak-30",
+			title: "Mes registrando",
+			message: `Llevas ${streakCurrent} días seguidos registrando peso. Eso ya es un hábito.`,
+			priority: priorityOf("streak-30"),
+		});
+	} else if (streakCurrent >= 7) {
+		out.push({
+			id: `streak-7-${today}`,
+			kind: "streak-7",
+			title: "Racha activa",
+			message: `Llevas ${streakCurrent} días seguidos registrando. La constancia es la que genera resultados.`,
+			priority: priorityOf("streak-7"),
+		});
+	} else if (streakBest >= 5 && streakCurrent < streakBest) {
+		out.push({
+			id: `streak-broken-${today}`,
+			kind: "streak-broken",
+			title: "Recomenzar",
+			message: `Tu mejor racha fue de ${streakBest} días. Hoy puedes empezar otra.`,
+			priority: priorityOf("streak-broken"),
+		});
+	}
+
+	out.sort((a, b) => b.priority - a.priority);
+	return out;
+};
+
+export const dailySuggestion = (args: DailySuggestionsArgs): string => {
+	const list = dailySuggestions(args);
+	if (list.length === 0)
+		return "Vas bien. Sigue registrando tus hábitos para mantener la constancia.";
+	return list[0]?.message ?? "Vas bien. Sigue registrando tus hábitos.";
 };
 
 export const reminders = (args: {

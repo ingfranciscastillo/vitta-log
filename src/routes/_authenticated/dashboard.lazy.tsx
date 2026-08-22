@@ -240,7 +240,7 @@ function DashboardPage() {
       </div>
 
       <div data-tour="water-counter">
-        <WaterCounter />d
+        <WaterCounter />
       </div>
 
       <div

@@ -14,6 +14,14 @@ import { Badge } from "#/components/ui/badge";
 import { Button } from "#/components/ui/button";
 import { Checkbox } from "#/components/ui/checkbox";
 import {
+  Combobox,
+  ComboboxContent,
+  ComboboxInput,
+  ComboboxItem,
+  ComboboxList,
+  ComboboxValue,
+} from "#/components/ui/combobox";
+import {
   Dialog,
   DialogContent,
   DialogDescription,
@@ -58,22 +66,64 @@ const THEME_OPTIONS: ReadonlyArray<{ id: Theme; label: string }> = [
   { id: "system", label: "Sistema" },
 ];
 
+type TimezoneOption = {
+  value: string;
+  label: string;
+};
+
+const COMMON_TIMEZONES: ReadonlyArray<TimezoneOption> = [
+  { value: "America/Mexico_City", label: "Ciudad de México (UTC-6)" },
+  { value: "America/Bogota", label: "Bogotá (UTC-5)" },
+  { value: "America/Lima", label: "Lima (UTC-5)" },
+  { value: "America/Santiago", label: "Santiago (UTC-4)" },
+  { value: "America/Argentina/Buenos_Aires", label: "Buenos Aires (UTC-3)" },
+  { value: "America/Montevideo", label: "Montevideo (UTC-3)" },
+  { value: "America/Sao_Paulo", label: "São Paulo (UTC-3)" },
+  { value: "America/Caracas", label: "Caracas (UTC-4)" },
+  { value: "America/New_York", label: "Nueva York (UTC-5/-4)" },
+  { value: "America/Chicago", label: "Chicago (UTC-6/-5)" },
+  { value: "America/Denver", label: "Denver (UTC-7/-6)" },
+  { value: "America/Los_Angeles", label: "Los Ángeles (UTC-8/-7)" },
+  { value: "America/Tijuana", label: "Tijuana (UTC-8/-7)" },
+  { value: "Europe/Madrid", label: "Madrid (UTC+1/+2)" },
+  { value: "Atlantic/Canary", label: "Canarias (UTC+0/+1)" },
+  { value: "UTC", label: "UTC" },
+  { value: "Europe/London", label: "Londres (UTC+0/+1)" },
+  { value: "Europe/Berlin", label: "Berlín (UTC+1/+2)" },
+  { value: "Asia/Tokyo", label: "Tokio (UTC+9)" },
+  { value: "Asia/Shanghai", label: "Shanghái (UTC+8)" },
+  { value: "Asia/Singapore", label: "Singapur (UTC+8)" },
+  { value: "Australia/Sydney", label: "Sídney (UTC+10/+11)" },
+];
+
 function SettingsPage() {
   const me = useSuspenseQuery(currentUserQuery()).data!;
-  return <SettingsContent initial={{ weightUnit: me.weightUnit }} />;
+  return (
+    <SettingsContent
+      initial={{
+        weightUnit: me.weightUnit,
+        timezone: me.timezone ?? "UTC",
+      }}
+    />
+  );
 }
 
 type InitialSettings = {
   weightUnit: "kg" | "lb";
+  timezone: string;
 };
 
 function SettingsContent({ initial }: { initial: InitialSettings }) {
   const qc = useQueryClient();
+  const me = useSuspenseQuery(currentUserQuery()).data!;
   const { theme, setTheme } = useTheme();
   const [wUnit, setWUnit] = useState<"kg" | "lb">(initial.weightUnit);
+  const [tz, setTz] = useState<string>(initial.timezone);
 
   const saveMutation = useMutation({
-    mutationFn: (data: { weightUnit: "kg" | "lb" }) => updateProfile({ data }),
+    mutationFn: (
+      data: Partial<{ weightUnit: "kg" | "lb"; timezone: string }>,
+    ) => updateProfile({ data }),
     onSuccess: async () => {
       toast.success("Ajustes guardados");
       await qc.invalidateQueries({ queryKey: ["current-user"] });
@@ -82,6 +132,20 @@ function SettingsContent({ initial }: { initial: InitialSettings }) {
       toast.error("No se pudieron guardar los ajustes");
     },
   });
+
+  const tzOptions: TimezoneOption[] = (() => {
+    const current = me.timezone ?? "UTC";
+    if (COMMON_TIMEZONES.some((o) => o.value === current)) {
+      return [...COMMON_TIMEZONES];
+    }
+    return [
+      { value: current, label: `${current} (personalizada)` },
+      ...COMMON_TIMEZONES,
+    ];
+  })();
+
+  const tzDirty = tz !== (me.timezone ?? "UTC");
+  const wUnitDirty = wUnit !== me.weightUnit;
 
   return (
     <div className="space-y-6">
@@ -112,7 +176,7 @@ function SettingsContent({ initial }: { initial: InitialSettings }) {
           <Button
             type="button"
             onClick={() => saveMutation.mutate({ weightUnit: wUnit })}
-            disabled={saveMutation.isPending}
+            disabled={saveMutation.isPending || !wUnitDirty}
             aria-busy={saveMutation.isPending}
             className="w-full h-11 font-display"
           >
@@ -141,6 +205,47 @@ function SettingsContent({ initial }: { initial: InitialSettings }) {
               </Button>
             ))}
           </div>
+        </div>
+      </section>
+
+      <section className="space-y-3">
+        <div className="font-display text-sm">Zona horaria</div>
+        <div className="rounded-2xl bg-card border border-border p-4 space-y-3">
+          <Field>
+            <Label htmlFor="settings-timezone">Zona horaria</Label>
+            <Combobox
+              value={tzOptions.find((o) => o.value === tz) ?? null}
+              onValueChange={(v: TimezoneOption | null) => v && setTz(v.value)}
+              items={tzOptions}
+              itemToStringLabel={(item: TimezoneOption) => item.label}
+              itemToStringValue={(item: TimezoneOption) => item.value}
+            >
+              <ComboboxInput
+                id="settings-timezone"
+                placeholder="Buscar zona horaria…"
+                className="w-full"
+              />
+              <ComboboxContent>
+                <ComboboxList>
+                  {(item: TimezoneOption) => (
+                    <ComboboxItem key={item.value} value={item}>
+                      <ComboboxValue>{item.label}</ComboboxValue>
+                    </ComboboxItem>
+                  )}
+                </ComboboxList>
+              </ComboboxContent>
+            </Combobox>
+          </Field>
+          <Button
+            type="button"
+            onClick={() => saveMutation.mutate({ timezone: tz })}
+            disabled={saveMutation.isPending || !tzDirty}
+            aria-busy={saveMutation.isPending}
+            className="w-full h-11 font-display"
+          >
+            {saveMutation.isPending && <Bars className="w-3 h-3 mr-1.5" />}
+            Guardar zona horaria
+          </Button>
         </div>
       </section>
 

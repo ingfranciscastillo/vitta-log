@@ -20,6 +20,7 @@
     "db:studio": "drizzle-kit studio"
   },
   "dependencies": {
+    "@base-ui/react": "^1.7.0",
     "@better-auth/drizzle-adapter": "^1.7.1",
     "@dodopayments/better-auth": "^1.6.5",
     "@fontsource/nunito-sans": "^5.3.0",

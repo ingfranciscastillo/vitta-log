@@ -25,6 +25,7 @@ const updateProfileSchema = z.object({
 	weightUnit: z.enum(["kg", "lb"]).optional(),
 	heightUnit: z.enum(["cm", "ft"]).optional(),
 	timezone: z.string().min(1).max(100).optional(),
+	tourCompleted: z.boolean().optional(),
 	waterGoal: z.number().positive().optional(),
 	stepsGoal: z.number().positive().optional(),
 	sleepGoal: z.number().positive().optional(),
@@ -47,6 +48,8 @@ export const updateProfile = createServerFn({ method: "POST" })
 		if (data.weightUnit !== undefined) update.weightUnit = data.weightUnit;
 		if (data.heightUnit !== undefined) update.heightUnit = data.heightUnit;
 		if (data.timezone !== undefined) update.timezone = data.timezone;
+		if (data.tourCompleted !== undefined)
+			update.tourCompleted = data.tourCompleted;
 		if (data.waterGoal !== undefined)
 			update.waterGoal = data.waterGoal.toString();
 		if (data.stepsGoal !== undefined)

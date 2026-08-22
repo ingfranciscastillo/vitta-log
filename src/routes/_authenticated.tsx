@@ -16,11 +16,12 @@ import {
   redirect,
   useRouterState,
 } from "@tanstack/react-router";
-import { Suspense, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { BottomNav } from "#/components/bottom-nav";
 import { DashboardSkeleton } from "#/components/dashboard-skeleton";
 import { HabitLogDialog } from "#/components/habit-log-dialog";
+import { OnboardingTour } from "#/components/onboarding-tour";
 import { QuickLogContext } from "#/components/quick-log-context";
 import { QuickLogDialog } from "#/components/quick-log-dialog";
 import {
@@ -33,6 +34,7 @@ import { getSession } from "#/lib/auth.functions";
 import { habitLogsQuery } from "#/lib/habits";
 import { addHabitLog } from "#/lib/habits.functions";
 import { habitToday } from "#/lib/health-utils";
+import { currentUserQuery } from "#/lib/profile";
 import { weightStatsQuery } from "#/lib/statistics";
 import { weightEntriesQuery } from "#/lib/weight";
 import { createWeightEntry } from "#/lib/weight.functions";
@@ -64,6 +66,7 @@ export const Route = createFileRoute("/_authenticated")({
     context.queryClient.ensureQueryData(weightEntriesQuery());
     context.queryClient.ensureQueryData(weightStatsQuery());
     context.queryClient.ensureQueryData(habitLogsQuery());
+    context.queryClient.ensureQueryData(currentUserQuery());
   },
   component: AuthenticatedLayout,
 });
@@ -72,9 +75,11 @@ function AuthenticatedLayout() {
   const [quickOpen, setQuickOpen] = useState<boolean>(false);
   const [habitOpen, setHabitOpen] = useState<boolean>(false);
   const [habitType, setHabitType] = useState<HabitType>("water");
+  const [tourOpen, setTourOpen] = useState<boolean>(false);
   const entries = useSuspenseQuery(weightEntriesQuery()).data!;
   const { unit } = useSuspenseQuery(weightStatsQuery()).data!;
   const habits = useSuspenseQuery(habitLogsQuery()).data!;
+  const me = useSuspenseQuery(currentUserQuery()).data;
   const qc = useQueryClient();
 
   const pathname = useRouterState({
@@ -133,10 +138,19 @@ function AuthenticatedLayout() {
     setHabitOpen(true);
   };
 
+  useEffect(() => {
+    if (!me || me.tourCompleted) return;
+    const t = setTimeout(() => setTourOpen(true), 800);
+    return () => clearTimeout(t);
+  }, [me]);
+
   return (
     <QuickLogContext.Provider value={{ open: () => setQuickOpen(true) }}>
       <div className="min-h-dvh bg-background max-w-md mx-auto relative">
-        <header className="sticky top-0 z-30 bg-background/90 backdrop-blur border-b border-border pt-[env(safe-area-inset-top)]">
+        <header
+          data-tour="brand"
+          className="sticky top-0 z-30 bg-background/90 backdrop-blur border-b border-border pt-[env(safe-area-inset-top)]"
+        >
           <div className="flex items-center justify-between px-4 h-14">
             <div className="flex items-center gap-2">
               <span className="w-2.5 h-2.5 rounded-full bg-primary" />
@@ -151,6 +165,7 @@ function AuthenticatedLayout() {
               <DropdownMenuTrigger asChild>
                 <button
                   type="button"
+                  data-tour="quick-log"
                   className="size-11 rounded-full bg-primary text-primary-foreground flex items-center justify-center shadow-sm active:scale-[0.92] motion-reduce:active:scale-100 transition-transform duration-100 ease-out"
                   aria-label="Registrar"
                 >
@@ -218,6 +233,7 @@ function AuthenticatedLayout() {
           currentToday={currentToday}
           onSave={(type, value) => addHabitMut.mutate({ type, step: value })}
         />
+        <OnboardingTour open={tourOpen} onOpenChange={setTourOpen} />
       </div>
     </QuickLogContext.Provider>
   );

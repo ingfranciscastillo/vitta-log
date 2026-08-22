@@ -5,7 +5,7 @@ import {
   useQueryClient,
   useSuspenseQuery,
 } from "@tanstack/react-query";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { Bars } from "#/components/bars";
@@ -254,7 +254,48 @@ function SettingsContent({ initial }: { initial: InitialSettings }) {
         <ChangePasswordForm />
         <TwoFactorSection />
       </section>
+
+      <ResetTourSection />
     </div>
+  );
+}
+
+function ResetTourSection() {
+  const qc = useQueryClient();
+  const navigate = useNavigate();
+
+  const resetMut = useMutation({
+    mutationFn: () => updateProfile({ data: { tourCompleted: false } }),
+    onSuccess: async () => {
+      toast.success("Tour reiniciado. Inicia sesión de nuevo para verlo.");
+      await qc.invalidateQueries({ queryKey: ["current-user"] });
+      navigate({ to: "/" });
+    },
+    onError: () => {
+      toast.error("No se pudo reiniciar el tour");
+    },
+  });
+
+  return (
+    <section className="space-y-3">
+      <div className="font-display text-sm">Ayuda</div>
+      <div className="rounded-2xl bg-card border border-border p-4 space-y-3">
+        <p className="text-sm text-muted-foreground text-pretty">
+          ¿Quieres volver a ver el tour de bienvenida de Vitta?
+        </p>
+        <Button
+          type="button"
+          variant="outline"
+          onClick={() => resetMut.mutate()}
+          disabled={resetMut.isPending}
+          aria-busy={resetMut.isPending}
+          className="w-full h-11 font-display"
+        >
+          {resetMut.isPending && <Bars className="w-3 h-3 mr-1.5" />}
+          Reiniciar tour
+        </Button>
+      </div>
+    </section>
   );
 }
 

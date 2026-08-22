@@ -314,7 +314,9 @@ function DashboardPage() {
 				</div>
 			)}
 
-			<SuggestionsCarousel suggestions={suggestions} max={6} />
+			<div data-tour="suggestions">
+				<SuggestionsCarousel suggestions={suggestions} max={6} />
+			</div>
 
 			{rems.length > 0 && (
 				<div className="space-y-2">

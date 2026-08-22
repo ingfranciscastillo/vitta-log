@@ -164,6 +164,12 @@ export const auth = betterAuth({
 				input: true,
 				returned: true,
 			},
+			tourCompleted: {
+				type: "boolean",
+				defaultValue: false,
+				input: true,
+				returned: true,
+			},
 			isPro: {
 				type: "boolean",
 				defaultValue: false,

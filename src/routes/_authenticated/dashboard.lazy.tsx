@@ -23,6 +23,7 @@ import {
 } from "@tanstack/react-query";
 import { createLazyFileRoute, Link } from "@tanstack/react-router";
 import { useMemo } from "react";
+import { ActivityChart } from "#/components/activity-chart";
 import { GoalCard } from "#/components/goal-card";
 import { InsightsList } from "#/components/insights-list";
 import { ProgressBar } from "#/components/progress-bar";
@@ -31,6 +32,7 @@ import { StreakCard } from "#/components/streak-card";
 import { SuggestionsCarousel } from "#/components/suggestions-carousel";
 import { WaterCounter } from "#/components/water-counter";
 import { WeightChart } from "#/components/weight-chart";
+import { buildActivityCounts } from "#/lib/activity";
 import { fastsQuery } from "#/lib/fasts";
 import { currentGoalQuery } from "#/lib/goals";
 import { habitLogsQuery } from "#/lib/habits";
@@ -93,6 +95,10 @@ function DashboardPage() {
   const imc = heightCm ? calcIMC(stats.current ?? 0, heightCm) : null;
   const imcCat = imcCategory(imc);
   const last30 = useMemo(() => sortByDateAsc(entries).slice(-30), [entries]);
+  const activityCounts = useMemo(
+    () => buildActivityCounts(entries, habits),
+    [entries, habits],
+  );
 
   const goals: HealthGoals = useMemo(
     () => ({
@@ -320,6 +326,8 @@ function DashboardPage() {
           />
         </div>
       )}
+
+      <ActivityChart counts={activityCounts} />
 
       <div data-tour="suggestions">
         <SuggestionsCarousel suggestions={suggestions} max={6} />

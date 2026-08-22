@@ -27,16 +27,18 @@ function PasswordInput({
 	value,
 	className,
 	disabled,
+	onFocus,
+	onBlur,
 	...props
 }: PasswordInputProps) {
 	const [visible, setVisible] = React.useState(false);
+	const [focused, setFocused] = React.useState(false);
+	const stringValue = typeof value === "string" ? value : "";
 	const strength = React.useMemo(
-		() =>
-			showStrengthMeter
-				? computePasswordStrength(typeof value === "string" ? value : "")
-				: null,
-		[value, showStrengthMeter],
+		() => (showStrengthMeter ? computePasswordStrength(stringValue) : null),
+		[stringValue, showStrengthMeter],
 	);
+	const revealed = showStrengthMeter && (focused || stringValue.length > 0);
 
 	return (
 		<div className={cn("flex flex-col gap-1.5", className)}>
@@ -51,6 +53,14 @@ function PasswordInput({
 					value={value}
 					type={visible ? "text" : "password"}
 					disabled={disabled}
+					onFocus={(e) => {
+						setFocused(true);
+						onFocus?.(e);
+					}}
+					onBlur={(e) => {
+						setFocused(false);
+						onBlur?.(e);
+					}}
 					className={cn(size === "md" ? "h-12" : "h-11")}
 				/>
 				<InputGroupAddon align="inline-end">
@@ -68,7 +78,7 @@ function PasswordInput({
 				</InputGroupAddon>
 			</InputGroup>
 
-			{strength ? (
+			{strength && revealed ? (
 				<div className="flex items-center gap-2 text-xs" aria-live="polite">
 					<meter
 						className="flex flex-1 gap-1 [&::-webkit-meter-bar]:bg-muted"

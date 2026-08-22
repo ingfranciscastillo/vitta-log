@@ -1,7 +1,6 @@
 "use client";
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useNavigate, useSearch } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import {
   Tour,
@@ -24,7 +23,7 @@ import { updateProfile } from "#/lib/profile.functions";
 import { hasTourCompleted, type TourId, withTourCompleted } from "#/lib/tours";
 
 export type TourStepConfig = {
-  target: string; // ej. `[data-tour="brand"]`
+  target: string;
   title: string;
   description: string;
   side: "top" | "bottom" | "left" | "right";
@@ -39,8 +38,6 @@ type TourRunnerProps = {
 
 export function TourRunner({ tourId, steps, me }: TourRunnerProps) {
   const qc = useQueryClient();
-  const navigate = useNavigate();
-  const search = useSearch({ strict: false }) as { tour?: string };
   const [open, setOpen] = useState(false);
 
   const completeMut = useMutation({
@@ -53,18 +50,20 @@ export function TourRunner({ tourId, steps, me }: TourRunnerProps) {
     },
   });
 
+  // Disparo manual: alguien navegó con ?tour=goals (ej. desde Settings)
   useEffect(() => {
-    if (search.tour === tourId) {
-      setOpen(true);
-      // limpia el query param para que no reabra en cada refresh
-      navigate({
-        search: (prev) => ({ ...prev, tour: undefined }),
-        replace: true,
-      });
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [search.tour, tourId]);
+    if (typeof window === "undefined") return;
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("tour") !== tourId) return;
 
+    setOpen(true);
+    params.delete("tour");
+    const query = params.toString();
+    const newUrl = `${window.location.pathname}${query ? `?${query}` : ""}${window.location.hash}`;
+    window.history.replaceState(null, "", newUrl);
+  }, [tourId]);
+
+  // Disparo automático: primera vez que este usuario ve esta sección
   useEffect(() => {
     if (!me) return;
     if (hasTourCompleted(me.completedTours, tourId)) return;

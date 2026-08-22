@@ -1,18 +1,22 @@
 <div align="center">
 
-![Vitta](./public/logo.png)
+<p align="center">
+  <img src="./public/logo.png" alt="cutebooth" width="160" />
+</p>
 
 # Vitta
 
 **Sigue tu evolución, día a día**
 
+<p align="center">
 La forma más simple de seguir tu progreso físico completo: peso, hábitos y medidas, todo en un solo lugar.
+</p>
 
 [English](./README.en.md) · Español
 
 </div>
 
-## Features
+## Características
 
 - **Registro ultra rápido** — abre, pesa, guarda. En menos de 5 segundos, sin fricción.
 - **Hábitos diarios** — agua, pasos, sueño y ayuno, todo en un tap.

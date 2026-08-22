@@ -17,6 +17,7 @@ import { Button } from "#/components/ui/button";
 import { Field, FieldError } from "#/components/ui/field";
 import { Input } from "#/components/ui/input";
 import { Label } from "#/components/ui/label";
+import { PasswordInput } from "#/components/ui/password-input.tsx";
 import { Google } from "#/components/ui/svgs/google";
 import { getSession } from "#/lib/auth.functions";
 import { authClient } from "#/lib/auth-client";
@@ -205,23 +206,16 @@ function LoginPage() {
 										¿Olvidaste tu contraseña?
 									</Link>
 								</div>
-								<div className="relative">
-									<LockIcon
-										className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground"
-										aria-hidden="true"
-									/>
-									<Input
-										id="password"
-										type="password"
-										autoComplete="current-password"
-										placeholder="••••••••"
-										value={field.state.value}
-										onBlur={field.handleBlur}
-										onChange={(e) => field.handleChange(e.target.value)}
-										className="pl-10 h-12"
-										aria-invalid={isInvalid}
-									/>
-								</div>
+								<PasswordInput
+									id="password"
+									startIcon={<LockIcon className="size-4" aria-hidden="true" />}
+									autoComplete="current-password"
+									placeholder="••••••••"
+									value={field.state.value}
+									onBlur={field.handleBlur}
+									onChange={(e) => field.handleChange(e.target.value)}
+									aria-invalid={isInvalid}
+								/>
 								{isInvalid && <FieldError errors={field.state.meta.errors} />}
 							</Field>
 						);

@@ -1,38 +1,44 @@
+import type { ReactElement } from "react";
+import { renderToStaticMarkup } from "react-dom/server";
+import { Resend } from "resend";
+
 type EmailPayload = {
 	to: string;
 	subject: string;
 	text: string;
+	react?: ReactElement;
 	html?: string;
 };
 
-const RESEND_URL = "https://api.resend.com/emails";
+const resend = process.env.RESEND_API_KEY
+	? new Resend(process.env.RESEND_API_KEY)
+	: null;
 
 export async function sendEmail(payload: EmailPayload): Promise<void> {
 	const from = process.env.EMAIL_FROM ?? "noreply@example.com";
-	const apiKey = process.env.RESEND_API_KEY;
+	const html =
+		payload.html ??
+		(payload.react
+			? `<!DOCTYPE html>${renderToStaticMarkup(payload.react)}`
+			: undefined);
 
-	if (apiKey) {
-		const res = await fetch(RESEND_URL, {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-				Authorization: `Bearer ${apiKey}`,
-			},
-			body: JSON.stringify({
-				from,
-				to: payload.to,
-				subject: payload.subject,
-				text: payload.text,
-				html: payload.html,
-			}),
+	if (resend) {
+		const { error } = await resend.emails.send({
+			from,
+			to: payload.to,
+			subject: payload.subject,
+			text: payload.text,
+			html,
 		});
-		if (!res.ok) {
-			throw new Error(`Resend send failed: ${res.status} ${await res.text()}`);
+		if (error) {
+			throw new Error(`Resend send failed: ${error.message}`);
 		}
 		return;
 	}
 
-	// Dev/mock fallback: print to server console so the link can be
-	// followed manually during local development.
-	console.log("[email:mock]", { from, ...payload });
+	console.log("[email:mock]", {
+		from,
+		to: payload.to,
+		subject: payload.subject,
+	});
 }

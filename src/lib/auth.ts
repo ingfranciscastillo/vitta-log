@@ -12,6 +12,10 @@ import DodoPayments from "dodopayments";
 import { eq } from "drizzle-orm";
 import { db } from "#/db";
 import { user } from "#/db/schema";
+import { OtpEmail } from "#/emails/otp-email";
+import { PasswordChangedEmail } from "#/emails/password-changed-email";
+import { ResetPasswordEmail } from "#/emails/reset-password-email";
+import { VerifyEmail } from "#/emails/verify-email";
 import { sendEmail } from "#/lib/email";
 
 const DODO_PAYMENTS_API_KEY = process.env.DODO_PAYMENTS_API_KEY;
@@ -230,10 +234,16 @@ export const auth = betterAuth({
 				to: user.email,
 				subject: "Restablece tu contraseña",
 				text: `Haz click en el siguiente enlace para restablecer tu contraseña: ${url}`,
+				react: ResetPasswordEmail({ url }),
 			});
 		},
 		onPasswordReset: async ({ user }) => {
-			console.log(`[auth] password reset user=${user.id} email=${user.email}`);
+			await sendEmail({
+				to: user.email,
+				subject: "Tu contraseña fue cambiada",
+				text: "Tu contraseña de Vitta fue cambiada correctamente. Si no fuiste tú, contacta a soporte de inmediato.",
+				react: PasswordChangedEmail(),
+			});
 		},
 	},
 	emailVerification: {
@@ -244,6 +254,7 @@ export const auth = betterAuth({
 				to: user.email,
 				subject: "Verifica tu email",
 				text: `Haz click en el siguiente enlace para verificar tu email: ${url}`,
+				react: VerifyEmail({ url }),
 			});
 		},
 	},
@@ -293,6 +304,7 @@ export const auth = betterAuth({
 						to: user.email,
 						subject: "Tu código de verificación",
 						text: `Tu código de acceso es: ${otp}. Válido por 5 minutos.`,
+						react: OtpEmail({ otp }),
 					});
 				},
 				period: 5,

@@ -1,7 +1,7 @@
 <div align="center">
 
 <p align="center">
-  <img src="./public/logo.png" alt="cutebooth" width="160" />
+  <img src="./public/logo.png" alt="Vitta" width="160" />
 </p>
 
 # Vitta

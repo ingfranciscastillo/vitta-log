@@ -75,6 +75,7 @@ const COMMON_TIMEZONES: ReadonlyArray<TimezoneOption> = [
   { value: "America/Mexico_City", label: "Ciudad de México (UTC-6)" },
   { value: "America/Bogota", label: "Bogotá (UTC-5)" },
   { value: "America/Lima", label: "Lima (UTC-5)" },
+  { value: "America/Santo_Domingo", label: "Santo Domingo (UTC-4)" },
   { value: "America/Santiago", label: "Santiago (UTC-4)" },
   { value: "America/Argentina/Buenos_Aires", label: "Buenos Aires (UTC-3)" },
   { value: "America/Montevideo", label: "Montevideo (UTC-3)" },
@@ -133,13 +134,28 @@ function SettingsContent({ initial }: { initial: InitialSettings }) {
     },
   });
 
+  function formatTimezoneLabel(tz: string): string {
+    const city = tz.split("/").pop()?.replace(/_/g, " ") ?? tz;
+    try {
+      const offset = new Intl.DateTimeFormat("en-US", {
+        timeZone: tz,
+        timeZoneName: "shortOffset",
+      })
+        .formatToParts(new Date())
+        .find((p) => p.type === "timeZoneName")?.value;
+      return offset ? `${city} (${offset})` : city;
+    } catch {
+      return city;
+    }
+  }
+
   const tzOptions: TimezoneOption[] = (() => {
     const current = me.timezone ?? "UTC";
     if (COMMON_TIMEZONES.some((o) => o.value === current)) {
       return [...COMMON_TIMEZONES];
     }
     return [
-      { value: current, label: `${current} (personalizada)` },
+      { value: current, label: formatTimezoneLabel(current) },
       ...COMMON_TIMEZONES,
     ];
   })();
@@ -265,9 +281,9 @@ function ResetTourSection() {
   const navigate = useNavigate();
 
   const resetMut = useMutation({
-    mutationFn: () => updateProfile({ data: { tourCompleted: false } }),
+    mutationFn: () => updateProfile({ data: { completedTours: "" } }),
     onSuccess: async () => {
-      toast.success("Tour reiniciado. Inicia sesión de nuevo para verlo.");
+      toast.success("Tour reiniciado");
       await qc.invalidateQueries({ queryKey: ["current-user"] });
       navigate({ to: "/" });
     },

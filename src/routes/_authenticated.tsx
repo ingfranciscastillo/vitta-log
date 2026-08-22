@@ -16,14 +16,15 @@ import {
   redirect,
   useRouterState,
 } from "@tanstack/react-router";
-import { Suspense, useEffect, useState } from "react";
+import { Suspense, useState } from "react";
 import toast from "react-hot-toast";
 import { BottomNav } from "#/components/bottom-nav";
 import { DashboardSkeleton } from "#/components/dashboard-skeleton";
 import { HabitLogDialog } from "#/components/habit-log-dialog";
-import { OnboardingTour } from "#/components/onboarding-tour";
 import { QuickLogContext } from "#/components/quick-log-context";
 import { QuickLogDialog } from "#/components/quick-log-dialog";
+import { TourRunner } from "#/components/tour-runner";
+import { DASHBOARD_TOUR_STEPS } from "#/components/tours/dashboard-tour-steps";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -75,7 +76,6 @@ function AuthenticatedLayout() {
   const [quickOpen, setQuickOpen] = useState<boolean>(false);
   const [habitOpen, setHabitOpen] = useState<boolean>(false);
   const [habitType, setHabitType] = useState<HabitType>("water");
-  const [tourOpen, setTourOpen] = useState<boolean>(false);
   const entries = useSuspenseQuery(weightEntriesQuery()).data!;
   const { unit } = useSuspenseQuery(weightStatsQuery()).data!;
   const habits = useSuspenseQuery(habitLogsQuery()).data!;
@@ -137,12 +137,6 @@ function AuthenticatedLayout() {
     setHabitType(type);
     setHabitOpen(true);
   };
-
-  useEffect(() => {
-    if (!me || me.tourCompleted) return;
-    const t = setTimeout(() => setTourOpen(true), 800);
-    return () => clearTimeout(t);
-  }, [me]);
 
   return (
     <QuickLogContext.Provider value={{ open: () => setQuickOpen(true) }}>
@@ -233,7 +227,7 @@ function AuthenticatedLayout() {
           currentToday={currentToday}
           onSave={(type, value) => addHabitMut.mutate({ type, step: value })}
         />
-        <OnboardingTour open={tourOpen} onOpenChange={setTourOpen} />
+        <TourRunner tourId="dashboard" steps={DASHBOARD_TOUR_STEPS} me={me} />
       </div>
     </QuickLogContext.Provider>
   );

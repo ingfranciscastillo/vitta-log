@@ -1,0 +1,1 @@
+ALTER TABLE "user" RENAME COLUMN "tour_completed" TO "completed_tours";

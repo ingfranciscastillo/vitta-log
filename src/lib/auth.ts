@@ -164,9 +164,9 @@ export const auth = betterAuth({
 				input: true,
 				returned: true,
 			},
-			tourCompleted: {
-				type: "boolean",
-				defaultValue: false,
+			completedTours: {
+				type: "string",
+				defaultValue: "[]",
 				input: true,
 				returned: true,
 			},

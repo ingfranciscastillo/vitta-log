@@ -67,7 +67,7 @@ export const user = pgTable("user", {
 	weightUnit: weightUnit("weight_unit").default("kg").notNull(),
 	heightUnit: heightUnit("height_unit").default("cm").notNull(),
 	timezone: text("timezone").default("UTC").notNull(),
-	tourCompleted: boolean("tour_completed").default(false).notNull(),
+	completedTours: text("completed_tours").default("[]").notNull(),
 	dodoCustomerId: text("dodo_customer_id"),
 	isPro: boolean("is_pro").default(false).notNull(),
 	twoFactorEnabled: boolean("two_factor_enabled").default(false).notNull(),

@@ -26,7 +26,3 @@ La forma más simple de seguir tu progreso físico completo: peso, hábitos y me
 - **Logros y rachas** — desbloquea hitos y mantente motivado con tu constancia.
 - **Gráficos y estadísticas** — tendencia, media móvil y análisis de tu evolución.
 - **Historial y resumen semanal** — revisa tu semana y tu calendario completo.
-
-## Screenshot
-
-<!-- Reemplaza el bloque siguiente con: ![Screenshot de Vitta](./docs/screenshot.png) -->
